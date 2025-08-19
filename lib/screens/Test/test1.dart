@@ -321,7 +321,7 @@ class _Test1ScreenState extends State<Test1Screen> {
               left: width * 0.19,
               bottom: navBarHeight * 0.46,
               child: Container(
-                width: width * 0.13,
+                width: width * 0.2,
                 height: navBarHeight * 0.34,
                 decoration: BoxDecoration(
                   color: const Color(0xFF7F95E4),

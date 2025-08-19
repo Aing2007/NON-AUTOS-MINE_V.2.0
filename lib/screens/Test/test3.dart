@@ -334,7 +334,7 @@ class _Test3ScreenState extends State<Test3Screen> {
               left: width * 0.19,
               bottom: navBarHeight * 0.46,
               child: Container(
-                width: width * 0.2,
+                width: width * 0.45,
                 height: navBarHeight * 0.34,
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(254, 211, 113, 1),

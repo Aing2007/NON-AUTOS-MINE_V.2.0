@@ -328,7 +328,7 @@ class _Test2ScreenState extends State<Test2Screen> {
               left: width * 0.19,
               bottom: navBarHeight * 0.46,
               child: Container(
-                width: width * 0.2,
+                width: width * 0.35,
                 height: navBarHeight * 0.34,
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(246, 90, 59, 1),
