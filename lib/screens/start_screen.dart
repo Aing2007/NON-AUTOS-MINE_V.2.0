@@ -39,7 +39,7 @@ class StartScreen extends StatelessWidget {
   }
 }
 
-// ✅ ปุ่ม START ทำให้ responsive
+// ✅ ปุ่ม START ทำให้
 class _StartButton extends StatefulWidget {
   final double screenHeight;
   const _StartButton({Key? key, required this.screenHeight}) : super(key: key);
