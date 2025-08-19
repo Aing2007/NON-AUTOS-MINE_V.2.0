@@ -83,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                           SizedBox(height: verticalPadding / 3),
                           // --- Description ---
                           Text(
-                            'ยินดีต้อนรับสู่ "NON-Autos mine แอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n(ระยะที่ 1 และ 2) อย่างครบวงจร',
+                            'ยินดีต้อนรับสู่ "NON-AUTOS MINE แอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n(ระยะที่ 1 และ 2) อย่างครบวงจร',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.barlowSemiCondensed(
                               fontSize: descFontSize,
