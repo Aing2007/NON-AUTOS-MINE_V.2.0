@@ -53,9 +53,9 @@ class _ATECHomePageState extends State<ATECHomePage> {
     final double radioFontSize = size.width * 0.04;
     final double cardTopRadius = size.width * 0.15;
     final double avatarRadius = size.width * 0.10;
-    final double formFieldHeight = size.height * 0.08;
-    final double navButtonSize = size.width * 0.13;
-    final double navBarHeight = size.height * 0.08;
+    final double formFieldHeight = size.height * 0.07;
+    final double navButtonSize = size.width * 0.11;
+    final double navBarHeight = size.height * 0.07;
 
     return Scaffold(
       backgroundColor: atecBrown,
@@ -70,7 +70,7 @@ class _ATECHomePageState extends State<ATECHomePage> {
                     padding: EdgeInsets.fromLTRB(
                       horizontalPadding,
                       verticalPadding,
-                      horizontalPadding * 4,
+                      horizontalPadding * 3,
                       verticalPadding * 1.5,
                     ),
                     child: Column(
@@ -85,7 +85,7 @@ class _ATECHomePageState extends State<ATECHomePage> {
                             letterSpacing: 2.4,
                           ),
                         ),
-                        SizedBox(height: verticalPadding * 0.3),
+                        SizedBox(height: verticalPadding * 1.5),
                         Text(
                           'แบบประเมินนี้ได้ถูกจัดทำขึ้นตามแนวคิดของ Rimland Rimland, Ph.D. & Stephen M. Edelson, Ph.D. \nและได้รับการแปลโดย วนาลักษณ์ เมืองมลมณีรัตน์ และ ภัทราภรณ์ ทุ่งปันคา',
                           style: TextStyle(
@@ -119,8 +119,8 @@ class _ATECHomePageState extends State<ATECHomePage> {
                     ),
                   ),
                   Positioned(
-                    top: verticalPadding * 2,
-                    right: horizontalPadding,
+                    top: verticalPadding * 1.2,
+                    right: horizontalPadding* 0.5,
                     child: CircleAvatar(
                       radius: avatarRadius,
                       backgroundColor: atecGreen,
@@ -169,9 +169,9 @@ class _ATECHomePageState extends State<ATECHomePage> {
                 ),
                 padding: EdgeInsets.fromLTRB(
                   horizontalPadding,
-                  verticalPadding * 2,
+                  verticalPadding * 1.5,
                   horizontalPadding,
-                  verticalPadding * 2.5,
+                  verticalPadding * 2.0,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

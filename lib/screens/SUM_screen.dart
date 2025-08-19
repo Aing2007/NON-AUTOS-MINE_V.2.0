@@ -85,56 +85,80 @@ class _SummaryPageState extends State<SummaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+    final double horizontalPadding = width * 0.07;
+    final double verticalPadding = height * 0.02;
+    final double titleFontSize = width * 0.09;
+    final double bodyImageHeight = height * 0.32;
+    final double levelFontSize = width * 0.06;
+    final double resultFontSize = width * 0.055;
+    final double scoreFontSize = width * 0.055;
+    final double scoreLineFontSize = width * 0.045;
+    final double summaryCodeFontSize = width * 0.13;
+    final double arrowButtonSize = width * 0.15;
+    final double bottomBarRadius = width * 0.13;
+
     return Scaffold(
       backgroundColor: pageColor,
       body: Column(
         children: [
-          const SizedBox(height: 60),
+          SizedBox(height: verticalPadding * 3),
           Text(
             'AING',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: titleFontSize,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.5,
             ),
           ),
-
-          Image.asset('assets/images/body.png', height: 400),
-
+          SizedBox(height: verticalPadding * 2),
+          Image.asset(
+            'assets/images/body.png',
+            height: bodyImageHeight,
+          ),
+          SizedBox(height: verticalPadding * 1.2),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+            padding: EdgeInsets.symmetric(
+              vertical: verticalPadding * 0.7,
+              horizontal: horizontalPadding * 0.7,
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(bottomBarRadius * 0.7),
             ),
             child: Text(
               "Level: $level",
               style: TextStyle(
                 color: pageColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: levelFontSize,
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: verticalPadding * 0.8),
           Text(
             testResult,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: resultFontSize,
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: verticalPadding * 0.3),
           Text(
             'คะแนนรวม = $scoreTotal',
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: scoreFontSize,
+            ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: verticalPadding * 1.2),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -142,21 +166,25 @@ class _SummaryPageState extends State<SummaryPage> {
                   index: 1,
                   title: 'การพูด/ การเปล่งเสียงใช้ภาษา/การสื่อสาร',
                   score: score1,
+                  fontSize: scoreLineFontSize,
                 ),
                 _buildScoreLine(
                   index: 2,
                   title: 'ความสามารถทางสังคม',
                   score: score2,
+                  fontSize: scoreLineFontSize,
                 ),
                 _buildScoreLine(
                   index: 3,
                   title: 'ประสาทสัมผัสรับความรู้สึก และความคิด/การรับรู้',
                   score: score3,
+                  fontSize: scoreLineFontSize,
                 ),
                 _buildScoreLine(
                   index: 4,
                   title: 'สุขภาพ/ ร่างกาย/ พฤติกรรม',
                   score: score4,
+                  fontSize: scoreLineFontSize,
                 ),
               ],
             ),
@@ -166,39 +194,41 @@ class _SummaryPageState extends State<SummaryPage> {
             children: [
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.only(top: 20, bottom: 40),
-                decoration: const BoxDecoration(
+                padding: EdgeInsets.only(
+                  top: verticalPadding * 2,
+                  bottom: verticalPadding * 4,
+                ),
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(48),
-                    topRight: Radius.circular(48),
+                    topLeft: Radius.circular(bottomBarRadius * 3.7),
+                    topRight: Radius.circular(bottomBarRadius * 3.7),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 8),
+                      SizedBox(height: verticalPadding * 0.5),
                       Text(
                         widget.summaryCode,
                         style: TextStyle(
                           color: pageColor,
-                          fontSize: 60,
+                          fontSize: summaryCodeFontSize,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 5,
                         ),
                       ),
-                      const SizedBox(height: 16),
-
-                      const SizedBox(height: 64), // เว้นช่องให้ปุ่มไม่ชน
+                      SizedBox(height: verticalPadding * 2),
+                      SizedBox(height: verticalPadding * 6), // เว้นช่องให้ปุ่มไม่ชน
                     ],
                   ),
                 ),
               ),
               Positioned(
-                bottom: 32,
-                right: 32,
+                bottom: verticalPadding * 2.5,
+                right: horizontalPadding,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -217,7 +247,8 @@ class _SummaryPageState extends State<SummaryPage> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(14),
+                    width: arrowButtonSize,
+                    height: arrowButtonSize,
                     decoration: BoxDecoration(
                       color: pageColor,
                       shape: BoxShape.circle,
@@ -229,10 +260,10 @@ class _SummaryPageState extends State<SummaryPage> {
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_forward,
                       color: Colors.white,
-                      size: 28,
+                      size: arrowButtonSize * 0.55,
                     ),
                   ),
                 ),
@@ -248,12 +279,13 @@ class _SummaryPageState extends State<SummaryPage> {
     required int index,
     required String title,
     required int score,
+    required double fontSize,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         '$index. $title = $score',
-        style: const TextStyle(color: Colors.white, fontSize: 20),
+        style: TextStyle(color: Colors.white, fontSize: fontSize),
       ),
     );
   }
