@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
     final double verticalPadding = size.height * 0.025;
     final double titleFontSize = size.width * 0.09;
     final double subtitleFontSize = size.width * 0.045;
-    final double inputFontSize = size.width * 0.045;
+    final double inputFontSize = size.width * 0.035;
     final double buttonFontSize = size.width * 0.055;
     final double buttonHeight = size.height * 0.08;
     final double cardTopRadius = size.width * 0.15;
