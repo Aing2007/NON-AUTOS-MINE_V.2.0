@@ -42,6 +42,21 @@ class _ATECHomePageState extends State<ATECHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive values
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding = size.width * 0.06;
+    final double verticalPadding = size.height * 0.02;
+    final double headerFontSize = size.width * 0.10;
+    final double subHeaderFontSize = size.width * 0.030;
+    final double formLabelFontSize = size.width * 0.06;
+    final double formHintFontSize = size.width * 0.030;
+    final double radioFontSize = size.width * 0.04;
+    final double cardTopRadius = size.width * 0.15;
+    final double avatarRadius = size.width * 0.10;
+    final double formFieldHeight = size.height * 0.08;
+    final double navButtonSize = size.width * 0.13;
+    final double navBarHeight = size.height * 0.08;
+
     return Scaffold(
       backgroundColor: atecBrown,
       body: SafeArea(
@@ -52,45 +67,50 @@ class _ATECHomePageState extends State<ATECHomePage> {
               Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 16, 96, 20),
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      verticalPadding,
+                      horizontalPadding * 4,
+                      verticalPadding * 1.5,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'ATEC',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 58,
+                            fontSize: headerFontSize,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 2.4,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: verticalPadding * 0.3),
                         Text(
                           'แบบประเมินนี้ได้ถูกจัดทำขึ้นตามแนวคิดของ Rimland Rimland, Ph.D. & Stephen M. Edelson, Ph.D. \nและได้รับการแปลโดย วนาลักษณ์ เมืองมลมณีรัตน์ และ ภัทราภรณ์ ทุ่งปันคา',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: formHintFontSize,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
                           ),
                         ),
-                        SizedBox(height: 17),
+                        SizedBox(height: verticalPadding * 0.8),
                         Text(
                           'คำชี้แจง: ข้อคำถามในแบบประเมินนี้สำหรับผู้ปกครอง หรือผู้ดูแลเด็ก กรุณาอ่านคำถามต่อไปนี้โดยละเอียดและ',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: subHeaderFontSize,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
                           ),
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: verticalPadding * 0.6),
                         Text(
                           'เลือกคำตอบที่ท่านสังเกตเห็นใกล้เคียงกับพฤติกรรมเด็กมากที่สุดภายใน 1 เดือนที่ผ่านมา',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: subHeaderFontSize,
                             fontWeight: FontWeight.bold,
                             height: 1.6,
                           ),
@@ -99,10 +119,10 @@ class _ATECHomePageState extends State<ATECHomePage> {
                     ),
                   ),
                   Positioned(
-                    top: 30,
-                    right: 20,
+                    top: verticalPadding * 2,
+                    right: horizontalPadding,
                     child: CircleAvatar(
-                      radius: 60,
+                      radius: avatarRadius,
                       backgroundColor: atecGreen,
                       child: Container(
                         decoration: BoxDecoration(
@@ -114,10 +134,10 @@ class _ATECHomePageState extends State<ATECHomePage> {
                             ],
                           ),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage: AssetImage(
+                            radius: avatarRadius,
+                            backgroundImage: const AssetImage(
                               'assets/images/ICON.png',
                             ),
                             backgroundColor: Colors.transparent,
@@ -132,11 +152,14 @@ class _ATECHomePageState extends State<ATECHomePage> {
               // Form Section
               Container(
                 width: double.infinity,
-                height: 730,
-                decoration: const BoxDecoration(
+                constraints: BoxConstraints(
+                  minHeight: size.height * 0.75,
+                  maxHeight: size.height * 0.85,
+                ),
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(60)),
-                  boxShadow: [
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(cardTopRadius)),
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 15,
@@ -144,7 +167,12 @@ class _ATECHomePageState extends State<ATECHomePage> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 48),
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  verticalPadding * 2,
+                  horizontalPadding,
+                  verticalPadding * 2.5,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -152,42 +180,45 @@ class _ATECHomePageState extends State<ATECHomePage> {
                       'Name of Child',
                       _childNameController,
                       'Enter child\'s name',
+                      formLabelFontSize,
+                      formFieldHeight,
+                      formHintFontSize,
                     ),
-                    const SizedBox(height: 32),
-                    const Text(
+                    SizedBox(height: verticalPadding * 1.5),
+                    Text(
                       'Date of Birth',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: formLabelFontSize,
                         fontWeight: FontWeight.w700,
                         color: atecBrown,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: verticalPadding * 0.5),
+                    Text(
                       '(format: MM/DD/YYYY, Example: 09/25/1998)',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: formHintFontSize,
                         fontWeight: FontWeight.w700,
                         color: atecMuted,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    _buildTextField(_dateOfBirthController, 'MM/DD/YYYY'),
-                    const SizedBox(height: 32),
-                    const Text(
+                    SizedBox(height: verticalPadding),
+                    _buildTextField(_dateOfBirthController, 'MM/DD/YYYY', formFieldHeight, formHintFontSize),
+                    SizedBox(height: verticalPadding * 1.5),
+                    Text(
                       'Sex',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: formLabelFontSize,
                         fontWeight: FontWeight.w700,
                         color: atecBrown,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: verticalPadding * 1.2),
                     Row(
                       children: [
-                        _buildRadioOption('female', 'Female'),
-                        const SizedBox(width: 48),
-                        _buildRadioOption('male', 'Male'),
+                        _buildRadioOption('female', 'Female', radioFontSize),
+                        SizedBox(width: horizontalPadding * 2),
+                        _buildRadioOption('male', 'Male', radioFontSize),
                       ],
                     ),
                   ],
@@ -196,11 +227,10 @@ class _ATECHomePageState extends State<ATECHomePage> {
 
               // Bottom Navigation
               Container(
-                height: 60,
-
+                height: navBarHeight,
                 width: double.infinity,
                 color: atecBrown,
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: verticalPadding * 1.2),
                 child: Row(
                   children: [
                     buildNavButton(Icons.chevron_left, () {
@@ -210,11 +240,11 @@ class _ATECHomePageState extends State<ATECHomePage> {
                           builder: (context) => const SignInScreen(),
                         ),
                       );
-                    }),
+                    }, navButtonSize),
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 18),
-                        height: 36,
+                        margin: EdgeInsets.symmetric(horizontal: horizontalPadding * 0.7),
+                        height: navBarHeight * 0.6,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(100),
@@ -222,9 +252,9 @@ class _ATECHomePageState extends State<ATECHomePage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            margin: const EdgeInsets.only(left: 8),
-                            width: 56,
-                            height: 28,
+                            margin: EdgeInsets.only(left: horizontalPadding * 0.3),
+                            width: navBarHeight,
+                            height: navBarHeight * 0.45,
                             decoration: BoxDecoration(
                               color: atecBrown,
                               borderRadius: BorderRadius.circular(100),
@@ -240,7 +270,7 @@ class _ATECHomePageState extends State<ATECHomePage> {
                           builder: (context) => const Test1Screen(),
                         ),
                       );
-                    }),
+                    }, navButtonSize),
                   ],
                 ),
               ),
@@ -255,27 +285,31 @@ class _ATECHomePageState extends State<ATECHomePage> {
     String label,
     TextEditingController controller,
     String placeholder,
+    double labelFontSize,
+    double fieldHeight,
+    double hintFontSize,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 24,
+          style: TextStyle(
+            fontSize: labelFontSize,
             fontWeight: FontWeight.w700,
             color: atecBrown,
           ),
         ),
-        const SizedBox(height: 16),
-        _buildTextField(controller, placeholder),
+        SizedBox(height: 16),
+        _buildTextField(controller, placeholder, fieldHeight, hintFontSize),
       ],
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String placeholder) {
+  Widget _buildTextField(
+      TextEditingController controller, String placeholder, double fieldHeight, double hintFontSize) {
     return Container(
-      height: 64,
+      height: fieldHeight,
       decoration: BoxDecoration(
         color: atecLightBg,
         borderRadius: BorderRadius.circular(100),
@@ -285,43 +319,44 @@ class _ATECHomePageState extends State<ATECHomePage> {
         decoration: InputDecoration(
           hintText: placeholder,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             horizontal: 24,
-            vertical: 18,
+            vertical: fieldHeight * 0.28,
           ),
+          hintStyle: TextStyle(fontSize: hintFontSize),
         ),
-        style: const TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: hintFontSize + 5),
       ),
     );
   }
 
-  Widget _buildRadioOption(String value, String label) {
+  Widget _buildRadioOption(String value, String label, double radioFontSize) {
     final isSelected = selectedSex == value;
     return GestureDetector(
       onTap: () => setState(() => selectedSex = value),
       child: Row(
         children: [
           Container(
-            width: 28,
-            height: 28,
+            width: radioFontSize * 1.4,
+            height: radioFontSize * 1.4,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? atecBrown : atecMuted,
             ),
             child: isSelected
-                ? const Center(
+                ? Center(
                     child: CircleAvatar(
-                      radius: 5,
+                      radius: radioFontSize * 0.35,
                       backgroundColor: Colors.white,
                     ),
                   )
                 : null,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: radioFontSize * 0.8),
           Text(
             label,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: radioFontSize,
               fontWeight: FontWeight.w700,
               color: isSelected ? atecBrown : atecMuted,
             ),
@@ -331,16 +366,16 @@ class _ATECHomePageState extends State<ATECHomePage> {
     );
   }
 
-  Widget buildNavButton(IconData icon, VoidCallback onPressed) {
+  Widget buildNavButton(IconData icon, VoidCallback onPressed, double size) {
     return Container(
-      width: 48,
-      height: 48,
+      width: size,
+      height: size,
       decoration: const BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
       ),
       child: IconButton(
-        icon: Icon(icon, color: atecBrown, size: 24),
+        icon: Icon(icon, color: atecBrown, size: size * 0.5),
         onPressed: onPressed,
       ),
     );
