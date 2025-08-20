@@ -11,20 +11,17 @@ void main() {
   runApp(MyApp());
 }
 
-/// แอปหลัก เริ่มที่ GameMapScreen
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mobile App Design',
       theme: ThemeData(fontFamily: 'Inter'),
-
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-/// หน้าหลักแสดงวงกลมและไอคอนต่าง ๆ
 class GameMapScreen extends StatefulWidget {
   final String? level;
   final String? testResult;
@@ -80,25 +77,27 @@ class _GameMapScreenState extends State<GameMapScreen> {
     Color color, {
     bool locked = false,
     VoidCallback? onTap,
+    required double circleSize,
+    required double iconSize,
   }) {
     Widget circle = Container(
-      width: 150,
-      height: 150,
+      width: circleSize,
+      height: circleSize,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 4),
+        border: Border.all(color: Colors.white, width: circleSize * 0.027),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 25,
-            offset: const Offset(0, 20),
-            spreadRadius: -5,
+            blurRadius: circleSize * 0.17,
+            offset: Offset(0, circleSize * 0.13),
+            spreadRadius: -circleSize * 0.03,
           ),
         ],
       ),
       child: locked
-          ? const Icon(Icons.lock_outline, size: 80, color: Colors.white)
+          ? Icon(Icons.lock_outline, size: iconSize, color: Colors.white)
           : null,
     );
 
@@ -109,103 +108,158 @@ class _GameMapScreenState extends State<GameMapScreen> {
 
   /// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
   /// สร้างวงกลมเรียงตาม summaryCode ใหม่
-  List<Widget> _buildCirclesAndTriangles() {
-    // ตรวจสอบ summaryCode ให้ถูกต้อง
-    const defaultSummary = 'LSCH';
-    final code = widget.summaryCode?.toUpperCase() ?? defaultSummary;
+  /// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
+/// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
+List<Widget> _buildCirclesAndTriangles(
+  double circleSize,
+  double iconSize,
+  double imageCircleSize,
+  double triangleHeight,
+  double triangleWidth,
+  double gap,
+) {
+  // ตรวจสอบ summaryCode
+  const defaultSummary = 'LSCH';
+  final code = widget.summaryCode?.toUpperCase() ?? defaultSummary;
 
-    final validChars = {'L', 'S', 'C', 'H'};
-    final codeSet = code.split('').toSet();
-    final summary =
-        (code.length != 4 ||
-            !codeSet.containsAll(validChars) ||
-            codeSet.length != 4)
-        ? defaultSummary
-        : code;
+  final validChars = {'L', 'S', 'C', 'H'};
+  final codeSet = code.split('').toSet();
+  final summary = (code.length != 4 || !codeSet.containsAll(validChars) || codeSet.length != 4)
+      ? defaultSummary
+      : code;
 
-    final colorMap = {
-      'L': periwinkleBlue,
-      'S': coralRed,
-      'C': goldYellow,
-      'H': sageGreen,
-    };
+  final colorMap = {
+    'L': periwinkleBlue,
+    'S': coralRed,
+    'C': goldYellow,
+    'H': sageGreen,
+  };
 
-    List<Widget> widgets = [];
+  List<Widget> widgets = [];
 
-    // วงกลมด้านล่างสุด
-    widgets.add(_buildImageCircle());
+  // ✅ วนจากบนลงล่าง (กลับลำดับ summaryCode)
+  final reversedSummary = summary.split('').reversed.toList();
 
-    // วงกลมสีเรียงจากด้านล่างขึ้นบน
-    for (int i = 0; i < summary.length; i++) {
-      final ch = summary[i];
-      final color = colorMap[ch] ?? Colors.grey;
+  for (int i = 0; i < reversedSummary.length; i++) {
+    final ch = reversedSummary[i];
+    final color = colorMap[ch] ?? Colors.grey;
 
-      final circleWidget = _buildColoredCircle(
-        color,
-        locked: i != 0, // ตัวแรกไม่มี lock
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) {
-                switch (ch) {
-                  case 'L':
-                    return MAPLscreen();
-                  case 'S':
-                    return MAPSscreen();
-                  case 'C':
-                    return MAPCscreen();
-                  case 'H':
-                    return MAPHscreen();
-                  default:
-                    return NextScreen(title: 'Unknown Screen');
-                }
-              },
-            ),
-          );
-        },
+    // 1) ไม่ต้องใส่ Triangle ด้านบนก่อนทุกวงกลม (ลบออก)
+    // if (i == 0) {
+    //   widgets.add(_buildTriangle(color, triangleWidth, triangleHeight));
+    //   widgets.add(SizedBox(height: gap));
+    // }
+
+    // 2) วงกลมทั้งหมดจะเป็น lock หมด ยกเว้นตัวสุดท้าย (อยู่ล่างสุด)
+    bool isUnlocked = (i == reversedSummary.length - 1);
+    widgets.add(
+  _buildColoredCircle(
+    color,
+    locked: !isUnlocked,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) {
+            switch (ch) {
+              case 'L': return MAPLscreen();
+              case 'S': return MAPSscreen();
+              case 'C': return MAPCscreen();
+              case 'H': return MAPHscreen();
+              default: return NextScreen(title: 'Unknown Screen');
+            }
+          },
+        ),
       );
+    },
+    circleSize: circleSize,
+    iconSize: iconSize,
+  ),
+);
+//============กรณีที่มี lock ไอคอน`====== จะกดไม่ได้
+     //   widgets.add(
+       //   _buildColoredCircle(
+         //   color,
+           // locked: !isUnlocked, // ตัวสุดท้ายไม่ล็อก
+       //     onTap: () {
+       //       if (isUnlocked) {
+       //         Navigator.push(
+       //           context,
+       //           MaterialPageRoute(
+       //             builder: (_) {
+       //               switch (ch) {
+       //                 case 'L':
+       //                   return MAPLscreen();
+        //                case 'S':
+       //                   return MAPSscreen();
+       //                 case 'C':
+       //                   return MAPCscreen();
+        //                case 'H':
+       //                   return MAPHscreen();
+       //                 default:
+       //                   return NextScreen(title: 'Unknown Screen');
+       //               }
+       //             },
+       //           ),
+       //         );
+       //       }
+       //     },
+       //     circleSize: circleSize,
+       //     iconSize: iconSize,
+       //   ),
+       // );
 
-      // เพิ่มวงกลมด้านบน image circle
-      widgets.insert(1 + i, circleWidget);
-      widgets.insert(2 + i, const SizedBox(height: 24)); // เว้นช่องว่าง
+    widgets.add(SizedBox(height: gap));
+
+    // 3) ใส่ Triangle ถ้าไม่ใช่วงกลมสุดท้าย
+    if (i < reversedSummary.length -1) {
+      widgets.add(_buildtrianglenormal(color, triangleWidth, triangleHeight));
+      widgets.add(SizedBox(height: gap));
     }
-
-    return widgets;
   }
 
-  Widget _buildTriangle(Color color) {
+  // ✅ ปิดท้ายด้วย triangle กลับหัว + วงกลมภาพ
+  widgets.add(_buildtrianglenormal(Colors.grey, triangleWidth, triangleHeight));
+  widgets.add(SizedBox(height: gap));
+  widgets.add(_buildImageCircle(imageCircleSize, gap));
+
+  return widgets;
+}
+
+
+
+  Widget _buildTriangle(Color color, double width, double height) {
     return CustomPaint(
-      size: const Size(20, 10),
+      size: Size(width, height),
       painter: TrianglePainter(color),
     );
   }
 
-  Widget _buildtrianglenormal(Color color) {
+  Widget _buildtrianglenormal(Color color, double width, double height) {
     return Transform.rotate(
       angle: 3.1416,
       child: CustomPaint(
-        size: const Size(20, 10),
+        size: Size(width, height),
         painter: TrianglePainter(color),
       ),
     );
   }
 
-  Widget _buildImageCircle() {
+  Widget _buildImageCircle(double size, double gap) {
     return Column(
       children: [
         Container(
-          width: 90,
-          height: 90,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 4),
+            border: Border.all(color: Colors.white, width: size * 0.044),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
-                blurRadius: 15,
-                offset: const Offset(0, 10),
+                blurRadius: size * 0.17,
+                offset: Offset(0, size * 0.11),
               ),
             ],
             image: const DecorationImage(
@@ -214,225 +268,246 @@ class _GameMapScreenState extends State<GameMapScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        const SizedBox(height: 24),
+        SizedBox(height: gap * 0.33),
+        SizedBox(height: gap),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+    final double horizontalPadding = width * 0.06;
+    final double verticalPadding = height * 0.025;
+    final double avatarSize = width * 0.18;
+    final double imageCircleSize = width * 0.24;
+    final double circleSize = width * 0.36;
+    final double iconSize = width * 0.18;
+    final double triangleHeight = width * 0.06;
+    final double triangleWidth = width * 0.11;
+    final double gap = height * 0.04;
+    final double bottomBarHeight = height * 0.10;
+    final double bottomBarRadius = width * 0.07;
+    final double navIconSize = width * 0.08;
+    final double navFontSize = width * 0.035;
+
     return Scaffold(
       backgroundColor: creamBackground,
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            Column(
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/ICON.png'),
-                            fit: BoxFit.cover,
+            // Header
+            Padding(
+              padding: EdgeInsets.fromLTRB(horizontalPadding, verticalPadding * 0.5, horizontalPadding, verticalPadding * 0.9),
+              child: Row(
+                children: [
+                  Container(
+                    width: avatarSize,
+                    height: avatarSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/ICON.png'),
+                        fit: BoxFit.cover,
+                      ),
+                      border: Border.all(color: Colors.white, width: avatarSize * 0.033),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: avatarSize * 0.21,
+                          offset: Offset(0, avatarSize * 0.14),
+                          spreadRadius: -avatarSize * 0.04,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: horizontalPadding * 0.5),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'NON AUTOS MINE',
+                          style: TextStyle(
+                            fontSize: navFontSize * 1.2,
+                            fontWeight: FontWeight.w600,
+                            color: darkGray,
                           ),
-                          border: Border.all(color: Colors.white, width: 2.4),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 15,
-                              offset: const Offset(0, 10),
-                              spreadRadius: -3,
-                            ),
-                          ],
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'NON AUTOS MINE',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: darkGray,
+                        Text(
+                          'ระดับ= ${widget.summaryCode ?? "LSCH"}',
+                          style: TextStyle(
+                            fontSize: navFontSize * 1.2,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        SizedBox(height: verticalPadding*0.1),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding * 1.2,
+                            vertical: verticalPadding * 0.7,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(999),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 15,
+                                offset: Offset(0, 10),
+                                spreadRadius: -3,
                               ),
-                            ),
-                            Text(
-                              'ระดับ= ${widget.summaryCode ?? "LSCH"}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(999),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 15,
-                                    offset: const Offset(0, 10),
-                                    spreadRadius: -3,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 28,
-                                    height: 28,
-                                    decoration: const BoxDecoration(
-                                      color: goldYellow,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        '\$',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    '12,000,000.00 points',
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: navIconSize * 1.1,
+                                height: navIconSize * 1.1,
+                                decoration: const BoxDecoration(
+                                  color: goldYellow,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    '\$',
                                     style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: mediumGray,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(width: horizontalPadding * 0.7,),
+                              Text(
+                                '12,000,000.00 points',
+                                style: TextStyle(
+                                  fontSize: navFontSize * 1.3,
+                                  fontWeight: FontWeight.w500,
+                                  color: mediumGray,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-
-                // Scrollable Content
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
-                    child: Column(children: _buildCirclesAndTriangles()),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
 
-            // Bottom Navigation
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
+            // Scrollable Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, bottomBarHeight * 1.2),
+                child: Column(
+                  children: _buildCirclesAndTriangles(
+                    circleSize,
+                    iconSize,
+                    imageCircleSize,
+                    triangleHeight,
+                    triangleWidth,
+                    gap,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 15,
-                      offset: Offset(0, -5),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _BottomNavButton(
-                      icon: Icons.home,
-                      label: 'HOME',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MAINHomePage(
-                              pageColor: widget.pageColor,
-                              level: widget.level,
-                              testResult: widget.testResult,
-                              score1: widget.score1,
-                              score2: widget.score2,
-                              score3: widget.score3,
-                              score4: widget.score4,
-                              summaryCode: widget.summaryCode,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    _BottomNavButton(
-                      icon: Icons.games,
-                      label: 'GAME',
-                      iconColor: Colors.blue,
-                      labelColor: Colors.blue,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => GameMapScreen(
-                              pageColor: widget.pageColor,
-                              level: widget.level,
-                              testResult: widget.testResult,
-                              score1: widget.score1,
-                              score2: widget.score2,
-                              score3: widget.score3,
-                              score4: widget.score4,
-                              summaryCode: widget.summaryCode,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    _BottomNavButton(
-                      icon: Icons.person,
-                      label: 'PROFILE',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => DashboardPage(
-                              pageColor: widget.pageColor,
-                              level: widget.level,
-                              testResult: widget.testResult,
-                              score1: widget.score1,
-                              score2: widget.score2,
-                              score3: widget.score3,
-                              score4: widget.score4,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(bottomBarRadius * 2.2),
+            topRight: Radius.circular(bottomBarRadius * 2.2),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 15,
+              offset: Offset(0, -5),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.symmetric(vertical: verticalPadding * 0.7),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _BottomNavButton(
+              icon: Icons.home,
+              label: 'HOME',
+              iconSize: navIconSize,
+              fontSize: navFontSize,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MAINHomePage(
+                      pageColor: widget.pageColor,
+                      level: widget.level,
+                      testResult: widget.testResult,
+                      score1: widget.score1,
+                      score2: widget.score2,
+                      score3: widget.score3,
+                      score4: widget.score4,
+                      summaryCode: widget.summaryCode,
+                    ),
+                  ),
+                );
+              },
+            ),
+            _BottomNavButton(
+              icon: Icons.games,
+              label: 'GAME',
+              iconColor: Colors.blue,
+              labelColor: Colors.blue,
+              iconSize: navIconSize,
+              fontSize: navFontSize,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => GameMapScreen(
+                      pageColor: widget.pageColor,
+                      level: widget.level,
+                      testResult: widget.testResult,
+                      score1: widget.score1,
+                      score2: widget.score2,
+                      score3: widget.score3,
+                      score4: widget.score4,
+                      summaryCode: widget.summaryCode,
+                    ),
+                  ),
+                );
+              },
+            ),
+            _BottomNavButton(
+              icon: Icons.person,
+              label: 'PROFILE',
+              iconSize: navIconSize,
+              fontSize: navFontSize,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DashboardPage(
+                      pageColor: widget.pageColor,
+                      level: widget.level,
+                      testResult: widget.testResult,
+                      score1: widget.score1,
+                      score2: widget.score2,
+                      score3: widget.score3,
+                      score4: widget.score4,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -490,6 +565,8 @@ class _BottomNavButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? iconColor;
   final Color? labelColor;
+  final double? iconSize;
+  final double? fontSize;
   const _BottomNavButton({
     Key? key,
     required this.icon,
@@ -497,6 +574,8 @@ class _BottomNavButton extends StatelessWidget {
     required this.onTap,
     this.iconColor,
     this.labelColor,
+    this.iconSize,
+    this.fontSize,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -505,13 +584,13 @@ class _BottomNavButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: iconColor ?? Colors.grey, size: 30),
-          const SizedBox(height: 4),
+          Icon(icon, color: iconColor ?? Colors.grey, size: iconSize ?? 30),
+          SizedBox(height: (fontSize ?? 12) * 0.33),
           Text(
             label,
             style: TextStyle(
               color: labelColor ?? Colors.grey,
-              fontSize: 12,
+              fontSize: fontSize ?? 12,
               fontWeight: FontWeight.w500,
             ),
           ),
