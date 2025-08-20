@@ -12,8 +12,8 @@ class WelcomeScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final double verticalPadding = size.height * 0.04;
     final double horizontalPadding = size.width * 0.04;
-    final double welcomeFontSize = size.width * 0.09;
-    final double descFontSize = size.width * 0.045;
+    final double welcomeFontSize = size.width * 0.075;
+    final double descFontSize = size.width * 0.035;
     final double buttonWidth = size.width * 0.38;
     final double buttonHeight = size.height * 0.09;
 
@@ -38,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                   right: 0,
                   bottom: 0,
                   child: Container(
-                    height: curveHeight,
+                    height: curveHeight*1.1,
                     decoration: const BoxDecoration(
                       color: Color(0xFFF2D37D),
                       borderRadius: BorderRadius.only(
@@ -53,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                   left: 0,
                   right: 0,
                   // Move the content further down by increasing 'bottom'
-                  bottom: curveHeight*0.01, // Move text down
+                  top: curveHeight*1.7,// Move text down
                   child: Center(
                     child: Container(
                       constraints: BoxConstraints(
@@ -69,6 +69,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SizedBox(height: verticalPadding),
                           // --- Welcome Title ---
                           Text(
                             'ยินดีต้อนรับ',
@@ -83,7 +84,7 @@ class WelcomeScreen extends StatelessWidget {
                           SizedBox(height: verticalPadding / 3),
                           // --- Description ---
                           Text(
-                            'ยินดีต้อนรับสู่ "NON-Autos mine แอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n(ระยะที่ 1 และ 2) อย่างครบวงจร',
+                            'ยินดีต้อนรับสู่ "NON-AUTOS MINE แอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n(ระยะที่ 1 และ 2) อย่างครบวงจร',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.barlowSemiCondensed(
                               fontSize: descFontSize,

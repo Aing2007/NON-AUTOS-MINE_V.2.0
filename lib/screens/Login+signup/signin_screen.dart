@@ -10,8 +10,20 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive values
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding = size.width * 0.05;
+    final double verticalPadding = size.height * 0.025;
+    final double titleFontSize = size.width * 0.07;
+    final double subtitleFontSize = size.width * 0.036;
+    final double inputFontSize = size.width * 0.035;
+    final double buttonFontSize = size.width * 0.045;
+    final double buttonHeight = size.height * 0.08;
+    final double cardTopRadius = size.width * 0.15;
+
     final TextEditingController _usernameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _confirmPasswordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: AppColors.yellowPrimary,
@@ -20,33 +32,33 @@ class SignInScreen extends StatelessWidget {
           children: [
             // Top Section with Back Button and Title
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 20,
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: verticalPadding * 2,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const BackButtonWidget(top: 16, left: 10),
-                  const SizedBox(height: 32),
+                  SizedBox(height: verticalPadding * 2),
 
                   // Title
                   Text(
                     'SIGN UP',
                     style: GoogleFonts.barlowSemiCondensed(
-                      fontSize: 50,
+                      fontSize: titleFontSize,
                       fontWeight: FontWeight.bold,
                       color: AppColors.brownPrimary,
                       letterSpacing: 1.0,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: verticalPadding),
 
                   // Subtitle
                   Text(
                     'สวัสดี\nเราคือแอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n',
                     style: GoogleFonts.barlowSemiCondensed(
-                      fontSize: 26,
+                      fontSize: subtitleFontSize,
                       fontWeight: FontWeight.w500,
                       color: AppColors.brownSecondary,
                       letterSpacing: 0.5,
@@ -56,7 +68,7 @@ class SignInScreen extends StatelessWidget {
                   Text(
                     'โปรดตั้งค่าชื่อผู้ใช้ และรหัสผ่าน',
                     style: GoogleFonts.barlowSemiCondensed(
-                      fontSize: 26,
+                      fontSize: subtitleFontSize,
                       fontWeight: FontWeight.bold,
                       color: AppColors.brownSecondary,
                       letterSpacing: 0.5,
@@ -71,13 +83,13 @@ class SignInScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
+                    topLeft: Radius.circular(cardTopRadius),
+                    topRight: Radius.circular(cardTopRadius),
                   ),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color.fromRGBO(0, 0, 0, 0.25),
                       blurRadius: 6,
@@ -86,21 +98,26 @@ class SignInScreen extends StatelessWidget {
                   ],
                 ),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(32, 64, 32, 32),
+                  padding: EdgeInsets.fromLTRB(
+                    horizontalPadding * 1.6,
+                    verticalPadding * 2.5,
+                    horizontalPadding * 1.6,
+                    verticalPadding * 1.3,
+                  ),
                   child: Column(
                     children: [
                       // Username
                       TextField(
                         controller: _usernameController,
                         style: GoogleFonts.barlowSemiCondensed(
-                          fontSize: 18,
+                          fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
                           color: AppColors.brownTertiary,
                         ),
                         decoration: InputDecoration(
                           hintText: 'ชื่อผู้ใช้',
                           hintStyle: GoogleFonts.barlowSemiCondensed(
-                            fontSize: 20,
+                            fontSize: inputFontSize + 2,
                             fontWeight: FontWeight.w600,
                             color: AppColors.brownTertiary,
                           ),
@@ -110,26 +127,26 @@ class SignInScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 28,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding * 0.8,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: verticalPadding * 1.2),
 
                       // Password
                       TextField(
                         controller: _passwordController,
                         obscureText: true,
                         style: GoogleFonts.barlowSemiCondensed(
-                          fontSize: 18,
+                          fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
                           color: AppColors.brownTertiary,
                         ),
                         decoration: InputDecoration(
                           hintText: 'รหัสผ่าน',
                           hintStyle: GoogleFonts.barlowSemiCondensed(
-                            fontSize: 20,
+                            fontSize: inputFontSize + 2,
                             fontWeight: FontWeight.w600,
                             color: AppColors.brownTertiary,
                           ),
@@ -139,24 +156,26 @@ class SignInScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 28,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding * 0.8,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: verticalPadding * 1.8),
+
+                      // Confirm Password
                       TextField(
-                        controller: _passwordController,
+                        controller: _confirmPasswordController, // ใช้ controller ใหม่
                         obscureText: true,
                         style: GoogleFonts.barlowSemiCondensed(
-                          fontSize: 18,
+                          fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.brownTertiary,
+                          color: const Color.fromARGB(255, 138, 114, 109),
                         ),
                         decoration: InputDecoration(
                           hintText: 'ยืนยันรหัสผ่าน',
                           hintStyle: GoogleFonts.barlowSemiCondensed(
-                            fontSize: 15,
+                            fontSize: inputFontSize - 2,
                             fontWeight: FontWeight.w600,
                             color: AppColors.brownTertiary,
                           ),
@@ -166,22 +185,22 @@ class SignInScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 28,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding * 0.8,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: verticalPadding * 1.8),
 
                       // Login Button
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 50,
-                        ), // <-- ปรับตรงนี้
+                        padding: EdgeInsets.symmetric(
+                          horizontal: horizontalPadding * 0.8,
+                          vertical: verticalPadding * 2.5,
+                        ),
                         child: SizedBox(
                           width: double.infinity,
-                          height: 60,
+                          height: buttonHeight,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
@@ -201,7 +220,7 @@ class SignInScreen extends StatelessWidget {
                             child: Text(
                               'เข้าสู่ระบบ',
                               style: GoogleFonts.barlowSemiCondensed(
-                                fontSize: 25,
+                                fontSize: buttonFontSize,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                                 letterSpacing: 1.0,
@@ -210,12 +229,12 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: verticalPadding * 1.8),
 
                       // Divider
-                      const SizedBox(height: 24),
+                      SizedBox(height: verticalPadding * 1.3),
 
-                      // Social Login
+                      // Social Login (add your widget here if needed)
                     ],
                   ),
                 ),

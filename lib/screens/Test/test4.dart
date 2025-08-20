@@ -12,10 +12,10 @@ class Test4Screen extends StatefulWidget {
     : super(key: key);
 
   @override
-  State<Test4Screen> createState() => _Test1ScreenState();
+  State<Test4Screen> createState() => _Test4ScreenState();
 }
 
-class _Test1ScreenState extends State<Test4Screen> {
+class _Test4ScreenState extends State<Test4Screen> {
   final List<String> _questions = [
     'ปัสสาวะรดที่นอน',
     'ปัสสาวะรดกางเกง/ ผ้าอ้อม',
@@ -48,8 +48,18 @@ class _Test1ScreenState extends State<Test4Screen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+    final double horizontalPadding = width * 0.05;
+    final double verticalPadding = height * 0.02;
+    final double titleFontSize = width * 0.053;
+    final double subtitleFontSize = width * 0.039;
+    final double questionFontSize = width * 0.042;
+    final double radioFontSize = width * 0.038;
+    final double avatarSize = width * 0.28;
+    final double navButtonSize = width * 0.11;
+    final double navBarHeight = height * 0.10;
 
     return Scaffold(
       body: Container(
@@ -63,17 +73,17 @@ class _Test1ScreenState extends State<Test4Screen> {
             // White container background
             Positioned(
               left: 0,
-              top: height * 0.2,
+              top: height * 0.19,
               child: Container(
                 width: width,
-                height: height * 0.80,
-                decoration: const BoxDecoration(
+                height: height * 0.81,
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
+                    topLeft: Radius.circular(width * 0.15),
+                    topRight: Radius.circular(width * 0.15),
                   ),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color(0x40000000),
                       blurRadius: 6,
@@ -85,15 +95,15 @@ class _Test1ScreenState extends State<Test4Screen> {
             ),
 
             // Title
-            const Positioned(
-              left: 30,
-              top: 45,
+            Positioned(
+              left: horizontalPadding,
+              top: verticalPadding * 2.2,
               child: Text(
                 '4.ด้านสุขภาพร่างกาย\nและพฤติกรรม',
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'Barlow Semi Condensed',
-                  fontSize: 40,
+                  fontSize: titleFontSize,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.5,
                 ),
@@ -101,17 +111,17 @@ class _Test1ScreenState extends State<Test4Screen> {
             ),
 
             // จำนวนข้อ
-            const Positioned(
-              left: 30,
-              top: 175,
+            Positioned(
+              left: horizontalPadding,
+              top: verticalPadding * 6.5,
               child: SizedBox(
-                width: 250,
+                width: width * 0.5,
                 child: Text(
                   'จำนวน 25 ข้อ',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Barlow Semi Condensed',
-                    fontSize: 25,
+                    fontSize: subtitleFontSize,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.8,
                   ),
@@ -121,11 +131,11 @@ class _Test1ScreenState extends State<Test4Screen> {
 
             // Avatar
             Positioned(
-              right: 25,
-              top: 51,
+              right: horizontalPadding,
+              top: verticalPadding * 2.5,
               child: Container(
-                width: 130,
-                height: 130,
+                width: avatarSize,
+                height: avatarSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFF8BC7AD),
@@ -140,7 +150,7 @@ class _Test1ScreenState extends State<Test4Screen> {
                 ),
                 child: ClipOval(
                   child: Image.asset(
-                    'assets/images/ICON.png', // ✅ เปลี่ยน path เป็นของคุณ
+                    'assets/images/ICON.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -152,24 +162,24 @@ class _Test1ScreenState extends State<Test4Screen> {
               top: height * 0.25,
               left: 0,
               right: 0,
-              bottom: 100, // เผื่อ space สำหรับ Navbar
+              bottom: navBarHeight,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 child: ListView.builder(
                   itemCount: _questions.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 13,
-                      ), //ระยะห่างระหว่างคำถาม
+                      padding: EdgeInsets.symmetric(
+                        vertical: verticalPadding * 0.7,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${index + 1}. ${_questions[index]}',
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 58, 58, 58),
-                              fontSize: 16,
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 58, 58, 58),
+                              fontSize: questionFontSize,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -181,19 +191,14 @@ class _Test1ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 0,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(
-                                      139,
-                                      199,
-                                      173,
-                                      1,
-                                    ),
+                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  const Text("ไม่มี"),
+                                  Text("ไม่มี", style: TextStyle(fontSize: radioFontSize)),
                                 ],
                               ),
                               Row(
@@ -201,19 +206,14 @@ class _Test1ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 1,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(
-                                      139,
-                                      199,
-                                      173,
-                                      1,
-                                    ),
+                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  const Text("เล็กน้อย"),
+                                  Text("เล็กน้อย", style: TextStyle(fontSize: radioFontSize)),
                                 ],
                               ),
                               Row(
@@ -221,19 +221,14 @@ class _Test1ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 2,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(
-                                      139,
-                                      199,
-                                      173,
-                                      1,
-                                    ),
+                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  const Text("ปานกลาง"),
+                                  Text("ปานกลาง", style: TextStyle(fontSize: radioFontSize)),
                                 ],
                               ),
                               Row(
@@ -241,19 +236,14 @@ class _Test1ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 3,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(
-                                      139,
-                                      199,
-                                      173,
-                                      1,
-                                    ),
+                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  const Text("มาก"),
+                                  Text("มาก", style: TextStyle(fontSize: radioFontSize)),
                                 ],
                               ),
                             ],
@@ -272,19 +262,17 @@ class _Test1ScreenState extends State<Test4Screen> {
               bottom: 0,
               child: Container(
                 width: width,
-                height: 100,
+                height: navBarHeight,
                 color: const Color.fromRGBO(139, 199, 173, 1),
               ),
             ),
 
             // ปุ่มย้อนกลับ (ซ้าย)
             Positioned(
-              left: 22,
-              bottom: 45,
+              left: horizontalPadding,
+              bottom: navBarHeight * 0.38,
               child: GestureDetector(
                 onTap: () {
-                  // คำนวณคะแนนตามเงื่อนไข
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -296,16 +284,16 @@ class _Test1ScreenState extends State<Test4Screen> {
                   );
                 },
                 child: Container(
-                  width: 45,
-                  height: 45,
+                  width: navButtonSize,
+                  height: navButtonSize,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back,
-                    color: Color.fromRGBO(139, 199, 173, 1),
-                    size: 30,
+                    color: const Color.fromRGBO(139, 199, 173, 1),
+                    size: navButtonSize * 0.7,
                   ),
                 ),
               ),
@@ -313,24 +301,23 @@ class _Test1ScreenState extends State<Test4Screen> {
 
             // ปุ่มถัดไป (ขวา)
             Positioned(
-              right: 22,
-              bottom: 45,
+              right: horizontalPadding,
+              bottom: navBarHeight * 0.38,
               child: GestureDetector(
                 onTap: () {
                   int test4_score = 0;
                   for (var answer in _answers) {
                     if (answer == 0) {
-                      test4_score += 0; // ไม่มี
+                      test4_score += 0;
                     } else if (answer == 1) {
-                      test4_score += 1; // เล็กน้อย
+                      test4_score += 1;
                     } else if (answer == 2) {
-                      test4_score += 2; // ปานกลาง
+                      test4_score += 2;
                     } else if (answer == 3) {
-                      test4_score += 3; // มาก
+                      test4_score += 3;
                     }
                   }
 
-                  // ส่งไปหน้า StartScreen หรือหน้าอื่น พร้อมส่ง test4_score ถ้าต้องการ
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -339,36 +326,33 @@ class _Test1ScreenState extends State<Test4Screen> {
                         score2: widget.score2,
                         score3: widget.score3,
                         score4: test4_score,
-                      ), // หรือหน้าอื่นที่ต้องการ
+                      ),
                     ),
                   );
-
-                  // หากต้องการใช้ test4_score ที่หน้าอื่น อย่าลืมส่งผ่าน constructor ด้วย
                 },
-
                 child: Container(
-                  width: 45,
-                  height: 45,
+                  width: navButtonSize,
+                  height: navButtonSize,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_forward,
-                    color: Color.fromRGBO(139, 199, 173, 1),
-                    size: 30,
+                    color: const Color.fromRGBO(139, 199, 173, 1),
+                    size: navButtonSize * 0.7,
                   ),
                 ),
               ),
             ),
 
-            // แถบขาว (ยืดตามความกว้างของหน้าจอ เว้นซ้าย-ขวา 65)
+            // แถบขาว (ยืดตามความกว้างของหน้าจอ เว้นซ้าย-ขวา)
             Positioned(
-              left: 80,
-              right: 80,
-              bottom: 45,
+              left: width * 0.18,
+              right: width * 0.18,
+              bottom: navBarHeight * 0.43,
               child: Container(
-                height: 40,
+                height: navBarHeight * 0.4,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(100),
@@ -376,16 +360,13 @@ class _Test1ScreenState extends State<Test4Screen> {
               ),
             ),
 
-            // แถบสีด้านใน
+            // Progress bar (สีหลัก)
             Positioned(
-              left:
-                  36 +
-                  (width - 130) * 0.76, // เริ่มจากซ้าย + 15% ของความกว้างแถบขาว
-
-              bottom: 48,
+              left: width * 0.19,
+              bottom: navBarHeight * 0.46,
               child: Container(
-                width: (width - 130) * 0.25, // 70% ของความกว้างแถบขาว
-                height: 34,
+                width: width * 0.61,
+                height: navBarHeight * 0.34,
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(139, 199, 173, 1),
                   borderRadius: BorderRadius.circular(100),
