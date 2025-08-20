@@ -102,175 +102,177 @@ class _SummaryPageState extends State<SummaryPage> {
 
     return Scaffold(
       backgroundColor: pageColor,
-      body: Column(
-        children: [
-          SizedBox(height: verticalPadding * 3),
-          Text(
-            'AING',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: titleFontSize,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-            ),
-          ),
-          SizedBox(height: verticalPadding * 2),
-          Image.asset(
-            'assets/images/body.png',
-            height: bodyImageHeight,
-          ),
-          SizedBox(height: verticalPadding * 1.2),
-          Container(
-            padding: EdgeInsets.symmetric(
-              vertical: verticalPadding * 0.7,
-              horizontal: horizontalPadding * 0.7,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(bottomBarRadius * 0.7),
-            ),
-            child: Text(
-              "Level: $level",
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: verticalPadding * 3),
+            Text(
+              'AING',
               style: TextStyle(
-                color: pageColor,
+                color: Colors.white,
+                fontSize: titleFontSize,
                 fontWeight: FontWeight.bold,
-                fontSize: levelFontSize,
+                letterSpacing: 1.5,
               ),
             ),
-          ),
-          SizedBox(height: verticalPadding * 0.8),
-          Text(
-            testResult,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: resultFontSize,
-              letterSpacing: 1,
+            SizedBox(height: verticalPadding * 2),
+            Image.asset(
+              'assets/images/body.png',
+              height: bodyImageHeight,
             ),
-          ),
-          SizedBox(height: verticalPadding * 0.3),
-          Text(
-            'คะแนนรวม = $scoreTotal',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: scoreFontSize,
+            SizedBox(height: verticalPadding * 1.2),
+            Container(
+              padding: EdgeInsets.symmetric(
+                vertical: verticalPadding * 0.7,
+                horizontal: horizontalPadding * 0.7,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(bottomBarRadius * 0.7),
+              ),
+              child: Text(
+                "Level: $level",
+                style: TextStyle(
+                  color: pageColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: levelFontSize,
+                ),
+              ),
             ),
-          ),
-          SizedBox(height: verticalPadding * 1.2),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: verticalPadding * 0.8),
+            Text(
+              testResult,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: resultFontSize,
+                letterSpacing: 1,
+              ),
+            ),
+            SizedBox(height: verticalPadding * 0.3),
+            Text(
+              'คะแนนรวม = $scoreTotal',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: scoreFontSize,
+              ),
+            ),
+            SizedBox(height: verticalPadding * 1.2),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildScoreLine(
+                    index: 1,
+                    title: 'การพูด/ การเปล่งเสียงใช้ภาษา/การสื่อสาร',
+                    score: score1,
+                    fontSize: scoreLineFontSize,
+                  ),
+                  _buildScoreLine(
+                    index: 2,
+                    title: 'ความสามารถทางสังคม',
+                    score: score2,
+                    fontSize: scoreLineFontSize,
+                  ),
+                  _buildScoreLine(
+                    index: 3,
+                    title: 'ประสาทสัมผัสรับความรู้สึก และความคิด/การรับรู้',
+                    score: score3,
+                    fontSize: scoreLineFontSize,
+                  ),
+                  _buildScoreLine(
+                    index: 4,
+                    title: 'สุขภาพ/ ร่างกาย/ พฤติกรรม',
+                    score: score4,
+                    fontSize: scoreLineFontSize,
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Stack(
               children: [
-                _buildScoreLine(
-                  index: 1,
-                  title: 'การพูด/ การเปล่งเสียงใช้ภาษา/การสื่อสาร',
-                  score: score1,
-                  fontSize: scoreLineFontSize,
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(
+                    top: verticalPadding * 2,
+                    bottom: verticalPadding * 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(bottomBarRadius * 3.7),
+                      topRight: Radius.circular(bottomBarRadius * 3.7),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: verticalPadding * 0.5),
+                        Text(
+                          widget.summaryCode,
+                          style: TextStyle(
+                            color: pageColor,
+                            fontSize: summaryCodeFontSize,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 5,
+                          ),
+                        ),
+                        SizedBox(height: verticalPadding * 2),
+                        SizedBox(height: verticalPadding * 6), // เว้นช่องให้ปุ่มไม่ชน
+                      ],
+                    ),
+                  ),
                 ),
-                _buildScoreLine(
-                  index: 2,
-                  title: 'ความสามารถทางสังคม',
-                  score: score2,
-                  fontSize: scoreLineFontSize,
-                ),
-                _buildScoreLine(
-                  index: 3,
-                  title: 'ประสาทสัมผัสรับความรู้สึก และความคิด/การรับรู้',
-                  score: score3,
-                  fontSize: scoreLineFontSize,
-                ),
-                _buildScoreLine(
-                  index: 4,
-                  title: 'สุขภาพ/ ร่างกาย/ พฤติกรรม',
-                  score: score4,
-                  fontSize: scoreLineFontSize,
+                Positioned(
+                  bottom: verticalPadding * 2.5,
+                  right: horizontalPadding,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MAINHomePage(
+                            pageColor: pageColor,
+                            level: level,
+                            testResult: testResult,
+                            score1: score1,
+                            score2: score2,
+                            score3: score3,
+                            score4: score4,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: arrowButtonSize,
+                      height: arrowButtonSize,
+                      decoration: BoxDecoration(
+                        color: pageColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: pageColor.withOpacity(0.6),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                        size: arrowButtonSize * 0.55,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          const Spacer(),
-          Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.only(
-                  top: verticalPadding * 2,
-                  bottom: verticalPadding * 4,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(bottomBarRadius * 3.7),
-                    topRight: Radius.circular(bottomBarRadius * 3.7),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: verticalPadding * 0.5),
-                      Text(
-                        widget.summaryCode,
-                        style: TextStyle(
-                          color: pageColor,
-                          fontSize: summaryCodeFontSize,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 5,
-                        ),
-                      ),
-                      SizedBox(height: verticalPadding * 2),
-                      SizedBox(height: verticalPadding * 6), // เว้นช่องให้ปุ่มไม่ชน
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: verticalPadding * 2.5,
-                right: horizontalPadding,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MAINHomePage(
-                          pageColor: pageColor,
-                          level: level,
-                          testResult: testResult,
-                          score1: score1,
-                          score2: score2,
-                          score3: score3,
-                          score4: score4,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: arrowButtonSize,
-                    height: arrowButtonSize,
-                    decoration: BoxDecoration(
-                      color: pageColor,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: pageColor.withOpacity(0.6),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                      size: arrowButtonSize * 0.55,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
