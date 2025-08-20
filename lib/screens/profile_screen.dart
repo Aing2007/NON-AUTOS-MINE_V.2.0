@@ -509,7 +509,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     score2: widget.score2,
                     score3: widget.score3,
                     score4: widget.score4,
-                    summaryCode: summaryCode,
+                    
                   ),
                 ),
               );
