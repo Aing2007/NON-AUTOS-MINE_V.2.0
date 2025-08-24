@@ -341,7 +341,7 @@ List<Widget> _buildCirclesAndTriangles(
                           style: TextStyle(
                             fontSize: navFontSize * 1.2,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black87,
+                            color: darkGray,
                           ),
                         ),
                         SizedBox(height: verticalPadding*0.1),
