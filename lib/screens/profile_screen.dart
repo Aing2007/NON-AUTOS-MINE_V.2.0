@@ -105,12 +105,30 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+    final double horizontalPadding = width * 0.04;
+    final double verticalPadding = height * 0.03;
+    final double avatarSize = width * 0.32;
+    final double iconSize = width * 0.09;
+    final double chartFontSize = width * 0.045;
+    final double chartTitleFontSize = width * 0.055;
+    final double chartScoreFontSize = width * 0.045;
+    final double chartDescFontSize = width * 0.035;
+    final double indicatorFontSize = width * 0.09;
+    final double indicatorBarWidth = width * 0.13;
+    final double indicatorBarHeight = height * 0.13;
+    final double indicatorBarRadius = width * 0.05;
+    final double bottomBarHeight = height * 0.10;
+    final double bottomBarRadius = width * 0.07;
+
     final List<ChartData> chartDataList = [
       ChartData(
         title: "Speech/Language/Communication",
         score: score1,
         scoreDescription: score1_re,
-        color: Color(0xFF7F95E4),
+        color: const Color(0xFF7F95E4),
         data: List.filled(25, 50),
         description: "ด่านที่ 1-14 การสื่อสาร",
       ),
@@ -118,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
         title: "Sociability",
         score: score2,
         scoreDescription: score2_re,
-        color: Color(0xFFF65A3B),
+        color: const Color(0xFFF65A3B),
         data: List.filled(25, 45),
         description: "ด่านที่ 15-34 การเข้าสังคม",
       ),
@@ -126,7 +144,7 @@ class _DashboardPageState extends State<DashboardPage> {
         title: "Sensory/Cognitive Awareness",
         score: score3,
         scoreDescription: score3_re,
-        color: Color(0xFFFFD370),
+        color: const Color(0xFFFFD370),
         data: List.filled(25, 70),
         description: "ด่านที่ 35-52 ความรู้สึกและการรับรู้",
       ),
@@ -134,7 +152,7 @@ class _DashboardPageState extends State<DashboardPage> {
         title: "Health/Physical/Behavior",
         score: score4,
         scoreDescription: score4_re,
-        color: Color(0xFF8BC7AD),
+        color: const Color(0xFF8BC7AD),
         data: List.filled(25, 60),
         description: "ด่านที่ 53-77 ด้านสุขภาพ ร่างกาย และพฤติกรรม",
       ),
@@ -146,29 +164,60 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: verticalPadding * 1.5,
+              ),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
+                  constraints: BoxConstraints(maxWidth: width * 0.95),
                   child: Column(
                     children: [
-                      _buildProfileSection(),
-                      const SizedBox(height: 32),
-                      _buildLevelIndicators(),
-                      const SizedBox(height: 16),
-                      _buildProgressChart(chartDataList[_selectedChartIndex]),
-                      const SizedBox(height: 100),
+                      _buildProfileSection(
+                        avatarSize: avatarSize,
+                        indicatorFontSize: indicatorFontSize,
+                        indicatorBarWidth: indicatorBarWidth,
+                        indicatorBarHeight: indicatorBarHeight,
+                        indicatorBarRadius: indicatorBarRadius,
+                        verticalPadding: verticalPadding,
+                        pageColor: pageColor,
+                        level: level,
+                        testResult: testResult,
+                      ),
+                      SizedBox(height: verticalPadding * 2),
+                      _buildLevelIndicators(
+                        indicatorFontSize: indicatorFontSize,
+                        indicatorBarWidth: indicatorBarWidth,
+                        indicatorBarHeight: indicatorBarHeight,
+                        indicatorBarRadius: indicatorBarRadius,
+                        verticalPadding: verticalPadding,
+                      ),
+                      SizedBox(height: verticalPadding * 1.2),
+                      _buildProgressChart(
+                        chartDataList[_selectedChartIndex],
+                        chartFontSize: chartFontSize,
+                        chartTitleFontSize: chartTitleFontSize,
+                        chartScoreFontSize: chartScoreFontSize,
+                        chartDescFontSize: chartDescFontSize,
+                        width: width,
+                      ),
+                      SizedBox(height: bottomBarHeight * 1.2),
                     ],
                   ),
                 ),
               ),
             ),
-            _buildSideIcons(),
+            //_buildSideIcons(iconSize: iconSize, verticalPadding: verticalPadding),
             Positioned(
               left: 0,
               right: 0,
               bottom: 0,
-              child: _buildBottomNavigation(),
+              child: _buildBottomNavigation(
+                bottomBarHeight: bottomBarHeight,
+                bottomBarRadius: bottomBarRadius,
+                iconSize: iconSize,
+                width: width,
+              ),
             ),
           ],
         ),
@@ -176,67 +225,239 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildProgressChart(ChartData chartData) {
+  Widget _buildProfileSection({
+    required double avatarSize,
+    required double indicatorFontSize,
+    required double indicatorBarWidth,
+    required double indicatorBarHeight,
+    required double indicatorBarRadius,
+    required double verticalPadding,
+    required Color pageColor,
+    required String level,
+    required String testResult,
+  }) {
+    return Column(
+      children: [
+        Container(
+          width: avatarSize,
+          height: avatarSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: pageColor, width: avatarSize * 0.03),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: avatarSize * 0.07,
+                offset: Offset(0, avatarSize * 0.03),
+              ),
+            ],
+            image: const DecorationImage(
+              image: AssetImage('assets/images/ICON.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(height: verticalPadding * 0.5),
+        Icon(
+          Icons.keyboard_arrow_down,
+          color: const Color.fromARGB(255, 12, 5, 3),
+          size: indicatorFontSize * 0.5,
+        ),
+        SizedBox(height: verticalPadding * 1.2),
+        Text(
+          'AING',
+          style: TextStyle(
+            color: pageColor,
+            fontSize: indicatorFontSize * 0.7,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: verticalPadding * 0.5),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: indicatorBarWidth * 0.7,
+            vertical: verticalPadding * 0.5,
+          ),
+          decoration: BoxDecoration(
+            color: pageColor,
+            borderRadius: BorderRadius.circular(indicatorBarRadius * 2),
+          ),
+          child: Text(
+            'LEVEL : $level',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: indicatorFontSize * 0.5,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: verticalPadding * 1.2),
+        Text(
+          'ผลการประเมิน: $testResult',
+          style: TextStyle(
+            color: pageColor,
+            fontSize: indicatorFontSize * 0.7,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLevelIndicators({
+    required double indicatorFontSize,
+    required double indicatorBarWidth,
+    required double indicatorBarHeight,
+    required double indicatorBarRadius,
+    required double verticalPadding,
+  }) {
+    final indicators = [
+      {'letter': 'L', 'color': const Color(0xFF7F95E4), 'height': indicatorBarHeight * 0.6, 'index': 0},
+      {'letter': 'S', 'color': const Color(0xFFF65A3B), 'height': indicatorBarHeight * 0.24, 'index': 1},
+      {'letter': 'C', 'color': const Color(0xFFFFD370), 'height': indicatorBarHeight * 0.78, 'index': 2},
+      {'letter': 'H', 'color': const Color(0xFF8BC7AD), 'height': indicatorBarHeight * 0.66, 'index': 3},
+    ];
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: indicators.map((i) {
+            return Text(
+              i['letter'] as String,
+              style: TextStyle(
+                color: i['color'] as Color,
+                fontSize: indicatorFontSize,
+                fontWeight: FontWeight.w800,
+              ),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: verticalPadding),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: indicators.map((i) {
+            return Container(
+              width: indicatorBarWidth,
+              height: indicatorBarHeight,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(indicatorBarRadius),
+              ),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: indicatorBarWidth,
+                  height: i['height'] as double,
+                  decoration: BoxDecoration(
+                    color: i['color'] as Color,
+                    borderRadius: BorderRadius.circular(indicatorBarRadius),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: verticalPadding),
+        Container(
+          height: verticalPadding * 2.5,
+          child: Row(
+            children: indicators.map((i) {
+              int index = i['index'] as int;
+              Color color = i['color'] as Color;
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => setState(() => _selectedChartIndex = index),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: _selectedChartIndex == index
+                          ? color
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(indicatorBarRadius),
+                    ),
+                    child: const Center(),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProgressChart(
+    ChartData chartData, {
+    required double chartFontSize,
+    required double chartTitleFontSize,
+    required double chartScoreFontSize,
+    required double chartDescFontSize,
+    required double width,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: chartData.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(width * 0.04),
       ),
-      padding: const EdgeInsets.all(16),
-      constraints: const BoxConstraints(minHeight: 400, maxHeight: 500),
+      padding: EdgeInsets.all(width * 0.04),
+      constraints: BoxConstraints(
+        minHeight: width * 1.1,
+        maxHeight: width * 1.3,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             chartData.title,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: chartTitleFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: chartFontSize * 0.2),
           Text(
             'SCORE : ${chartData.score} (${chartData.scoreDescription})',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: chartScoreFontSize,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: chartFontSize * 0.6),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(width * 0.03),
               ),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(width * 0.03),
               child: Column(
                 children: [
                   Text(
                     'กราฟแสดงประสิทธิภาพในการผ่านด่าน',
                     style: TextStyle(
                       color: chartData.color,
-                      fontSize: 14,
+                      fontSize: chartFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: chartFontSize * 0.6),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         SizedBox(
-                          width: 30,
+                          width: chartFontSize * 2.2,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: List.generate(11, (i) {
                               return Text(
                                 '${(10 - i) * 10}'.padLeft(2, '0'),
-                                style: const TextStyle(
-                                  fontSize: 7,
+                                style: TextStyle(
+                                  fontSize: chartFontSize * 0.5,
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -244,35 +465,33 @@ class _DashboardPageState extends State<DashboardPage> {
                             }),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: chartFontSize * 0.7),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: chartData.data.map((value) {
                               return SizedBox(
-                                width: 8,
+                                width: chartFontSize* 0.5,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                      width: 8,
-                                      height: 128,
+                                      width: chartFontSize * 0.7,
+                                      height: chartFontSize * 3.2,
                                       decoration: BoxDecoration(
                                         color: chartData.color.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius: BorderRadius.circular(chartFontSize * 0.35),
                                       ),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Container(
-                                            width: 8,
-                                            height: (128 * value / 100),
+                                            width: chartFontSize * 0.7,
+                                            height: (chartFontSize * 3.2 * value / 100),
                                             decoration: BoxDecoration(
                                               color: chartData.color,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
+                                              borderRadius: BorderRadius.circular(chartFontSize * 0.35),
                                             ),
                                           ),
                                         ],
@@ -287,7 +506,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: chartFontSize * 0.6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(25, (index) {
@@ -295,7 +514,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         '${index + 1}',
                         style: TextStyle(
                           color: chartData.color,
-                          fontSize: 10,
+                          fontSize: chartDescFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       );
@@ -305,198 +524,63 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: chartFontSize * 0.6),
           Text(
             chartData.description,
-            style: const TextStyle(fontSize: 12, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileSection() {
-    return Column(
-      children: [
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: pageColor, width: 3),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-            image: const DecorationImage(
-              image: AssetImage(
-                'assets/images/ICON.png',
-              ), // ✅ เปลี่ยน path ให้ถูกต้อง
-              fit: BoxFit.cover, // หรือ BoxFit.contain ตามความต้องการ
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        const Icon(
-          Icons.keyboard_arrow_down,
-          color: Color.fromARGB(255, 12, 5, 3),
-          size: 16,
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'AING',
-          style: TextStyle(
-            color: Color(0xFF805E57),
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-          decoration: BoxDecoration(
-            color: pageColor,
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Text(
-            'LEVEL : $level',
-            style: const TextStyle(
+            style: TextStyle(
+              fontSize: chartDescFontSize,
               color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'ผลการประเมิน: $testResult',
-          style: TextStyle(
-            color: pageColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLevelIndicators() {
-    final indicators = [
-      {'letter': 'L', 'color': Color(0xFF7F95E4), 'height': 80.0, 'index': 0},
-      {'letter': 'S', 'color': Color(0xFFF65A3B), 'height': 32.0, 'index': 1},
-      {'letter': 'C', 'color': Color(0xFFFFD370), 'height': 104.0, 'index': 2},
-      {'letter': 'H', 'color': Color(0xFF8BC7AD), 'height': 88.0, 'index': 3},
-    ];
-
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: indicators.map((i) {
-            return Text(
-              i['letter'] as String,
-              style: TextStyle(
-                color: i['color'] as Color,
-                fontSize: 32,
-                fontWeight: FontWeight.w800,
-              ),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: indicators.map((i) {
-            return Container(
-              width: 40,
-              height: 144,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: 40,
-                  height: i['height'] as double,
-                  decoration: BoxDecoration(
-                    color: i['color'] as Color,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          height: 48,
-          child: Row(
-            children: indicators.map((i) {
-              int index = i['index'] as int;
-              Color color = i['color'] as Color;
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() => _selectedChartIndex = index),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _selectedChartIndex == index
-                          ? color
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Center(),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSideIcons() {
-    return Positioned(
-      top: 16,
-      right: 16,
-      child: Column(
-        children: const [
-          Icon(Icons.settings, color: Color(0xFF805E57), size: 28),
-          SizedBox(height: 24),
-          Icon(Icons.notifications, color: Color(0xFF805E57), size: 28),
         ],
       ),
     );
   }
 
-  Widget _buildBottomNavigation() {
+  //Widget _buildSideIcons({required double iconSize, required double verticalPadding}) {
+    //return Positioned(
+      //top: verticalPadding,
+      //right: verticalPadding,
+      //child: Column(
+      //  children: [
+      //    Icon(Icons.settings, color: const Color(0xFF805E57), size: iconSize),
+      //    SizedBox(height: verticalPadding * 1.5),
+      //    Icon(Icons.notifications, color: const Color(0xFF805E57), size: iconSize),
+      //  ],
+      //),
+    //);
+ // }
+
+  Widget _buildBottomNavigation({
+    required double bottomBarHeight,
+    required double bottomBarRadius,
+    required double iconSize,
+    required double width,
+  }) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(bottomBarRadius * 3.4),
+          topRight: Radius.circular(bottomBarRadius * 3.4),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 15,
-            offset: Offset(0, -5),
+            offset: const Offset(0, -5),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: bottomBarHeight * 0.12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _BottomNavButton(
             icon: Icons.home,
             label: 'HOME',
+            iconSize: iconSize,
+            fontSize: width * 0.035,
             onTap: () {
               Navigator.push(
                 context,
@@ -509,7 +593,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     score2: widget.score2,
                     score3: widget.score3,
                     score4: widget.score4,
-                    
                   ),
                 ),
               );
@@ -518,6 +601,8 @@ class _DashboardPageState extends State<DashboardPage> {
           _BottomNavButton(
             icon: Icons.games,
             label: 'GAME',
+            iconSize: iconSize,
+            fontSize: width * 0.035,
             onTap: () {
               Navigator.push(
                 context,
@@ -540,6 +625,8 @@ class _DashboardPageState extends State<DashboardPage> {
             label: 'PROFILE',
             iconColor: Colors.blue,
             labelColor: Colors.blue,
+            iconSize: iconSize,
+            fontSize: width * 0.035,
             onTap: () {},
           ),
         ],
@@ -572,6 +659,8 @@ class _BottomNavButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? iconColor;
   final Color? labelColor;
+  final double? iconSize;
+  final double? fontSize;
 
   const _BottomNavButton({
     Key? key,
@@ -580,6 +669,8 @@ class _BottomNavButton extends StatelessWidget {
     required this.onTap,
     this.iconColor,
     this.labelColor,
+    this.iconSize,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -589,13 +680,13 @@ class _BottomNavButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: iconColor ?? Colors.grey, size: 30),
-          const SizedBox(height: 4),
+          Icon(icon, color: iconColor ?? Colors.grey, size: iconSize ?? 30),
+          SizedBox(height: (fontSize ?? 12) * 0.33),
           Text(
             label,
             style: TextStyle(
               color: labelColor ?? Colors.grey,
-              fontSize: 12,
+              fontSize: fontSize ?? 12,
               fontWeight: FontWeight.w500,
             ),
           ),
