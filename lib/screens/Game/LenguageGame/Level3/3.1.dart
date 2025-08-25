@@ -1,13 +1,12 @@
 import 'dart:math';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flame/flame.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flame/events.dart';
 /// คลาส MatchingGame สำหรับเชื่อมต่อกับ GameWidget จากหน้าอื่น ๆ ได้
-class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
+class MatchingGame extends FlameGame with HasCollisionDetection {
   final MatchingParams params;
   MatchingGame({required this.params});
 
@@ -195,7 +194,7 @@ class MatchingParams {
   });
 }
 
-/// ImageCard คือภาพที่แตะได้
+/// ImageCard คือภาพที่แตะได้ (ใช้ TapCallbacks ของ Flame)
 class ImageCard extends SpriteComponent with TapCallbacks {
   final String keyId;
   final String spritePath;
