@@ -67,7 +67,9 @@ flutter:
 
   assets:
     - assets/images/
-    
+    - assets/images/Gameassets/
+    - assets/images/GameBG/
+    - assets/images/GamemapBG
     
 fonts:
   - family: Barlow Semi Condensed

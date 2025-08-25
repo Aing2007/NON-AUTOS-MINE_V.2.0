@@ -37,10 +37,10 @@ class MatchingGame extends FlameGame with HasCollisionDetection {
 
   // ไลบรารีภาพ + เสียง (key → (imagePath, soundPath))
   final Map<String, (String imagePath, String soundPath)> _library = {
-    'cat': ('images/Gameassets/3.1/cat.jpeg', 'sounds/cat.mp3'),
-    'dog': ('images/Gameassets/3.1/dog.jpeg', 'sounds/dog.mp3'),
-    'cow': ('images/Gameassets/3.1/cow.jpeg', 'sounds/cow.mp3'),
-    'car': ('images/Gameassets/3.1/car.jpeg', 'sounds/car.mp3'),
+    'cat': ('images/cat.jpeg', 'sounds/cat.mp3'),
+    'dog': ('images/dog.jpeg', 'sounds/dog.mp3'),
+    'cow': ('images/cow.jpeg', 'sounds/cow.mp3'),
+    'car': ('images/car.jpeg', 'sounds/car.mp3'),
   };
 
   // State

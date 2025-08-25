@@ -41,7 +41,7 @@ class SideScrollGame extends FlameGame with HasCollisionDetection {
 
     // ✅ พื้นหลังยาว
     background = SpriteComponent()
-      ..sprite = await loadSprite('/GameBG/bg1.png')
+      ..sprite = await loadSprite('bg1.png')
       ..size = Vector2(totalDistance * 5, 2500)
       ..position = Vector2.zero()
       ..priority = -1;
