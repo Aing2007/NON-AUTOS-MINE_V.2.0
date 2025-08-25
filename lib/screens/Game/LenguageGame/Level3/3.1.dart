@@ -6,73 +6,12 @@ import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
-// main() คือจุดเริ่มต้นของแอป
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Flame.device.fullScreen();
-  await Flame.device.setLandscape();
-
-  // โหลดไฟล์เสียง
-  await FlameAudio.audioCache.loadAll([
-    'sounds/cat.mp3',
-    'sounds/dog.mp3',
-    'sounds/cow.mp3',
-    'sounds/car.mp3',
-  ]);
-
-  // โหลดไฟล์ภาพ
-  await Flame.images.loadAll([
-    'images/cat.png',
-    'images/dog.png',
-    'images/cow.png',
-    'images/car.png',
-  ]);
-
-  // กำหนดพารามิเตอร์เกม
-  final params = MatchingParams(
-    totalRounds: 10, // จำนวนรอบ
-    itemsPerRound: 3, // จำนวนภาพต่อรอบ
-    roundTimeSeconds: 10, // เวลาต่อรอบ
-  );
-
-  // สร้างเกมและรัน
-  final game = MatchingGame(params: params);
-  runApp(
-    GameWidget(
-      game: game,
-      overlayBuilderMap: {
-        'HUD': (context, game) => HUDOverlay(game as MatchingGame),
-        'Start': (context, game) => StartOverlay(
-              onStart: () => (game as MatchingGame).startGame(),
-            ),
-        'End': (context, game) => EndOverlay(
-              game: game as MatchingGame,
-              onRestart: () => (game as MatchingGame).restartGame(),
-            ),
-      },
-      initialActiveOverlays: const ['Start'],
-    ),
-  );
-}
-
-// กำหนดพารามิเตอร์เกม
-class MatchingParams {
-  final int totalRounds;
-  final int itemsPerRound;
-  final double roundTimeSeconds;
-  const MatchingParams({
-    required this.totalRounds,
-    required this.itemsPerRound,
-    required this.roundTimeSeconds,
-  });
-}
-
-// คลาสหลักของเกม
+/// คลาส MatchingGame สำหรับเชื่อมต่อกับ GameWidget จากหน้าอื่น ๆ ได้
 class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
-  MatchingGame({required this.params});
   final MatchingParams params;
+  MatchingGame({required this.params});
 
-  // ไลบรารีภาพและเสียง
+  // ไลบรารีภาพและเสียง (key: ชื่อ, value: (pathภาพ, pathเสียง))
   final Map<String, (String imagePath, String soundPath)> _library = {
     'cat': ('images/cat.png', 'sounds/cat.mp3'),
     'dog': ('images/dog.png', 'sounds/dog.mp3'),
@@ -87,13 +26,9 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
 
   List<String> _currentKeys = [];
   String? _currentTargetKey;
-
   final _rand = Random();
 
-  // TimerComponent สำหรับจับเวลา
   late final TimerComponent _timer;
-
-  // สำหรับคำนวณดาว
   int _successRounds = 0; // รอบที่ผ่านสำเร็จภายในเวลา
 
   static const int _cols = 4;
@@ -102,7 +37,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // สร้าง TimerComponent ด้วย onTick
+    // สร้าง TimerComponent สำหรับจับเวลาแต่ละรอบ
     _timer = TimerComponent(
       period: 1,
       repeat: true,
@@ -117,7 +52,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     add(_timer);
   }
 
-  // เริ่มเกมใหม่
+  /// เริ่มเกมใหม่
   void startGame() {
     _score = 0;
     _round = 0;
@@ -128,13 +63,13 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     _startNextRound();
   }
 
-  // รีสตาร์ทเกม
+  /// รีสตาร์ทเกม
   void restartGame() {
     overlays.remove('End');
     startGame();
   }
 
-  // เริ่มรอบถัดไป
+  /// เริ่มรอบถัดไป
   void _startNextRound() {
     _round++;
     _timeLeft = params.roundTimeSeconds;
@@ -151,9 +86,12 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     _pickAndPlayNextTarget();
   }
 
-  // สร้าง ImageCard สำหรับแต่ละภาพ
-  void _spawnImages() async {
+  /// สร้าง ImageCard สำหรับแต่ละภาพ
+  void _spawnImages() {
+    // ลบภาพเดิมก่อน
     children.whereType<ImageCard>().toList().forEach(remove);
+
+    // Responsive: คำนวณขนาด cell ตามขนาดหน้าจอ
     final sizePerCell = Vector2(
       (size.x - (_padding * (_cols + 1))) / _cols,
       (size.y - (_padding * 3)) / 2,
@@ -178,7 +116,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     }
   }
 
-  // เลือกเป้าหมายและเล่นเสียง
+  /// เลือกเป้าหมายและเล่นเสียง
   void _pickAndPlayNextTarget() {
     if (_currentKeys.isEmpty) {
       _endRound(success: true);
@@ -189,7 +127,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     FlameAudio.play(sound);
   }
 
-  // เมื่อแตะภาพ
+  /// เมื่อแตะภาพ
   void _onCardTapped(String keyId) {
     if (!_isPlaying || _currentTargetKey == null) return;
     if (keyId == _currentTargetKey) {
@@ -201,7 +139,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     }
   }
 
-  // ฟังเสียงซ้ำ
+  /// ฟังเสียงซ้ำ
   void replaySound() {
     if (_currentTargetKey != null) {
       final sound = _library[_currentTargetKey]!.$2;
@@ -209,10 +147,10 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     }
   }
 
-  // จบรอบ
+  /// จบรอบ
   void _endRound({required bool success}) {
     if (success && _timeLeft > 0) {
-      _successRounds++; // นับรอบที่สำเร็จภายในเวลา
+      _successRounds++;
     }
     if (_round < params.totalRounds) {
       _startNextRound();
@@ -221,7 +159,7 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
     }
   }
 
-  // จบเกม
+  /// จบเกม
   void _finishGame() {
     _isPlaying = false;
     overlays.remove('HUD');
@@ -234,9 +172,9 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
   double get timeLeft => _timeLeft;
   int get totalRounds => params.totalRounds;
   bool get isPlaying => _isPlaying;
-  int get successRounds => _successRounds; // S
+  int get successRounds => _successRounds;
 
-  // คำนวณดาว
+  /// คำนวณดาว
   int calculateStars() {
     final percent = (successRounds / params.totalRounds) * 100;
     if (percent <= 40) return 1;
@@ -245,17 +183,29 @@ class MatchingGame extends FlameGame with HasTappables, HasCollisionDetection {
   }
 }
 
-// ImageCard คือภาพที่แตะได้
+/// พารามิเตอร์เกม (กำหนดจากหน้าอื่น ๆ ได้)
+class MatchingParams {
+  final int totalRounds;
+  final int itemsPerRound;
+  final double roundTimeSeconds;
+  const MatchingParams({
+    required this.totalRounds,
+    required this.itemsPerRound,
+    required this.roundTimeSeconds,
+  });
+}
+
+/// ImageCard คือภาพที่แตะได้
 class ImageCard extends SpriteComponent with TapCallbacks {
+  final String keyId;
+  final String spritePath;
+  final void Function(String keyId) onTapped;
+
   ImageCard({
     required this.keyId,
     required this.spritePath,
     required this.onTapped,
   });
-
-  final String keyId;
-  final String spritePath;
-  final void Function(String keyId) onTapped;
 
   @override
   Future<void> onLoad() async {
@@ -270,28 +220,30 @@ class ImageCard extends SpriteComponent with TapCallbacks {
   }
 }
 
-// HUDOverlay แสดง HUD ด้านบน
+/// HUDOverlay แสดง HUD ด้านบนแบบ responsive
 class HUDOverlay extends StatelessWidget {
-  const HUDOverlay(this.game, {super.key});
   final MatchingGame game;
+  const HUDOverlay(this.game, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double fontSize = size.width * 0.045;
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(size.width * 0.03),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _HUDChip(icon: Icons.timelapse, label: 'เวลา', value: game.timeLeft.toStringAsFixed(0)),
-              _HUDChip(icon: Icons.sports_score, label: 'คะแนน', value: '${game.score}'),
-              _HUDChip(icon: Icons.flag, label: 'รอบ', value: '${game.round}/${game.totalRounds}'),
+              _HUDChip(icon: Icons.timelapse, label: 'เวลา', value: game.timeLeft.toStringAsFixed(0), fontSize: fontSize),
+              _HUDChip(icon: Icons.sports_score, label: 'คะแนน', value: '${game.score}', fontSize: fontSize),
+              _HUDChip(icon: Icons.flag, label: 'รอบ', value: '${game.round}/${game.totalRounds}', fontSize: fontSize),
               ElevatedButton.icon(
                 onPressed: game.replaySound,
-                icon: const Icon(Icons.volume_up),
-                label: const Text('ฟังอีกครั้ง'),
+                icon: Icon(Icons.volume_up, size: fontSize),
+                label: Text('ฟังอีกครั้ง', style: TextStyle(fontSize: fontSize * 0.9)),
               ),
             ],
           ),
@@ -301,30 +253,31 @@ class HUDOverlay extends StatelessWidget {
   }
 }
 
-// _HUDChip คือกล่องแสดงข้อมูลใน HUD
+/// _HUDChip คือกล่องแสดงข้อมูลใน HUD แบบ responsive
 class _HUDChip extends StatelessWidget {
-  const _HUDChip({required this.icon, required this.label, required this.value});
   final IconData icon;
   final String label;
   final String value;
+  final double fontSize;
+  const _HUDChip({required this.icon, required this.label, required this.value, required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: fontSize, vertical: fontSize * 0.5),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(icon, color: Colors.white, size: fontSize),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-              Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(label, style: TextStyle(color: Colors.white70, fontSize: fontSize * 0.8)),
+              Text(value, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize)),
             ],
           ),
         ],
@@ -333,7 +286,7 @@ class _HUDChip extends StatelessWidget {
   }
 }
 
-// StartOverlay คือหน้าจอเริ่มเกม
+/// StartOverlay คือหน้าจอเริ่มเกม
 class StartOverlay extends StatelessWidget {
   const StartOverlay({super.key, required this.onStart});
   final VoidCallback onStart;
@@ -362,7 +315,7 @@ class StartOverlay extends StatelessWidget {
   }
 }
 
-// EndOverlay คือหน้าจอจบเกม
+/// EndOverlay คือหน้าจอจบเกม
 class EndOverlay extends StatelessWidget {
   const EndOverlay({super.key, required this.game, required this.onRestart});
   final MatchingGame game;
