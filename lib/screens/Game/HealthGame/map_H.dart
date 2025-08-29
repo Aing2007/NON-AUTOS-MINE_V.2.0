@@ -15,7 +15,7 @@ class MAPHscreen extends StatelessWidget {
           // 🔹 ภาพพื้นหลัง
           Positioned.fill(
             child: Image.asset(
-              'assets/images/GAME_H.png', // ✅ ลบ '/' หน้าพาธ
+              'assets/images/GamemapBG/GAME_H.png', // ✅ ลบ '/' หน้าพาธ
               fit: BoxFit.cover,
             ),
           ),
