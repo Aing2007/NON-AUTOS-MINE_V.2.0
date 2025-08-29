@@ -43,3 +43,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Flutter generated files
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+.flutter-*
+**/Generated.xcconfig
+**/flutter_export_environment.sh
