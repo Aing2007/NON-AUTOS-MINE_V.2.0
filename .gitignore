@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.flutter-plugins-dependencies
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/AppFrameworkInfo.plist
+# Uncomment if you have Mac Catalyst enabled
+# ios/Flutter/ephemeral/MacCatalyst/FlutterMacOS.framework
+# ios/Flutter/ephemeral/MacCatalyst/FlutterMacOS.dylib
+# Uncomment if you have MacOS enabled
