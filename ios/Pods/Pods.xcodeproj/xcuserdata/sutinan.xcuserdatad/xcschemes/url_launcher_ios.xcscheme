@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DF45E85925DF410BE416B32171F59C1F"
-               BuildableName = "url_launcher_ios.framework"
+               BuildableName = "liburl_launcher_ios.a"
                BlueprintName = "url_launcher_ios"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

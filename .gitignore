@@ -1,3 +1,62 @@
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VSCode (ถ้าไม่อยากแชร์ settings กัน)
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android build outputs
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# iOS auto-generated
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/AppFrameworkInfo.plist
+# ถ้ามี Catalyst หรือ macOS เปิดใช้งาน ให้ ignore ด้วย
+# ios/Flutter/ephemeral/
+
+# Firebase/Secrets (กรณีที่มี)
+google-services.json
+GoogleService-Info.plist
+=======
 .flutter-plugins-dependencies
 ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
+

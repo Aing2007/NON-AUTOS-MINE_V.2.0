@@ -1,13 +1,15 @@
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/audioplayers_darwin" "${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_ios"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/audioplayers_darwin/audioplayers_darwin.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation/path_provider_foundation.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_ios/url_launcher_ios.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Firebase" "${PODS_ROOT}/Headers/Public/FirebaseCore" "${PODS_ROOT}/Headers/Public/GoogleUtilities" "${PODS_ROOT}/Headers/Public/firebase_core" $(inherited) ${PODS_ROOT}/Firebase/CoreOnly/Sources
 LD_RUNPATH_SEARCH_PATHS = $(inherited) /usr/lib/swift
 LIBRARY_SEARCH_PATHS = $(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)/ $(SDKROOT)/usr/lib/swift
-OTHER_LDFLAGS = $(inherited) -framework "audioplayers_darwin" -framework "path_provider_foundation" -framework "url_launcher_ios"
+OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/audioplayers_darwin/audioplayers_darwin.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation/path_provider_foundation.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_ios/url_launcher_ios.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/FirebaseCore/FirebaseCore.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/GoogleUtilities/GoogleUtilities.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/firebase_core/firebase_core.modulemap"
+OTHER_LDFLAGS = $(inherited) -l"z" -framework "Foundation" -framework "Security" -framework "UIKit"
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/audioplayers_darwin/audioplayers_darwin.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation/path_provider_foundation.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_ios/url_launcher_ios.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/FirebaseCore/FirebaseCore.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/GoogleUtilities/GoogleUtilities.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/firebase_core/firebase_core.modulemap"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods
 PODS_XCFRAMEWORKS_BUILD_DIR = $(PODS_CONFIGURATION_BUILD_DIR)/XCFrameworkIntermediates
+SWIFT_INCLUDE_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Firebase" "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal" "${PODS_CONFIGURATION_BUILD_DIR}/audioplayers_darwin" "${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_ios"
 USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

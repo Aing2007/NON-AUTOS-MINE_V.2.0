@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1088555697124",
+    "project_id": "non-autos-mine-95230",
+    "storage_bucket": "non-autos-mine-95230.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088555697124:android:3a33fb3e359510be34bdf1",
+        "android_client_info": {
+          "package_name": "com.example.non_v2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCftE92ggUNTchQqtfKwM6Fjz1UwXvyBtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

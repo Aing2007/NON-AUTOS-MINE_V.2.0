@@ -1,4 +1,4 @@
-framework module audioplayers_darwin {
+module audioplayers_darwin {
   umbrella header "audioplayers_darwin-umbrella.h"
 
   export *

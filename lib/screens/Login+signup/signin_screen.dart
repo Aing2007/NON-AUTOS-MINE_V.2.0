@@ -6,8 +6,9 @@ import '/utils/colors.dart';
 import '../Test/ATEC_screen.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
-
+  const
+  SignInScreen({super.key});
+  
   @override
   Widget build(BuildContext context) {
     // Responsive values
@@ -20,7 +21,6 @@ class SignInScreen extends StatelessWidget {
     final double buttonFontSize = size.width * 0.045;
     final double buttonHeight = size.height * 0.08;
     final double cardTopRadius = size.width * 0.15;
-
     final TextEditingController _usernameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
     final TextEditingController _confirmPasswordController = TextEditingController();

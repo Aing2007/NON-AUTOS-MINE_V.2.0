@@ -128,6 +128,24 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "firebase_core",
+      "rootUri": "file:///Users/sutinan/.pub-cache/hosted/pub.dev/firebase_core-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "firebase_core_platform_interface",
+      "rootUri": "file:///Users/sutinan/.pub-cache/hosted/pub.dev/firebase_core_platform_interface-6.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "firebase_core_web",
+      "rootUri": "file:///Users/sutinan/.pub-cache/hosted/pub.dev/firebase_core_web-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "fixnum",
       "rootUri": "file:///Users/sutinan/.pub-cache/hosted/pub.dev/fixnum-1.1.1",
       "packageUri": "lib/",
