@@ -1,4 +1,4 @@
-framework module Pods_Runner {
+module Pods_Runner {
   umbrella header "Pods-Runner-umbrella.h"
 
   export *

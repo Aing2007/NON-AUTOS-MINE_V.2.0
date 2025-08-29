@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "67C6B567311D7E870E2D1A0DA187FE3B"
-               BuildableName = "audioplayers_darwin.framework"
+               BuildableName = "libaudioplayers_darwin.a"
                BlueprintName = "audioplayers_darwin"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
