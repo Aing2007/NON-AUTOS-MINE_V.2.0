@@ -1,12 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../widgets/backwordbutton-loginpage.dart';
-import '../../widgets/SocialLoginButton.dart';
 import '/utils/colors.dart';
 import '../start_screen.dart';
+import '../../functionDatabase/auth_service.dart'; // ✅ เพิ่ม import
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  Future<void> _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final User? user = await _authService.signIn(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+
+      if (user != null) {
+        // ✅ Login สำเร็จ → ไปหน้า StartScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const StartScreen()),
+        );
+      } else {
+        setState(() {
+          _errorMessage = "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      // ✅ Error จาก Firebase (กรณีไม่พบผู้ใช้ / รหัสผ่านผิด)
+      setState(() {
+        _errorMessage = e.message ?? "เกิดข้อผิดพลาดในการเข้าสู่ระบบ";
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = "เกิดข้อผิดพลาด: ${e.toString()}";
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +72,12 @@ class LoginScreen extends StatelessWidget {
     final double buttonHeight = size.height * 0.08;
     final double cardTopRadius = size.width * 0.15;
 
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-
     return Scaffold(
       backgroundColor: AppColors.yellowPrimary,
       body: SafeArea(
         child: Column(
           children: [
-            // Top Section with Back Button and Title
+            // Top Section
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: horizontalPadding,
@@ -39,8 +88,6 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   const BackButtonWidget(top: 16, left: 16),
                   SizedBox(height: verticalPadding * 2),
-
-                  // Title
                   Text(
                     'LOG IN',
                     style: GoogleFonts.barlowSemiCondensed(
@@ -51,8 +98,6 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: verticalPadding),
-
-                  // Subtitle
                   Text(
                     'ยินดีต้อนรับกลับ เราคือแอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n',
                     style: GoogleFonts.barlowSemiCondensed(
@@ -104,16 +149,16 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      // Username
+                      // Email
                       TextField(
-                        controller: _usernameController,
+                        controller: _emailController,
                         style: GoogleFonts.barlowSemiCondensed(
                           fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
                           color: AppColors.brownTertiary,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'ชื่อผู้ใช้',
+                          hintText: 'อีเมล',
                           hintStyle: GoogleFonts.barlowSemiCondensed(
                             fontSize: inputFontSize,
                             fontWeight: FontWeight.w600,
@@ -161,6 +206,15 @@ class LoginScreen extends StatelessWidget {
                       ),
                       SizedBox(height: verticalPadding * 2),
 
+                      // Error message
+                      if (_errorMessage != null) ...[
+                        Text(
+                          _errorMessage!,
+                          style: const TextStyle(color: Colors.red, fontSize: 14),
+                        ),
+                        SizedBox(height: verticalPadding),
+                      ],
+
                       // Login Button
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -171,14 +225,7 @@ class LoginScreen extends StatelessWidget {
                           width: double.infinity,
                           height: buttonHeight,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const StartScreen(),
-                                ),
-                              );
-                            },
+                            onPressed: _isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.brownPrimary,
                               shape: RoundedRectangleBorder(
@@ -186,24 +233,22 @@ class LoginScreen extends StatelessWidget {
                               ),
                               elevation: 0,
                             ),
-                            child: Text(
-                              'เข้าสู่ระบบ',
-                              style: GoogleFonts.barlowSemiCondensed(
-                                fontSize: buttonFontSize,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    'เข้าสู่ระบบ',
+                                    style: GoogleFonts.barlowSemiCondensed(
+                                      fontSize: buttonFontSize,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
-                      SizedBox(height: verticalPadding * 1.8),
-
-                      // Divider
-                      SizedBox(height: verticalPadding * 1.3),
-
-                      // Social Login (add your widget here if needed)
                     ],
                   ),
                 ),

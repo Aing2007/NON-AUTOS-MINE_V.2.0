@@ -4,11 +4,11 @@ import '../../widgets/backwordbutton-loginpage.dart';
 import '../../widgets/SocialLoginButton.dart';
 import '/utils/colors.dart';
 import '../Test/ATEC_screen.dart';
+import '../../functionDatabase/auth_service.dart'; // ✅ เพิ่ม import
 
 class SignInScreen extends StatelessWidget {
-  const
-  SignInScreen({super.key});
-  
+  const SignInScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Responsive values
@@ -24,6 +24,8 @@ class SignInScreen extends StatelessWidget {
     final TextEditingController _usernameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
     final TextEditingController _confirmPasswordController = TextEditingController();
+
+    final AuthService _authService = AuthService(); // ✅ สร้าง instance
 
     return Scaffold(
       backgroundColor: AppColors.yellowPrimary,
@@ -115,7 +117,7 @@ class SignInScreen extends StatelessWidget {
                           color: AppColors.brownTertiary,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'ชื่อผู้ใช้',
+                          hintText: 'อีเมล',
                           hintStyle: GoogleFonts.barlowSemiCondensed(
                             fontSize: inputFontSize + 2,
                             fontWeight: FontWeight.w600,
@@ -165,7 +167,7 @@ class SignInScreen extends StatelessWidget {
 
                       // Confirm Password
                       TextField(
-                        controller: _confirmPasswordController, // ใช้ controller ใหม่
+                        controller: _confirmPasswordController,
                         obscureText: true,
                         style: GoogleFonts.barlowSemiCondensed(
                           fontSize: inputFontSize,
@@ -192,7 +194,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       SizedBox(height: verticalPadding * 1.8),
 
-                      // Login Button
+                      // Register Button
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: horizontalPadding * 0.8,
@@ -202,13 +204,50 @@ class SignInScreen extends StatelessWidget {
                           width: double.infinity,
                           height: buttonHeight,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ATECHomePage(),
-                                ),
-                              );
+                            onPressed: () async {
+                              final email = _usernameController.text.trim();
+                              final password = _passwordController.text.trim();
+                              final confirmPassword = _confirmPasswordController.text.trim();
+
+                              // Validation
+                              if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบถ้วน')),
+                                );
+                                return;
+                              }
+                              if (password != confirmPassword) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('รหัสผ่านไม่ตรงกัน')),
+                                );
+                                return;
+                              }
+                              if (password.length < 6) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร')),
+                                );
+                                return;
+                              }
+
+                              // Register with Firebase Auth
+                              final user = await _authService.register(email, password);
+                              if (user != null) {
+                                // สมัครสำเร็จ
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('สมัครสมาชิกสำเร็จ')),
+                                );
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ATECHomePage(),
+                                  ),
+                                );
+                              } else {
+                                // สมัครไม่สำเร็จ
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('สมัครสมาชิกไม่สำเร็จ')),
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.brownPrimary,
@@ -218,7 +257,7 @@ class SignInScreen extends StatelessWidget {
                               elevation: 0,
                             ),
                             child: Text(
-                              'เข้าสู่ระบบ',
+                              'สมัครสมาชิก',
                               style: GoogleFonts.barlowSemiCondensed(
                                 fontSize: buttonFontSize,
                                 fontWeight: FontWeight.w800,

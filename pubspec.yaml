@@ -39,6 +39,7 @@ dependencies:
   flame: ^1.0.0
   flame_audio: ^2.11.8
   firebase_core: ^4.0.0
+  firebase_auth: ^6.0.1
 fl_chart: ^0.68.0
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,7 @@ flutter:
     - assets/images/
     - assets/images/Gameassets/
     - assets/images/GameBG/
-    - assets/images/GamemapBG
+    - assets/images/GamemapBG/
     
 fonts:
   - family: Barlow Semi Condensed
