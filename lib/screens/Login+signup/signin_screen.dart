@@ -6,11 +6,9 @@ import '/utils/colors.dart';
 import '../Test/ATEC_screen.dart';
 import '../../functionDatabase/auth_service.dart'; // ✅ เพิ่ม import
 
-
 class SignInScreen extends StatelessWidget {
-  const
-  SignInScreen({super.key});
-  
+  const SignInScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Responsive values
