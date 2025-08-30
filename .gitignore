@@ -1,3 +1,4 @@
+
 # Miscellaneous
 *.class
 *.log
@@ -54,3 +55,8 @@ ios/Flutter/AppFrameworkInfo.plist
 # Firebase/Secrets (กรณีที่มี)
 google-services.json
 GoogleService-Info.plist
+=======
+.flutter-plugins-dependencies
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+

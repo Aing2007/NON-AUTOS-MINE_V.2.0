@@ -1,7 +1,8 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import '../LenguageGame/Level1/1.1.dart';
 import '../LenguageGame/Level1/1.2.dart';
-
+import 'Level3/3.1.dart';
 class MAPLscreen extends StatelessWidget {
   const MAPLscreen({super.key});
 
@@ -15,7 +16,7 @@ class MAPLscreen extends StatelessWidget {
           // 🔹 ภาพพื้นหลัง
           Positioned.fill(
             child: Image.asset(
-              'assets/images/GAME_L.png', // ✅ ลบ '/' หน้าพาธ
+              'assets/images/GamemapBG/GAME_L.png', // ✅ ลบ '/' หน้าพาธ
               fit: BoxFit.cover,
             ),
           ),
@@ -157,12 +158,19 @@ class MAPLscreen extends StatelessWidget {
                   }),
                   _buildBottomButton('02', null, () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GameWidgetWithUI(game: SideScrollGame()),
-                      ),
-                    );
+  context,
+  MaterialPageRoute(
+    builder: (context) => GameWidget(
+      game: MatchingGame(
+        params: MatchingParams(
+          totalRounds: 10,
+          itemsPerRound: 3,
+          roundTimeSeconds: 10,
+        ),
+      ),
+    ),
+  ),
+);
                   }),
                   _buildBottomButton(
                     '',
