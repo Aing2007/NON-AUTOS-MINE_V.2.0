@@ -5,6 +5,7 @@ import '../../widgets/SocialLoginButton.dart';
 import '/utils/colors.dart';
 import '../start_screen.dart';
 
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
