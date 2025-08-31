@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../widgets/backwordbutton-loginpage.dart';
-import '../../widgets/SocialLoginButton.dart';
 import '/utils/colors.dart';
 import '../Test/ATEC_screen.dart';
-import '../../functionDatabase/auth_service.dart'; // ✅ เพิ่ม import
+import '../../functionDatabase/auth_service.dart'; // ✅ import AuthService
+import 'package:email_validator/email_validator.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -21,9 +21,11 @@ class SignInScreen extends StatelessWidget {
     final double buttonFontSize = size.width * 0.045;
     final double buttonHeight = size.height * 0.08;
     final double cardTopRadius = size.width * 0.15;
-    final TextEditingController _usernameController = TextEditingController();
+
+    final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
     final TextEditingController _confirmPasswordController = TextEditingController();
+    final TextEditingController _nameController = TextEditingController(); // ✅ เพิ่ม controller สำหรับชื่อ
 
     final AuthService _authService = AuthService(); // ✅ สร้าง instance
 
@@ -32,7 +34,7 @@ class SignInScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Top Section with Back Button and Title
+            // Top Section
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: horizontalPadding,
@@ -44,7 +46,6 @@ class SignInScreen extends StatelessWidget {
                   const BackButtonWidget(top: 16, left: 10),
                   SizedBox(height: verticalPadding * 2),
 
-                  // Title
                   Text(
                     'SIGN UP',
                     style: GoogleFonts.barlowSemiCondensed(
@@ -56,7 +57,6 @@ class SignInScreen extends StatelessWidget {
                   ),
                   SizedBox(height: verticalPadding),
 
-                  // Subtitle
                   Text(
                     'สวัสดี\nเราคือแอปพลิเคชันเพื่อส่งเสริมพัฒนาการของเด็กออทิสติก\n',
                     style: GoogleFonts.barlowSemiCondensed(
@@ -108,9 +108,37 @@ class SignInScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      // Username
+                      // Name
                       TextField(
-                        controller: _usernameController,
+                        controller: _nameController,
+                        style: GoogleFonts.barlowSemiCondensed(
+                          fontSize: inputFontSize,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.brownTertiary,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ชื่อผู้ใช้',
+                          hintStyle: GoogleFonts.barlowSemiCondensed(
+                            fontSize: inputFontSize + 2,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.brownTertiary,
+                          ),
+                          filled: true,
+                          fillColor: AppColors.cream,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding * 0.8,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: verticalPadding * 1.2),
+
+                      // Email
+                      TextField(
+                        controller: _emailController,
                         style: GoogleFonts.barlowSemiCondensed(
                           fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
@@ -172,7 +200,7 @@ class SignInScreen extends StatelessWidget {
                         style: GoogleFonts.barlowSemiCondensed(
                           fontSize: inputFontSize,
                           fontWeight: FontWeight.w600,
-                          color: const Color.fromARGB(255, 138, 114, 109),
+                          color: AppColors.brownTertiary,
                         ),
                         decoration: InputDecoration(
                           hintText: 'ยืนยันรหัสผ่าน',
@@ -205,50 +233,58 @@ class SignInScreen extends StatelessWidget {
                           height: buttonHeight,
                           child: ElevatedButton(
                             onPressed: () async {
-                              final email = _usernameController.text.trim();
-                              final password = _passwordController.text.trim();
-                              final confirmPassword = _confirmPasswordController.text.trim();
+  final email = _emailController.text.trim();
+  final password = _passwordController.text.trim();
+  final confirmPassword = _confirmPasswordController.text.trim();
+  final username = _nameController.text.trim();
 
-                              // Validation
-                              if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบถ้วน')),
-                                );
-                                return;
-                              }
-                              if (password != confirmPassword) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('รหัสผ่านไม่ตรงกัน')),
-                                );
-                                return;
-                              }
-                              if (password.length < 6) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร')),
-                                );
-                                return;
-                              }
+  // Validation
+  if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || username.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบถ้วน')),
+    );
+    return;
+  }
 
-                              // Register with Firebase Auth
-                              final user = await _authService.register(email, password);
-                              if (user != null) {
-                                // สมัครสำเร็จ
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('สมัครสมาชิกสำเร็จ')),
-                                );
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const ATECHomePage(),
-                                  ),
-                                );
-                              } else {
-                                // สมัครไม่สำเร็จ
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('สมัครสมาชิกไม่สำเร็จ')),
-                                );
-                              }
-                            },
+  // ตรวจสอบ email ด้วย email_validator
+  if (!EmailValidator.validate(email)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('กรุณากรอกอีเมลให้ถูกต้อง')),
+    );
+    return;
+  }
+
+  if (password != confirmPassword) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('รหัสผ่านไม่ตรงกัน')),
+    );
+    return;
+  }
+
+  if (password.length < 6) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร')),
+    );
+    return;
+  }
+
+  final user = await _authService.register(email: email, password: password, name: username);
+
+  if (user != null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('สมัครสมาชิกสำเร็จ')),
+    );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ATECHomePage()),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('สมัครสมาชิกไม่สำเร็จ')),
+    );
+  }
+},
+
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.brownPrimary,
                               shape: RoundedRectangleBorder(
@@ -269,11 +305,6 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: verticalPadding * 1.8),
-
-                      // Divider
-                      SizedBox(height: verticalPadding * 1.3),
-
-                      // Social Login (add your widget here if needed)
                     ],
                   ),
                 ),
@@ -284,4 +315,9 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
+}
+// เพิ่มฟังก์ชันตรวจสอบอีเมล
+bool isValidEmail(String email) {
+  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+  return emailRegex.hasMatch(email);
 }
