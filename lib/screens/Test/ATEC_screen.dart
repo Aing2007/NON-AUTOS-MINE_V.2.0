@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'test1.dart';
 import '../Login+signup/signin_screen.dart';
-
+import 'package:non_autos_mine/functionDatabase/database_service.dart';
 void main() {
   runApp(const ATECApp());
 }
@@ -153,8 +153,8 @@ class _ATECHomePageState extends State<ATECHomePage> {
               Container(
                 width: double.infinity,
                 constraints: BoxConstraints(
-                  minHeight: size.height * 0.75,
-                  maxHeight: size.height * 0.85,
+                  minHeight: size.height * 0.60,
+                  maxHeight: size.height * 0.60,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,

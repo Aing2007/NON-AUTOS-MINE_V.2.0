@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main_screen.dart';
 import 'gamemap_screen.dart';
-
+import 'package:non_autos_mine/functionDatabase/database_service.dart';
 class SummaryPage extends StatefulWidget {
   final String summaryCode;
   final String explanation;

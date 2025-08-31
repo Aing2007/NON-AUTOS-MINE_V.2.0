@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'gamemap_screen.dart';
 import 'start_screen.dart';
 import 'profile_screen.dart';
-
+import 'package:non_autos_mine/functionDatabase/database_service.dart';
 class MAINHomePage extends StatelessWidget {
   final int? score1;
   final int? score2;
