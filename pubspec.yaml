@@ -43,6 +43,9 @@ dependencies:
   firebase_database: ^12.0.0
   email_validator: ^3.0.0
   text_to_speech: ^0.2.3
+  flutter_speech: ^2.0.1
+  speech_to_text: ^7.3.0
+  
 fl_chart: ^0.68.0
 dev_dependencies:
   flutter_test:
@@ -75,6 +78,10 @@ flutter:
     - assets/images/Gameassets/
     - assets/images/GameBG/
     - assets/images/GamemapBG/
+    - assets/images/GamemapBG/GAME_L.png
+    - assets/images/GamemapBG/GAME_S.png
+    - assets/images/GamemapBG/GAME_C.png
+    - assets/images/GamemapBG/GAME_H.png
     
 fonts:
   - family: Barlow Semi Condensed

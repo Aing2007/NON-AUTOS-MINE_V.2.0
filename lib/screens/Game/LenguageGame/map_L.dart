@@ -2,13 +2,15 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import '../LenguageGame/Level1/1.1.dart';
 import '../LenguageGame/Level1/1.2.dart';
-import 'Level3/3.1.dart';
 class MAPLscreen extends StatelessWidget {
   const MAPLscreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size; // ขนาดหน้าจอ
+    final buttonSize = size.width * 0.22; // ✅ ปุ่มกว้าง/สูง 22% ของหน้าจอ
+    final headerIconSize = size.width * 0.18; // ✅ ขนาดโปรไฟล์ไอคอน
+    final headerHeight = size.height * 0.08; // ✅ ความสูงกล่องเงิน
 
     return Scaffold(
       body: Stack(
@@ -16,7 +18,7 @@ class MAPLscreen extends StatelessWidget {
           // 🔹 ภาพพื้นหลัง
           Positioned.fill(
             child: Image.asset(
-              'assets/images/GamemapBG/GAME_L.png', // ✅ ลบ '/' หน้าพาธ
+              'assets/images/GamemapBG/GAME_L.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -24,19 +26,19 @@ class MAPLscreen extends StatelessWidget {
           // 🔹 เนื้อหาหลัก (Header + กลางจอ)
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 16.0,
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.05,
+                vertical: size.height * 0.02,
               ),
               child: Column(
                 children: [
                   // 🔸 Header บน
                   Row(
                     children: [
-                      // วงกลมแดง
+                      // วงกลมโปรไฟล์
                       Container(
-                        width: 70,
-                        height: 70,
+                        width: headerIconSize,
+                        height: headerIconSize,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 3),
@@ -48,24 +50,22 @@ class MAPLscreen extends StatelessWidget {
                             ),
                           ],
                           image: const DecorationImage(
-                            image: AssetImage(
-                              'assets/images/ICON.png',
-                            ), // ✅ เปลี่ยน path ให้ถูกต้อง
-                            fit: BoxFit
-                                .cover, // หรือ BoxFit.contain ตามความต้องการ
+                            image: AssetImage('assets/images/ICON.png'),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
 
-                      const SizedBox(width: 10),
+                      SizedBox(width: size.width * 0.03),
 
                       // ชื่อ + ยอดเงิน
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.03,
+                            vertical: size.height * 0.01,
                           ),
+                          height: headerHeight,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -81,16 +81,16 @@ class MAPLscreen extends StatelessWidget {
                             children: [
                               const Icon(
                                 Icons.attach_money,
-                                size: 16,
+                                size: 18,
                                 color: Colors.amber,
                               ),
                               const SizedBox(width: 4),
-                              const Expanded(
+                              Expanded(
                                 child: Text(
                                   '12,000,000.00',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: size.width * 0.04,
                                     color: Colors.brown,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -101,12 +101,12 @@ class MAPLscreen extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(width: 10),
+                      SizedBox(width: size.width * 0.03),
 
                       // ปุ่ม location
                       Container(
-                        width: 36,
-                        height: 36,
+                        width: headerIconSize * 0.5,
+                        height: headerIconSize * 0.5,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
@@ -126,7 +126,7 @@ class MAPLscreen extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: size.height * 0.02),
 
                   // 🔸 พื้นที่ว่างตรงกลาง
                   Expanded(child: Container()),
@@ -140,10 +140,9 @@ class MAPLscreen extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            top: 1000,
             child: Container(
-              color: const Color(0xFF7F95E4),
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              color: const Color.fromARGB(0, 149, 228, 228),
+              padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -155,28 +154,16 @@ class MAPLscreen extends StatelessWidget {
                             GameWidgetWithUI(game: SideScrollGame()),
                       ),
                     );
-                  }),
+                  }, buttonSize),
                   _buildBottomButton('02', null, () {
                     Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => GameWidget(
-      game: MatchingGame(
-        params: MatchingParams(
-          totalRounds: 10,
-          itemsPerRound: 3,
-          roundTimeSeconds: 10,
-        ),
-      ),
-    ),
-  ),
-);
-                  }),
-                  _buildBottomButton(
-                    '',
-                    Icons.lock,
-                    null,
-                  ), // ปุ่มล็อก ไม่มี onTap
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TTSscreen(),
+                      ),
+                    );
+                  }, buttonSize),
+                  _buildBottomButton('', Icons.lock, null, buttonSize),
                 ],
               ),
             ),
@@ -186,26 +173,34 @@ class MAPLscreen extends StatelessWidget {
     );
   }
 
-  // 🔹 ปุ่มล่าง reusable
-  Widget _buildBottomButton(String label, IconData? icon, VoidCallback? onTap) {
+  // 🔹 ปุ่มล่าง reusable (responsive)
+  Widget _buildBottomButton(
+      String label, IconData? icon, VoidCallback? onTap, double size) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 120,
-        height: 120,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(size * 0.2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Center(
           child: icon != null
-              ? Icon(icon, size: 30, color: Color(0xFF7F95E4))
+              ? Icon(icon, size: size * 0.3, color: const Color(0xFF7F95E4))
               : Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 30,
+                  style: TextStyle(
+                    fontSize: size * 0.25,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF7F95E4),
+                    color: const Color(0xFF7F95E4),
                   ),
                 ),
         ),
