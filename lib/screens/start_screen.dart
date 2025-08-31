@@ -70,7 +70,7 @@ class _StartButtonState extends State<_StartButton> {
     final isSmallScreen = height < 600;
 
     return Container(
-      height: height * 0.12, // 12% ของความสูงจอ
+      height: height * 0.15, // 12% ของความสูงจอ
       decoration: const BoxDecoration(
         color: Color(0xFF8BC7AD),
         borderRadius: BorderRadius.only(

@@ -250,72 +250,83 @@ class MAINHomePage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _BottomNavButton(
-                          icon: Icons.home,
-                          label: 'HOME',
-                          isActive: true,
-                          iconSize: iconSize,
-                          fontSize: navFontSize,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MAINHomePage(
-                                pageColor: pageColor,
-                                level: level,
-                                testResult: testResult,
-                                score1: score1,
-                                score2: score2,
-                                score3: score3,
-                                score4: score4,
-                                summaryCode: summaryCode,
-                              ),
-                            ),
-                          ),
-                        ),
-                        _BottomNavButton(
-                          icon: Icons.games,
-                          label: 'GAME',
-                          iconSize: iconSize,
-                          fontSize: navFontSize,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GameMapScreen(
-                                pageColor: pageColor,
-                                level: level,
-                                testResult: testResult,
-                                score1: score1,
-                                score2: score2,
-                                score3: score3,
-                                score4: score4,
-                              ),
-                            ),
-                          ),
-                        ),
-                        _BottomNavButton(
-                          icon: Icons.person,
-                          label: 'PROFILE',
-                          iconSize: iconSize,
-                          fontSize: navFontSize,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DashboardPage(
-                                pageColor: pageColor,
-                                level: level,
-                                testResult: testResult,
-                                score1: score1,
-                                score2: score2,
-                                score3: score3,
-                                score4: score4,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+  _BottomNavButton(
+    icon: Icons.home,
+    label: 'HOME',
+        iconColor: Colors.blue,    // ✅ ใช้งานสี custom
+    labelColor: Colors.blue, 
+    iconSize: iconSize,
+    fontSize: navFontSize,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MAINHomePage(
+            pageColor: pageColor,
+            level: level,
+            testResult: testResult,
+            score1: score1,
+            score2: score2,
+            score3: score3,
+            score4: score4,
+            summaryCode: summaryCode,
+          ),
+        ),
+      );
+    },
+  ),
+  _BottomNavButton(
+    icon: Icons.games,
+    label: 'GAME',
+    // ✅ ใช้งานสี custom
+    iconSize: iconSize,
+    fontSize: navFontSize,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => GameMapScreen(
+            pageColor: pageColor,
+            level: level,
+            testResult: testResult,
+            score1: score1,
+            score2: score2,
+            score3: score3,
+            score4: score4,
+            summaryCode: summaryCode,
+          ),
+        ),
+      );
+    },
+  ),
+  _BottomNavButton(
+    icon: Icons.person,
+    label: 'PROFILE',
+    iconSize: iconSize,
+    fontSize: navFontSize,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => DashboardPage(
+            pageColor: pageColor,
+            level: level,
+            testResult: testResult,
+            score1: score1,
+            score2: score2,
+            score3: score3,
+            score4: score4,
+          ),
+        ),
+      );
+    },
+  ),
+],
+
                     ),
                   ),
                 ),
@@ -365,19 +376,21 @@ class _SidebarButton extends StatelessWidget {
 class _BottomNavButton extends StatefulWidget {
   final IconData icon;
   final String label;
-  final bool isActive;
   final double iconSize;
   final double fontSize;
   final VoidCallback onTap;
+  final Color? iconColor;   // ✅ เพิ่ม
+  final Color? labelColor;  // ✅ เพิ่ม
 
   const _BottomNavButton({
     Key? key,
     required this.icon,
     required this.label,
-    this.isActive = false,
     required this.iconSize,
     required this.fontSize,
     required this.onTap,
+    this.iconColor,   // ✅ เพิ่ม
+    this.labelColor,  // ✅ เพิ่ม
   }) : super(key: key);
 
   @override
@@ -406,14 +419,14 @@ class _BottomNavButtonState extends State<_BottomNavButton> {
           children: [
             Icon(
               widget.icon,
-              color: widget.isActive ? Colors.blue : Colors.grey,
+              color: widget.iconColor ?? Colors.grey,  // ✅ ใช้สีที่ส่งมา
               size: widget.iconSize,
             ),
             SizedBox(height: widget.fontSize * 0.3),
             Text(
               widget.label,
               style: TextStyle(
-                color: widget.isActive ? Colors.blue : Colors.grey,
+                color: widget.labelColor ?? Colors.grey, // ✅ ใช้สีที่ส่งมา
                 fontSize: widget.fontSize,
                 fontWeight: FontWeight.w500,
               ),
@@ -424,3 +437,4 @@ class _BottomNavButtonState extends State<_BottomNavButton> {
     );
   }
 }
+
