@@ -42,6 +42,7 @@ dependencies:
   firebase_auth: ^6.0.1
   firebase_database: ^12.0.0
   email_validator: ^3.0.0
+  text_to_speech: ^0.2.3
 fl_chart: ^0.68.0
 dev_dependencies:
   flutter_test:
