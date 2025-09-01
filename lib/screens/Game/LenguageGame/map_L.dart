@@ -139,7 +139,7 @@ class MAPLscreen extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: 30,
             child: Container(
               color: const Color.fromARGB(0, 149, 228, 228),
               padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
