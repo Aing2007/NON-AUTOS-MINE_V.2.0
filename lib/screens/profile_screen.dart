@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'main_screen.dart';
 import 'gamemap_screen.dart';
 import 'package:non_autos_mine/functionDatabase/database_service.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -313,10 +314,30 @@ class _DashboardPageState extends State<DashboardPage> {
     required double verticalPadding,
   }) {
     final indicators = [
-      {'letter': 'L', 'color': const Color(0xFF7F95E4), 'height': indicatorBarHeight * 0.6, 'index': 0},
-      {'letter': 'S', 'color': const Color(0xFFF65A3B), 'height': indicatorBarHeight * 0.24, 'index': 1},
-      {'letter': 'C', 'color': const Color(0xFFFFD370), 'height': indicatorBarHeight * 0.78, 'index': 2},
-      {'letter': 'H', 'color': const Color(0xFF8BC7AD), 'height': indicatorBarHeight * 0.66, 'index': 3},
+      {
+        'letter': 'L',
+        'color': const Color(0xFF7F95E4),
+        'height': indicatorBarHeight * 0.6,
+        'index': 0,
+      },
+      {
+        'letter': 'S',
+        'color': const Color(0xFFF65A3B),
+        'height': indicatorBarHeight * 0.24,
+        'index': 1,
+      },
+      {
+        'letter': 'C',
+        'color': const Color(0xFFFFD370),
+        'height': indicatorBarHeight * 0.78,
+        'index': 2,
+      },
+      {
+        'letter': 'H',
+        'color': const Color(0xFF8BC7AD),
+        'height': indicatorBarHeight * 0.66,
+        'index': 3,
+      },
     ];
 
     return Column(
@@ -472,7 +493,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: chartData.data.map((value) {
                               return SizedBox(
-                                width: chartFontSize* 0.5,
+                                width: chartFontSize * 0.5,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -481,17 +502,27 @@ class _DashboardPageState extends State<DashboardPage> {
                                       height: chartFontSize * 3.2,
                                       decoration: BoxDecoration(
                                         color: chartData.color.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(chartFontSize * 0.35),
+                                        borderRadius: BorderRadius.circular(
+                                          chartFontSize * 0.35,
+                                        ),
                                       ),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Container(
                                             width: chartFontSize * 0.7,
-                                            height: (chartFontSize * 3.2 * value / 100),
+                                            height:
+                                                (chartFontSize *
+                                                3.2 *
+                                                value /
+                                                100),
                                             decoration: BoxDecoration(
                                               color: chartData.color,
-                                              borderRadius: BorderRadius.circular(chartFontSize * 0.35),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    chartFontSize * 0.35,
+                                                  ),
                                             ),
                                           ),
                                         ],
@@ -527,10 +558,7 @@ class _DashboardPageState extends State<DashboardPage> {
           SizedBox(height: chartFontSize * 0.6),
           Text(
             chartData.description,
-            style: TextStyle(
-              fontSize: chartDescFontSize,
-              color: Colors.white,
-            ),
+            style: TextStyle(fontSize: chartDescFontSize, color: Colors.white),
           ),
         ],
       ),
@@ -538,18 +566,18 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   //Widget _buildSideIcons({required double iconSize, required double verticalPadding}) {
-    //return Positioned(
-      //top: verticalPadding,
-      //right: verticalPadding,
-      //child: Column(
-      //  children: [
-      //    Icon(Icons.settings, color: const Color(0xFF805E57), size: iconSize),
-      //    SizedBox(height: verticalPadding * 1.5),
-      //    Icon(Icons.notifications, color: const Color(0xFF805E57), size: iconSize),
-      //  ],
-      //),
-    //);
- // }
+  //return Positioned(
+  //top: verticalPadding,
+  //right: verticalPadding,
+  //child: Column(
+  //  children: [
+  //    Icon(Icons.settings, color: const Color(0xFF805E57), size: iconSize),
+  //    SizedBox(height: verticalPadding * 1.5),
+  //    Icon(Icons.notifications, color: const Color(0xFF805E57), size: iconSize),
+  //  ],
+  //),
+  //);
+  // }
 
   Widget _buildBottomNavigation({
     required double bottomBarHeight,

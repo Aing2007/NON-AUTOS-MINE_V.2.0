@@ -36,9 +36,24 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin firebase_database, io.flutter.plugins.firebase.database.FirebaseDatabasePlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new com.flutter.speech_recognition.flutter_speech.FlutterSpeechRecognitionPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_speech, com.flutter.speech_recognition.flutter_speech.FlutterSpeechRecognitionPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin path_provider_android, io.flutter.plugins.pathprovider.PathProviderPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.csdcorp.speech_to_text.SpeechToTextPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin speech_to_text, com.csdcorp.speech_to_text.SpeechToTextPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.ixsans.text_to_speech.TextToSpeechPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin text_to_speech, com.ixsans.text_to_speech.TextToSpeechPlugin", e);
     }
     try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());

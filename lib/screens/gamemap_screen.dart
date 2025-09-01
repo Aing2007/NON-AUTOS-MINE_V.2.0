@@ -336,14 +336,7 @@ List<Widget> _buildCirclesAndTriangles(
                             color: darkGray,
                           ),
                         ),
-                        Text(
-                          'ระดับ= ${widget.summaryCode ?? "LSCH"}',
-                          style: TextStyle(
-                            fontSize: navFontSize * 1.2,
-                            fontWeight: FontWeight.w600,
-                            color: darkGray,
-                          ),
-                        ),
+                        
                         SizedBox(height: verticalPadding*0.1),
                         Container(
                           padding: EdgeInsets.symmetric(
