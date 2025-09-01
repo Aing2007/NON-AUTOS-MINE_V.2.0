@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import '../LenguageGame/Level1/1.1.dart';
 import '../LenguageGame/Level1/1.2.dart';
+
 class MAPSscreen extends StatelessWidget {
   const MAPSscreen({super.key});
 
@@ -87,7 +88,7 @@ class MAPSscreen extends StatelessWidget {
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
-                                  '12,000,000.00',
+                                  '12,000,000',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: size.width * 0.04,
@@ -158,9 +159,7 @@ class MAPSscreen extends StatelessWidget {
                   _buildBottomButton('02', null, () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => TTSscreen(),
-                      ),
+                      MaterialPageRoute(builder: (context) => TTSscreen()),
                     );
                   }, buttonSize),
                   _buildBottomButton('', Icons.lock, null, buttonSize),
@@ -175,12 +174,16 @@ class MAPSscreen extends StatelessWidget {
 
   // 🔹 ปุ่มล่าง reusable (responsive)
   Widget _buildBottomButton(
-      String label, IconData? icon, VoidCallback? onTap, double size) {
+    String label,
+    IconData? icon,
+    VoidCallback? onTap,
+    double size,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: size*1.2,
-        height: size*1.2,
+        width: size * 1.2,
+        height: size * 1.2,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(size * 0.2),
