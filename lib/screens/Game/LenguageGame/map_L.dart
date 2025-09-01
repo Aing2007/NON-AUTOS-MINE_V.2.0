@@ -89,7 +89,7 @@ class MAPLscreen extends StatelessWidget {
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
-                                  '12,000,000',
+                                  '12,000,000.00',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: size.width * 0.04,
