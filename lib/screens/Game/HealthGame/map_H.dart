@@ -179,8 +179,8 @@ class MAPHscreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: size,
-        height: size,
+        width: size*1.2,
+        height: size*1.2,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(size * 0.2),
@@ -198,7 +198,7 @@ class MAPHscreen extends StatelessWidget {
               : Text(
                   label,
                   style: TextStyle(
-                    fontSize: size * 0.25,
+                    fontSize: size * 0.45,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF8BC7AD),
                   ),

@@ -2,6 +2,8 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import '../LenguageGame/Level1/1.1.dart';
 import '../LenguageGame/Level1/1.2.dart';
+import 'startscreenL.dart';
+
 class MAPLscreen extends StatelessWidget {
   const MAPLscreen({super.key});
 
@@ -140,31 +142,32 @@ class MAPLscreen extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 30,
+            top: size.height * 0.7,
             child: Container(
-              color: const Color.fromARGB(0, 149, 228, 228),
+              color: const Color(0xFF7F95E4),
               padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBottomButton('01', null, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GameWidgetWithUI(game: SideScrollGame()),
-                      ),
-                    );
-                  }, buttonSize),
-                  _buildBottomButton('02', null, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TTSscreen(),
-                      ),
-                    );
-                  }, buttonSize),
-                  _buildBottomButton('', Icons.lock, null, buttonSize),
-                ],
+              height: size.height * 0.18, // ✅ กำหนดความสูงเผื่อใส่ 15 แถว
+              child: GridView.count(
+                crossAxisCount: 3, // ✅ 3 ปุ่มต่อแถว
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                padding: const EdgeInsets.all(12),
+                children: List.generate(45, (index) {
+                  final level = index + 1;
+                  return _buildBottomButton(
+                    level < 10 ? "0$level" : "$level", // ✅ 01, 02, ..., 45
+                    null,
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => STARTLscreen(number: "$level"),
+                        ),
+                      );
+                    },
+                    buttonSize,
+                  );
+                }),
               ),
             ),
           ),
@@ -175,12 +178,16 @@ class MAPLscreen extends StatelessWidget {
 
   // 🔹 ปุ่มล่าง reusable (responsive)
   Widget _buildBottomButton(
-      String label, IconData? icon, VoidCallback? onTap, double size) {
+    String label,
+    IconData? icon,
+    VoidCallback? onTap,
+    double size,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: size,
-        height: size,
+        width: size * 1.2,
+        height: size * 1.2,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(size * 0.2),
@@ -198,7 +205,7 @@ class MAPLscreen extends StatelessWidget {
               : Text(
                   label,
                   style: TextStyle(
-                    fontSize: size * 0.25,
+                    fontSize: size * 0.45,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF7F95E4),
                   ),
