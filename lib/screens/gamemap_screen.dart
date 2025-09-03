@@ -109,124 +109,99 @@ class _GameMapScreenState extends State<GameMapScreen> {
   /// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
   /// สร้างวงกลมเรียงตาม summaryCode ใหม่
   /// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
-/// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
-List<Widget> _buildCirclesAndTriangles(
-  double circleSize,
-  double iconSize,
-  double imageCircleSize,
-  double triangleHeight,
-  double triangleWidth,
-  double gap,
-) {
-  // ตรวจสอบ summaryCode
-  const defaultSummary = 'LSCH';
-  final code = widget.summaryCode?.toUpperCase() ?? defaultSummary;
+  /// สร้างวงกลมและสามเหลี่ยมตาม summaryCode
+  List<Widget> _buildCirclesAndTriangles(
+    double circleSize,
+    double iconSize,
+    double imageCircleSize,
+    double triangleHeight,
+    double triangleWidth,
+    double gap,
+  ) {
+    // ตรวจสอบ summaryCode
+    const defaultSummary = 'LSCH';
+    final code = widget.summaryCode?.toUpperCase() ?? defaultSummary;
 
-  final validChars = {'L', 'S', 'C', 'H'};
-  final codeSet = code.split('').toSet();
-  final summary = (code.length != 4 || !codeSet.containsAll(validChars) || codeSet.length != 4)
-      ? defaultSummary
-      : code;
+    final validChars = {'L', 'S', 'C', 'H'};
+    final codeSet = code.split('').toSet();
+    final summary =
+        (code.length != 4 ||
+            !codeSet.containsAll(validChars) ||
+            codeSet.length != 4)
+        ? defaultSummary
+        : code;
 
-  final colorMap = {
-    'L': periwinkleBlue,
-    'S': coralRed,
-    'C': goldYellow,
-    'H': sageGreen,
-  };
+    final colorMap = {
+      'L': periwinkleBlue,
+      'S': coralRed,
+      'C': goldYellow,
+      'H': sageGreen,
+    };
 
-  List<Widget> widgets = [];
+    List<Widget> widgets = [];
 
-  // ✅ วนจากบนลงล่าง (กลับลำดับ summaryCode)
-  final reversedSummary = summary.split('').reversed.toList();
+    final summaryList = summary.split(''); // ไม่ reverse
 
-  for (int i = 0; i < reversedSummary.length; i++) {
-    final ch = reversedSummary[i];
-    final color = colorMap[ch] ?? Colors.grey;
+    for (int i = 0; i < summaryList.length; i++) {
+      final ch = summaryList[i];
+      final color = colorMap[ch] ?? Colors.grey;
 
-    // 1) ไม่ต้องใส่ Triangle ด้านบนก่อนทุกวงกลม (ลบออก)
-    // if (i == 0) {
-    //   widgets.add(_buildTriangle(color, triangleWidth, triangleHeight));
-    //   widgets.add(SizedBox(height: gap));
-    // }
+      // ตัวบนสุดปลดล็อก
+      bool isUnlocked = (i == 0);
 
-    // 2) วงกลมทั้งหมดจะเป็น lock หมด ยกเว้นตัวสุดท้าย (อยู่ล่างสุด)
-    bool isUnlocked = (i == reversedSummary.length - 1);
-    widgets.add(
-  _buildColoredCircle(
-    color,
-    locked: !isUnlocked,
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            switch (ch) {
-              case 'L': return MAPLscreen();
-              case 'S': return MAPSscreen();
-              case 'C': return MAPCscreen();
-              case 'H': return MAPHscreen();
-              default: return NextScreen(title: 'Unknown Screen');
+      widgets.add(
+        _buildColoredCircle(
+          color,
+          locked: !isUnlocked,
+          onTap: () {
+            if (isUnlocked) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) {
+                    switch (ch) {
+                      case 'L':
+                        return MAPLscreen();
+                      case 'S':
+                        return MAPSscreen();
+                      case 'C':
+                        return MAPCscreen();
+                      case 'H':
+                        return MAPHscreen();
+                      default:
+                        return NextScreen(title: 'Unknown Screen');
+                    }
+                  },
+                ),
+              );
             }
           },
+          circleSize: circleSize,
+          iconSize: iconSize,
         ),
       );
-    },
-    circleSize: circleSize,
-    iconSize: iconSize,
-  ),
-);
-//============กรณีที่มี lock ไอคอน`====== จะกดไม่ได้
-     //   widgets.add(
-       //   _buildColoredCircle(
-         //   color,
-           // locked: !isUnlocked, // ตัวสุดท้ายไม่ล็อก
-       //     onTap: () {
-       //       if (isUnlocked) {
-       //         Navigator.push(
-       //           context,
-       //           MaterialPageRoute(
-       //             builder: (_) {
-       //               switch (ch) {
-       //                 case 'L':
-       //                   return MAPLscreen();
-        //                case 'S':
-       //                   return MAPSscreen();
-       //                 case 'C':
-       //                   return MAPCscreen();
-        //                case 'H':
-       //                   return MAPHscreen();
-       //                 default:
-       //                   return NextScreen(title: 'Unknown Screen');
-       //               }
-       //             },
-       //           ),
-       //         );
-       //       }
-       //     },
-       //     circleSize: circleSize,
-       //     iconSize: iconSize,
-       //   ),
-       // );
 
-    widgets.add(SizedBox(height: gap));
-
-    // 3) ใส่ Triangle ถ้าไม่ใช่วงกลมสุดท้าย
-    if (i < reversedSummary.length -1) {
-      widgets.add(_buildtrianglenormal(color, triangleWidth, triangleHeight));
       widgets.add(SizedBox(height: gap));
+
+      // วางสามเหลี่ยมระหว่างวงกลม (ยกเว้นวงกลมสุดท้าย)
+      if (i < summaryList.length - 1) {
+        widgets.add(_buildtrianglenormal(color, triangleWidth, triangleHeight));
+        widgets.add(SizedBox(height: gap));
+      }
     }
+    // ปิดท้ายด้วยไอคอนรูปภาพด้านบน พร้อมเว้นระยะห่าง
+    widgets.insert(
+      0,
+      SizedBox(height: gap * 0.5),
+    ); // เว้นระยะห่างระหว่างสามเหลี่ยมกับวงกลม
+    widgets.insert(
+      0,
+      _buildTriangle(Colors.grey, triangleWidth, triangleHeight),
+    );
+    widgets.insert(0, _buildImageCircle(imageCircleSize, gap));
+
+    return widgets;
   }
-
-  // ✅ ปิดท้ายด้วย triangle กลับหัว + วงกลมภาพ
-  widgets.add(_buildtrianglenormal(Colors.grey, triangleWidth, triangleHeight));
-  widgets.add(SizedBox(height: gap));
-  widgets.add(_buildImageCircle(imageCircleSize, gap));
-
-  return widgets;
-}
-
-
 
   Widget _buildTriangle(Color color, double width, double height) {
     return CustomPaint(
@@ -236,12 +211,10 @@ List<Widget> _buildCirclesAndTriangles(
   }
 
   Widget _buildtrianglenormal(Color color, double width, double height) {
-    return Transform.rotate(
-      angle: 3.1416,
-      child: CustomPaint(
-        size: Size(width, height),
-        painter: TrianglePainter(color),
-      ),
+    // หัวชี้ขึ้น
+    return CustomPaint(
+      size: Size(width, height),
+      painter: TrianglePainter(color),
     );
   }
 
@@ -300,7 +273,12 @@ List<Widget> _buildCirclesAndTriangles(
           children: [
             // Header
             Padding(
-              padding: EdgeInsets.fromLTRB(horizontalPadding, verticalPadding * 0.5, horizontalPadding, verticalPadding * 0.9),
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                verticalPadding * 0.5,
+                horizontalPadding,
+                verticalPadding * 0.9,
+              ),
               child: Row(
                 children: [
                   Container(
@@ -312,7 +290,10 @@ List<Widget> _buildCirclesAndTriangles(
                         image: AssetImage('assets/images/ICON.png'),
                         fit: BoxFit.cover,
                       ),
-                      border: Border.all(color: Colors.white, width: avatarSize * 0.033),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: avatarSize * 0.033,
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
@@ -336,8 +317,8 @@ List<Widget> _buildCirclesAndTriangles(
                             color: darkGray,
                           ),
                         ),
-                        
-                        SizedBox(height: verticalPadding*0.1),
+
+                        SizedBox(height: verticalPadding * 0.1),
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: horizontalPadding * 1.2,
@@ -375,7 +356,7 @@ List<Widget> _buildCirclesAndTriangles(
                                   ),
                                 ),
                               ),
-                              SizedBox(width: horizontalPadding * 0.7,),
+                              SizedBox(width: horizontalPadding * 0.7),
                               Text(
                                 '12,000,000.00 points',
                                 style: TextStyle(
@@ -397,7 +378,12 @@ List<Widget> _buildCirclesAndTriangles(
             // Scrollable Content
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, bottomBarHeight * 1.2),
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  0,
+                  horizontalPadding,
+                  bottomBarHeight * 1.2,
+                ),
                 child: Column(
                   children: _buildCirclesAndTriangles(
                     circleSize,

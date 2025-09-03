@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/map_L.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/ด้านที่1/1.1.1.dart';
+import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
+import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
+import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
+
 import '../../../AIfunction/TTS.dart';
 
 void main() {
@@ -9,9 +12,11 @@ void main() {
 
 class STARTLscreen extends StatelessWidget {
   final String number;
+  final String page;
   const STARTLscreen({
     super.key,
-    this.number = "01",
+    this.number = "00",
+    this.page = "",
   }); // ✅ เพิ่มพารามิเตอร์ number
 
   @override
@@ -19,7 +24,10 @@ class STARTLscreen extends StatelessWidget {
     return MaterialApp(
       title: 'AING App',
       theme: ThemeData(fontFamily: 'Roboto', useMaterial3: true),
-      home: AingHomePage(number: number), // ✅ ส่งค่าไปยัง AingHomePage
+      home: AingHomePage(
+        number: number,
+        page: page,
+      ), // ✅ ส่งค่าไปยัง AingHomePage
       debugShowCheckedModeBanner: false,
     );
   }
@@ -27,8 +35,12 @@ class STARTLscreen extends StatelessWidget {
 
 class AingHomePage extends StatefulWidget {
   final String number;
-
-  const AingHomePage({super.key, required this.number}); // ✅ รับค่า number
+  final String page;
+  const AingHomePage({
+    super.key,
+    required this.number,
+    required this.page,
+  }); // ✅ รับค่า number
 
   @override
   State<AingHomePage> createState() => _AingHomePageState();
@@ -297,9 +309,7 @@ class _AingHomePageState extends State<AingHomePage>
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const MAPLscreen(), // 👉 ไปยังหน้าใหม่
-                  ),
+                  MaterialPageRoute(builder: (_) => const MAPLscreen()),
                 );
               },
               child: Container(
@@ -414,17 +424,12 @@ class _AingHomePageState extends State<AingHomePage>
                         // Action Button with Heart
                         GestureDetector(
                           onTap: () {
-                            TtsService.speak(
-                              "1.ผลไม้ที่มีสีเหลือง",
-                              rate: 0.5,
-                              pitch: 1.0,
-                            ); // หยุดเสียงก่อนหน้า
+                            // ✅ เลือกหน้า Navigate ตามค่า page ที่ส่งเข้ามา
+                            Widget nextPage = _getPageByNumber(widget.page);
+
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    const SelectFruit(), // 👉 ไปยังหน้าใหม่
-                              ),
+                              MaterialPageRoute(builder: (_) => nextPage),
                             );
                           },
                           child: Container(
@@ -514,5 +519,18 @@ class _AingHomePageState extends State<AingHomePage>
         );
       },
     );
+  }
+}
+
+Widget _getPageByNumber(String page) {
+  switch (page) {
+    case "1":
+      return const SelectFruit1();
+    case "2":
+      return const SelectFruit2();
+    case "3":
+      return const SelectFruit3();
+    default:
+      return const MAPLscreen(); // fallback เผื่อ page ไม่ตรง
   }
 }

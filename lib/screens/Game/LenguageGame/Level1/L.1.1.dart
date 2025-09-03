@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
-import '../../../../../AIfunction/TTS.dart';
-import '../../summaryGameL.dart';
+import '../../../../AIfunction/TTS.dart';
+import '../summaryGameL.dart';
 
-class SelectFruit extends StatefulWidget {
-  const SelectFruit({Key? key}) : super(key: key);
+class SelectFruit1 extends StatefulWidget {
+  const SelectFruit1({Key? key}) : super(key: key);
 
   @override
-  State<SelectFruit> createState() => _SelectFruitState();
+  State<SelectFruit1> createState() => _SelectFruitState();
 }
 
-class _SelectFruitState extends State<SelectFruit> {
+class _SelectFruitState extends State<SelectFruit1> {
   int score = 0;
   int currentPage = 0;
 
@@ -239,6 +239,17 @@ class _SelectFruitState extends State<SelectFruit> {
   ];
 
   late int totalPages = fruitPages.length;
+  @override
+  void initState() {
+    super.initState();
+    // ✅ อ่านคำถามแรกทันทีเมื่อเข้าสู่หน้า
+    TtsService.speak(
+      fruitPages[0]["question"] as String,
+      rate: 0.5,
+      pitch: 1.0,
+    );
+  }
+
   double getProgressWidth(double maxWidth) {
     return maxWidth * ((currentPage + 1) / totalPages);
   }

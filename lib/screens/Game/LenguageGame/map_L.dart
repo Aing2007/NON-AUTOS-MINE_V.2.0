@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+
 import '../LenguageGame/Level1/1.1.dart';
-import '../LenguageGame/Level1/1.2.dart';
 import 'startscreenL.dart';
 
 class MAPLscreen extends StatelessWidget {
@@ -67,7 +67,7 @@ class MAPLscreen extends StatelessWidget {
                             horizontal: size.width * 0.03,
                             vertical: size.height * 0.01,
                           ),
-                          height: headerHeight,
+                          height: headerHeight * 0.8,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -161,7 +161,8 @@ class MAPLscreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => STARTLscreen(number: "$level"),
+                          builder: (context) =>
+                              STARTLscreen(number: "$level", page: "$level"),
                         ),
                       );
                     },

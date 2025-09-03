@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
 import '../LenguageGame/map_L.dart';
+import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
+import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
 // ฟังก์ชันสร้างหน้าสรุปผล
 Widget buildSummaryScreen({
@@ -231,13 +233,14 @@ Widget buildSummaryScreen({
                 ),
 
                 // ===== Buttons Row =====
+                // ===== Buttons Row =====
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          // ไปด่านถัดไป
+                          // กลับไปแผนที่
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_) => MAPLscreen()),
@@ -268,13 +271,30 @@ Widget buildSummaryScreen({
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          // ไปด่านถัดไป
-                          //Navigator.push(
-                          //context,
-                          // MaterialPageRoute(
-                          // builder: (_) => NextLevelScreen(level: currentLevel + 1),
-                          //),
-                          //);
+                          if (currentLevel == 1) {
+                            // ถ้าอยู่ level 1 → ไป SelectFruit2
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const SelectFruit2(),
+                              ),
+                            );
+                          }
+                          if (currentLevel == 2) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const SelectFruit3(),
+                              ),
+                            );
+                          } else {
+                            // level อื่น ๆ → จะไปหน้าถัดไป หรือให้แสดง Dialog ก็ได้
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("ยังไม่มีด่านถัดไปนะครับ 🙂"),
+                              ),
+                            );
+                          }
                         },
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
                         child: Container(
