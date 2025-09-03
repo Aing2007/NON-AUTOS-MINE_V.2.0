@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/map_L.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/ด้านที่1/1.1.1.dart';
+import '../../../AIfunction/TTS.dart';
 
 void main() {
   runApp(const STARTLscreen());
@@ -380,12 +381,13 @@ class _AingHomePageState extends State<AingHomePage>
                   ),
                 ],
               ),
+
               child: Stack(
                 children: [
                   // Main Number Display
                   Center(
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 1000),
 
                       child: Text(
                         Number, // ✅ ใช้ค่า String ที่รับมา
@@ -394,14 +396,14 @@ class _AingHomePageState extends State<AingHomePage>
                         ), // ใช้ Number แทน _currentNumber เพื่อให้ AnimatedSwitcher ทำงานถูก
                         style: TextStyle(
                           color: appPrimary,
-                          fontSize: isSmallScreen ? 96 : 128,
+                          fontSize: isSmallScreen ? 128 : 140,
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),
                       ),
                     ),
                   ),
-
+                  SizedBox(height: isSmallScreen ? 24 : 32),
                   // Bottom Actions
                   Positioned(
                     bottom: isSmallScreen ? 60 : 80,
@@ -412,6 +414,11 @@ class _AingHomePageState extends State<AingHomePage>
                         // Action Button with Heart
                         GestureDetector(
                           onTap: () {
+                            TtsService.speak(
+                              "1.ผลไม้ที่มีสีเหลือง",
+                              rate: 0.5,
+                              pitch: 1.0,
+                            ); // หยุดเสียงก่อนหน้า
                             Navigator.push(
                               context,
                               MaterialPageRoute(

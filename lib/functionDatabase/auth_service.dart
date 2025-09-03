@@ -9,7 +9,7 @@ class AuthService {
   Future<User?> register({
     required String email,
     required String password,
-    required String name,
+    required String? name,
   }) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(

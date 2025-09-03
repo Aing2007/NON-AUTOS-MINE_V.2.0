@@ -248,6 +248,12 @@
       "languageVersion": "3.8"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///Users/sutinan/.pub-cache/hosted/pub.dev/flutter_tts-4.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///Users/sutinan/development/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",

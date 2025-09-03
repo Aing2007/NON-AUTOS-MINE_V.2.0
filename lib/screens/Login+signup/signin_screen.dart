@@ -24,8 +24,10 @@ class SignInScreen extends StatelessWidget {
 
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
-    final TextEditingController _confirmPasswordController = TextEditingController();
-    final TextEditingController _nameController = TextEditingController(); // ✅ เพิ่ม controller สำหรับชื่อ
+    final TextEditingController _confirmPasswordController =
+        TextEditingController();
+    final TextEditingController _nameController =
+        TextEditingController(); // ✅ เพิ่ม controller สำหรับชื่อ
 
     final AuthService _authService = AuthService(); // ✅ สร้าง instance
 
@@ -233,57 +235,82 @@ class SignInScreen extends StatelessWidget {
                           height: buttonHeight,
                           child: ElevatedButton(
                             onPressed: () async {
-  final email = _emailController.text.trim();
-  final password = _passwordController.text.trim();
-  final confirmPassword = _confirmPasswordController.text.trim();
-  final username = _nameController.text.trim();
+                              final email = _emailController.text.trim();
+                              final password = _passwordController.text.trim();
+                              final confirmPassword = _confirmPasswordController
+                                  .text
+                                  .trim();
+                              final username = _nameController.text.trim();
 
-  // Validation
-  if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || username.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบถ้วน')),
-    );
-    return;
-  }
+                              // Validation
+                              if (email.isEmpty ||
+                                  password.isEmpty ||
+                                  confirmPassword.isEmpty ||
+                                  username.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('กรุณากรอกข้อมูลให้ครบถ้วน'),
+                                  ),
+                                );
+                                return;
+                              }
 
-  // ตรวจสอบ email ด้วย email_validator
-  if (!EmailValidator.validate(email)) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('กรุณากรอกอีเมลให้ถูกต้อง')),
-    );
-    return;
-  }
+                              // ตรวจสอบ email ด้วย email_validator
+                              if (!EmailValidator.validate(email)) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('กรุณากรอกอีเมลให้ถูกต้อง'),
+                                  ),
+                                );
+                                return;
+                              }
 
-  if (password != confirmPassword) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('รหัสผ่านไม่ตรงกัน')),
-    );
-    return;
-  }
+                              if (password != confirmPassword) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('รหัสผ่านไม่ตรงกัน'),
+                                  ),
+                                );
+                                return;
+                              }
 
-  if (password.length < 6) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร')),
-    );
-    return;
-  }
+                              if (password.length < 6) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
 
-  final user = await _authService.register(email: email, password: password, name: username);
+                              final user = await _authService.register(
+                                email: email,
+                                password: password,
+                                name: username,
+                              );
 
-  if (user != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('สมัครสมาชิกสำเร็จ')),
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const ATECHomePage()),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('สมัครสมาชิกไม่สำเร็จ')),
-    );
-  }
-},
+                              if (user != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('สมัครสมาชิกสำเร็จ'),
+                                  ),
+                                );
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ATECHomePage(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('สมัครสมาชิกไม่สำเร็จ'),
+                                  ),
+                                );
+                              }
+                            },
 
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.brownPrimary,
@@ -316,6 +343,7 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
+
 // เพิ่มฟังก์ชันตรวจสอบอีเมล
 bool isValidEmail(String email) {
   final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');

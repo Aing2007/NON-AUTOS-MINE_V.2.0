@@ -45,6 +45,8 @@ dependencies:
   text_to_speech: ^0.2.3
   flutter_speech: ^2.0.1
   speech_to_text: ^7.3.0
+  flutter_tts: ^4.2.3
+  path_provider: ^2.0.15
   
 fl_chart: ^0.68.0
 dev_dependencies:
@@ -82,7 +84,7 @@ flutter:
     - assets/images/GamemapBG/GAME_S.png
     - assets/images/GamemapBG/GAME_C.png
     - assets/images/GamemapBG/GAME_H.png
-    
+    - assets/game_assets/prototype/fruit/
 fonts:
   - family: Barlow Semi Condensed
     fonts:
