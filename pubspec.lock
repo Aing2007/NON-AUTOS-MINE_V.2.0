@@ -302,14 +302,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  flutter_speech:
-    dependency: "direct main"
-    description:
-      name: flutter_speech
-      sha256: "2bce1bf55d104e34b9083f332a2f4ec55a43f0592bf71f24ba7d83f6a09be3cc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   flutter_svg:
     dependency: "direct main"
     description:

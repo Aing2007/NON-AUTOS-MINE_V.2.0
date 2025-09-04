@@ -43,7 +43,7 @@ dependencies:
   firebase_database: ^12.0.0
   email_validator: ^3.0.0
   
-  flutter_speech: ^2.0.1
+  
   speech_to_text: ^7.3.0
   flutter_tts: ^4.2.3
   path_provider: ^2.0.15

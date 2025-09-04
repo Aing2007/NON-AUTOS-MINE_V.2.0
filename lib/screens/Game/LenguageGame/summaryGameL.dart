@@ -10,7 +10,6 @@ Widget buildSummaryScreen({
   required int currentLevel,
 }) {
   final screenWidth = MediaQuery.of(context).size.width;
-  final screenHeight = MediaQuery.of(context).size.height;
 
   // ✅ ใช้ scaleFactor สำหรับ responsive
   double baseWidth = 390;
@@ -28,20 +27,21 @@ Widget buildSummaryScreen({
   int starsEarned = calculateStars(scoreValue);
 
   return Scaffold(
-    backgroundColor: Colors.transparent,
     body: Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/GameBG/StartBGL.png'),
-          fit: BoxFit.cover,
+          image: AssetImage("assets/images/GameBG/StartBGL.png"),
+          fit: BoxFit.cover, // ✅ ให้ภาพเต็มหน้าจอ
         ),
       ),
       child: SafeArea(
+        // ✅ ย้าย SafeArea มาห่อ child ตรงนี้
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-
-            constraints: const BoxConstraints(maxWidth: 500), // ✅ กัน UI บวม
+            constraints: const BoxConstraints(maxWidth: 500),
             margin: EdgeInsets.symmetric(horizontal: 16 * scale),
             padding: EdgeInsets.symmetric(
               vertical: 12 * scale,
@@ -59,7 +59,7 @@ Widget buildSummaryScreen({
                 // ===== Progress Bar =====
                 Container(
                   width: double.infinity,
-                  height: 20 * scale,
+                  height: 30 * scale,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12 * scale),
@@ -79,7 +79,7 @@ Widget buildSummaryScreen({
                       return Stack(
                         children: [
                           Positioned(
-                            top: 6 * scale,
+                            top: 11 * scale,
                             left: 10,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
@@ -312,7 +312,6 @@ Widget buildSummaryScreen({
   );
 }
 
-// ===== Triangle Painter =====
 class TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

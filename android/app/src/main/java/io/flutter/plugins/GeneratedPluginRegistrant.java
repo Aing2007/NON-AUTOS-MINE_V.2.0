@@ -36,11 +36,6 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin firebase_database, io.flutter.plugins.firebase.database.FirebaseDatabasePlugin", e);
     }
     try {
-      flutterEngine.getPlugins().add(new com.flutter.speech_recognition.flutter_speech.FlutterSpeechRecognitionPlugin());
-    } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin flutter_speech, com.flutter.speech_recognition.flutter_speech.FlutterSpeechRecognitionPlugin", e);
-    }
-    try {
       flutterEngine.getPlugins().add(new com.tundralabs.fluttertts.FlutterTtsPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin flutter_tts, com.tundralabs.fluttertts.FlutterTtsPlugin", e);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
 import '../../../../AIfunction/TTS.dart';
 import '../summaryGameL.dart';
-import '../../../../AIfunction/STT.dart';
+import '../../../../AIfunction/STT.dart'; // ✅ ใช้ STT Service ที่คุณสร้างไว้
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
 
 class SelectFruit3 extends StatefulWidget {
@@ -15,24 +15,19 @@ class SelectFruit3 extends StatefulWidget {
 class _SelectFruitState extends State<SelectFruit3> {
   int score = 0;
   int currentPage = 0;
-  String recognizedText = ""; // ✅ เก็บข้อความจาก Speech
+  String recognizedText = ""; // ✅ เก็บข้อความที่ฟังได้
+  bool isListening = false; // ✅ state ไมโครโฟน
 
   final List<Map<String, dynamic>> fruitPages = [
     {
-      //==========================================1==================================================
       "question": "1.ฉันชอบกินกล้วย",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/banana.png",
           "isCorrect": true,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/grab.png",
-          "isCorrect": false,
-        },
       ],
     },
-    //==========================================2==================================================
     {
       "question": "2.ฉันชอบกินแอปเปิ้ล",
       "fruits": [
@@ -40,13 +35,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/apple.png",
           "isCorrect": true,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/banana.png",
-          "isCorrect": false,
-        },
       ],
     },
-    //==========================================3==================================================
     {
       "question": "3.ฉันชอบกินองุ่น",
       "fruits": [
@@ -54,13 +44,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/apple.png",
           "isCorrect": false,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/grab.png",
-          "isCorrect": true,
-        },
       ],
     },
-    //==========================================4==================================================
     {
       "question": "4.ฉันชอบกินกีวี่",
       "fruits": [
@@ -68,13 +53,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/kiwi.png",
           "isCorrect": true,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/apple.png",
-          "isCorrect": false,
-        },
       ],
     },
-    //==========================================5==================================================
     {
       "question": "5.ฉันกินสตรอเบอร์รี่",
       "fruits": [
@@ -82,13 +62,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/strawberry.png",
           "isCorrect": true,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/banana.png",
-          "isCorrect": false,
-        },
       ],
     },
-    //==========================================6==================================================
     {
       "question": "6.ฉันกินมะพร้าว",
       "fruits": [
@@ -96,14 +71,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/grab.png",
           "isCorrect": false,
         },
-
-        {
-          "image": "assets/game_assets/prototype/fruit/coconut.png",
-          "isCorrect": true,
-        },
       ],
     },
-    //==========================================7==================================================
     {
       "question": "7.ฉันกินเลม่อน",
       "fruits": [
@@ -111,13 +80,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/lemon.png",
           "isCorrect": true,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/strawberry.png",
-          "isCorrect": false,
-        },
       ],
     },
-    //==========================================8==================================================
     {
       "question": "8.ฉันกินลูกท้อ",
       "fruits": [
@@ -125,14 +89,8 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/kiwi.png",
           "isCorrect": false,
         },
-
-        {
-          "image": "assets/game_assets/prototype/fruit/peach.png",
-          "isCorrect": true,
-        },
       ],
     },
-    //==========================================9==================================================
     {
       "question": "9.ฉันกินสับปะรด",
       "fruits": [
@@ -140,24 +98,14 @@ class _SelectFruitState extends State<SelectFruit3> {
           "image": "assets/game_assets/prototype/fruit/strawberry.png",
           "isCorrect": false,
         },
-        {
-          "image": "assets/game_assets/prototype/fruit/pineapple.png",
-          "isCorrect": true,
-        },
       ],
     },
-    //==========================================10==================================================
     {
       "question": "10.ฉันกินแตงโม",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/watermelon.png",
           "isCorrect": true,
-        },
-
-        {
-          "image": "assets/game_assets/prototype/fruit/coconut.png",
-          "isCorrect": false,
         },
       ],
     },
@@ -175,16 +123,31 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ฟังก์ชันคำนวณความยาว ProgressBar
+  // ฟังก์ชัน ProgressBar
   double calculateProgress(double maxWidth) {
     return maxWidth * ((currentPage + 1) / totalPages);
   }
 
-  // ฟังก์ชันคำนวณตำแหน่ง icon บน ProgressBar
+  // ฟังก์ชันคำนวณตำแหน่ง icon
   double calculateIconPosition(double maxWidth, double iconWidth) {
     double progress = calculateProgress(maxWidth);
-    // ไม่ให้ icon หลุดขอบขวา
     return (progress - iconWidth / 2).clamp(0, maxWidth - iconWidth);
+  }
+
+  // ✅ ฟังก์ชันเริ่มฟังเสียง
+  Future<void> _startListening() async {
+    setState(() => isListening = true);
+    await SpeechService.startListening((text) {
+      setState(() {
+        recognizedText = text;
+      });
+    });
+  }
+
+  // ✅ ฟังก์ชันหยุดฟังเสียง
+  Future<void> _stopListening() async {
+    setState(() => isListening = false);
+    await SpeechService.stopListening();
   }
 
   @override
@@ -195,7 +158,7 @@ class _SelectFruitState extends State<SelectFruit3> {
     return Scaffold(
       body: Stack(
         children: [
-          // ✅ พื้นหลัง + เนื้อหาเกม
+          // พื้นหลังเกม
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -223,16 +186,11 @@ class _SelectFruitState extends State<SelectFruit3> {
                       ),
                       const SizedBox(height: 20),
 
-                      // ✅ Progress Bar (เหมือนเดิม)
                       _buildProgressBar(),
-
-                      // ✅ Floating Fruit Selector
                       _buildFloatingAvatar(),
-
-                      // ✅ Question
                       _buildQuestion(),
 
-                      // ✅ Fruits
+                      // ✅ แสดงปุ่มผลไม้
                       Column(
                         children: List.generate(
                           (fruitPages[currentPage]["fruits"] as List).length,
@@ -254,9 +212,7 @@ class _SelectFruitState extends State<SelectFruit3> {
                         ),
                       ),
 
-                      SizedBox(
-                        height: screenHeight * 0.15,
-                      ), // กันไม่ให้บังปุ่มไมค์
+                      SizedBox(height: screenHeight * 0.15),
                     ],
                   ),
                 ),
@@ -264,7 +220,7 @@ class _SelectFruitState extends State<SelectFruit3> {
             ),
           ),
 
-          // ✅ ปุ่มไมโครโฟน + แสดงข้อความที่ฟังได้
+          // ✅ ปุ่มไมโครโฟน
           Positioned(
             bottom: screenHeight * 0.05,
             left: 0,
@@ -290,20 +246,15 @@ class _SelectFruitState extends State<SelectFruit3> {
                   ),
 
                 GestureDetector(
-                  onLongPressStart: (_) async {
-                    await SpeechService.startListening((text) {
-                      setState(() => recognizedText = text);
-                    });
-                  },
-                  onLongPressEnd: (_) async {
-                    await SpeechService.stopListening();
-                  },
-                  child: Container(
-                    width: screenWidth * 0.2,
-                    height: screenWidth * 0.2,
+                  onLongPressStart: (_) => _startListening(),
+                  onLongPressEnd: (_) => _stopListening(),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: screenWidth * 0.3,
+                    height: screenWidth * 0.3,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.redAccent,
+                      color: isListening ? Colors.green : Colors.redAccent,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.3),
@@ -312,7 +263,11 @@ class _SelectFruitState extends State<SelectFruit3> {
                         ),
                       ],
                     ),
-                    child: const Icon(Icons.mic, color: Colors.white, size: 40),
+                    child: Icon(
+                      Icons.mic,
+                      color: Colors.white,
+                      size: isListening ? 70 : 60,
+                    ),
                   ),
                 ),
               ],
@@ -323,7 +278,6 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ✅ แยก widget ย่อยเพื่อความเป็นระเบียบ
   // ✅ Progress Bar
   Widget _buildProgressBar() {
     return Container(
@@ -342,12 +296,11 @@ class _SelectFruitState extends State<SelectFruit3> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          double maxWidth = constraints.maxWidth - 20; // padding ซ้ายขวา
+          double maxWidth = constraints.maxWidth - 20;
           double iconWidth = 25;
 
           return Stack(
             children: [
-              // Progress indicator
               Positioned(
                 top: 9,
                 left: 10,
@@ -361,8 +314,6 @@ class _SelectFruitState extends State<SelectFruit3> {
                   ),
                 ),
               ),
-
-              // Progress icon
               Positioned(
                 top: 1,
                 left: 10 + calculateIconPosition(maxWidth, iconWidth),
@@ -433,9 +384,9 @@ class _SelectFruitState extends State<SelectFruit3> {
                 ),
               ],
             ),
-            child: CustomPaint(
-              size: const Size(44, 19),
-              painter: const _PointerTrianglePainter(), // ⬅️ ใช้ชื่อใหม่
+            child: const CustomPaint(
+              size: Size(44, 19),
+              painter: _PointerTrianglePainter(),
             ),
           ),
         ],
@@ -484,45 +435,6 @@ class _SelectFruitState extends State<SelectFruit3> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      onTap: () {
-        // เพิ่มคะแนนถ้าถูก
-        if (isCorrect) {
-          setState(() {
-            score += 1;
-          });
-        }
-
-        // ไปหน้าผลไม้ชุดถัดไป
-        setState(() {
-          if (currentPage < fruitPages.length - 1) {
-            currentPage += 1; // ขึ้นชุดต่อไป
-            print("Current Score: $score");
-            TtsService.speak(
-              fruitPages[currentPage]["question"] as String,
-              rate: 0.5,
-              pitch: 1.0,
-            );
-          } else {
-            // ถ้าเป็นหน้าสุดท้าย แสดงผลลัพธ์
-            print("Game Finished! Score: $score");
-            TtsService.speak(
-              "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด $totalPages คะแนน",
-              rate: 0.5,
-              pitch: 1.0,
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => buildSummaryScreen(
-                  context: context,
-                  totalScore: score,
-                  currentLevel: 3,
-                ),
-              ),
-            );
-          }
-        });
-      },
       child: Container(
         padding: EdgeInsets.all(screenWidth * 0.04),
         decoration: BoxDecoration(
@@ -549,6 +461,7 @@ class _SelectFruitState extends State<SelectFruit3> {
   }
 }
 
+// ✅ ตัว Triangle pointer
 class _PointerTrianglePainter extends CustomPainter {
   const _PointerTrianglePainter();
 
@@ -557,13 +470,11 @@ class _PointerTrianglePainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
-
     final path = Path();
-    path.moveTo(size.width / 2, size.height); // bottom center
-    path.lineTo(0, 0); // top left
-    path.lineTo(size.width, 0); // top right
+    path.moveTo(size.width / 2, size.height);
+    path.lineTo(0, 0);
+    path.lineTo(size.width, 0);
     path.close();
-
     canvas.drawPath(path, paint);
   }
 
