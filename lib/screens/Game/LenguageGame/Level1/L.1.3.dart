@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
 import '../../../../AIfunction/TTS.dart';
 import '../summaryGameL.dart';
-import '../../../../AIfunction/STT.dart'; // ✅ ใช้ STT Service ที่คุณสร้างไว้
+import '../../../../AIfunction/STT.dart'; // ใช้ STT Service
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
 
 class SelectFruit3 extends StatefulWidget {
@@ -15,8 +15,8 @@ class SelectFruit3 extends StatefulWidget {
 class _SelectFruitState extends State<SelectFruit3> {
   int score = 0;
   int currentPage = 0;
-  String recognizedText = ""; // ✅ เก็บข้อความที่ฟังได้
-  bool isListening = false; // ✅ state ไมโครโฟน
+  String recognizedText = ""; // ข้อความที่ฟังได้
+  bool isListening = false; // สถานะไมโครโฟน
 
   final List<Map<String, dynamic>> fruitPages = [
     {
@@ -124,30 +124,26 @@ class _SelectFruitState extends State<SelectFruit3> {
   }
 
   // ฟังก์ชัน ProgressBar
-  double calculateProgress(double maxWidth) {
-    return maxWidth * ((currentPage + 1) / totalPages);
-  }
+  double calculateProgress(double maxWidth) =>
+      maxWidth * ((currentPage + 1) / totalPages);
+  double calculateIconPosition(double maxWidth, double iconWidth) =>
+      (calculateProgress(maxWidth) - iconWidth / 2).clamp(
+        0,
+        maxWidth - iconWidth,
+      );
 
-  // ฟังก์ชันคำนวณตำแหน่ง icon
-  double calculateIconPosition(double maxWidth, double iconWidth) {
-    double progress = calculateProgress(maxWidth);
-    return (progress - iconWidth / 2).clamp(0, maxWidth - iconWidth);
-  }
-
-  // ✅ ฟังก์ชันเริ่มฟังเสียง
+  // เริ่มฟังเสียง
   Future<void> _startListening() async {
     setState(() => isListening = true);
     await SpeechService.startListening((text) {
-      setState(() {
-        recognizedText = text;
-      });
+      setState(() => recognizedText = text); // อัปเดตข้อความเรียลไทม์
     });
   }
 
-  // ✅ ฟังก์ชันหยุดฟังเสียง
+  // หยุดฟังเสียง
   Future<void> _stopListening() async {
-    setState(() => isListening = false);
     await SpeechService.stopListening();
+    setState(() => isListening = false);
   }
 
   @override
@@ -185,12 +181,11 @@ class _SelectFruitState extends State<SelectFruit3> {
                         profileImage: "assets/images/head.png",
                       ),
                       const SizedBox(height: 20),
-
                       _buildProgressBar(),
                       _buildFloatingAvatar(),
                       _buildQuestion(),
 
-                      // ✅ แสดงปุ่มผลไม้
+                      // ผลไม้
                       Column(
                         children: List.generate(
                           (fruitPages[currentPage]["fruits"] as List).length,
@@ -211,7 +206,6 @@ class _SelectFruitState extends State<SelectFruit3> {
                           },
                         ),
                       ),
-
                       SizedBox(height: screenHeight * 0.15),
                     ],
                   ),
@@ -220,7 +214,7 @@ class _SelectFruitState extends State<SelectFruit3> {
             ),
           ),
 
-          // ✅ ปุ่มไมโครโฟน
+          // ปุ่มไมโครโฟน + แสดงข้อความ
           Positioned(
             bottom: screenHeight * 0.05,
             left: 0,
@@ -278,7 +272,7 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ✅ Progress Bar
+  // Progress Bar
   Widget _buildProgressBar() {
     return Container(
       width: double.infinity,
@@ -298,7 +292,6 @@ class _SelectFruitState extends State<SelectFruit3> {
         builder: (context, constraints) {
           double maxWidth = constraints.maxWidth - 20;
           double iconWidth = 25;
-
           return Stack(
             children: [
               Positioned(
@@ -335,7 +328,7 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ✅ Floating Avatar
+  // Floating Avatar
   Widget _buildFloatingAvatar() {
     return Container(
       margin: const EdgeInsets.only(bottom: 30, top: 20),
@@ -394,7 +387,7 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ✅ Question Box
+  // Question Box
   Widget _buildQuestion() {
     return Container(
       width: double.infinity,
@@ -426,14 +419,13 @@ class _SelectFruitState extends State<SelectFruit3> {
     );
   }
 
-  // ✅ Fruit Button
+  // Fruit Button
   Widget _buildFruitButton({
     required String imagePath,
     required bool isCorrect,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.all(screenWidth * 0.04),
@@ -461,7 +453,7 @@ class _SelectFruitState extends State<SelectFruit3> {
   }
 }
 
-// ✅ ตัว Triangle pointer
+// Triangle pointer
 class _PointerTrianglePainter extends CustomPainter {
   const _PointerTrianglePainter();
 
