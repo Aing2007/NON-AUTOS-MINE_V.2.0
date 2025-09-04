@@ -30,7 +30,7 @@ android {
     // 2️⃣ NDK Version สำหรับ plugin ที่ต้องการ
     // =============================
     ndkVersion = "27.0.12077973"
-
+    compileSdkVersion 34
     namespace = "com.example.non_v2"
     compileSdk = flutter.compileSdkVersion
 

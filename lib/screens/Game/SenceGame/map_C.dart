@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import '../LenguageGame/Level1/1.1.dart';
 import '../LenguageGame/Level1/1.2.dart';
+
 class MAPCscreen extends StatelessWidget {
   const MAPCscreen({super.key});
 
@@ -156,12 +157,12 @@ class MAPCscreen extends StatelessWidget {
                     );
                   }, buttonSize),
                   _buildBottomButton('02', null, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TTSscreen(),
-                      ),
-                    );
+                    //Navigator.push(
+                    //context,
+                    //MaterialPageRoute(
+                    //  builder: (context) => TTSscreen(),
+                    //),
+                    //);
                   }, buttonSize),
                   _buildBottomButton('', Icons.lock, null, buttonSize),
                 ],
@@ -175,12 +176,16 @@ class MAPCscreen extends StatelessWidget {
 
   // 🔹 ปุ่มล่าง reusable (responsive)
   Widget _buildBottomButton(
-      String label, IconData? icon, VoidCallback? onTap, double size) {
+    String label,
+    IconData? icon,
+    VoidCallback? onTap,
+    double size,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: size*1.2,
-        height: size*1.2,
+        width: size * 1.2,
+        height: size * 1.2,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(size * 0.2),

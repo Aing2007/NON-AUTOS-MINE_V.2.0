@@ -273,26 +273,19 @@ class _SelectFruitState extends State<SelectFruit1> {
   }) {
     return GestureDetector(
       onTap: () {
-        // เพิ่มคะแนนถ้าถูก
         if (isCorrect) {
-          setState(() {
-            score += 1;
-          });
+          setState(() => score += 1);
         }
 
-        // ไปหน้าผลไม้ชุดถัดไป
         setState(() {
           if (currentPage < fruitPages.length - 1) {
-            currentPage += 1; // ขึ้นชุดต่อไป
-            print("Current Score: $score");
+            currentPage += 1;
             TtsService.speak(
               fruitPages[currentPage]["question"] as String,
               rate: 0.5,
               pitch: 1.0,
             );
           } else {
-            // ถ้าเป็นหน้าสุดท้าย อาจจะแสดง dialog หรือ reset
-            print("Game Finished! Score: $score");
             TtsService.speak(
               "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด $totalPages คะแนน",
               rate: 0.5,
@@ -305,53 +298,59 @@ class _SelectFruitState extends State<SelectFruit1> {
                   context: context,
                   totalScore: score,
                   currentLevel: 1,
-
-                  //onNextLevel: () {
-                  //Navigator.push(
-                  //context,
-                  //MaterialPageRoute(builder: (_) => NextLevelScreen()),
-                  //      },
                 ),
               ),
             );
           }
         });
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              blurRadius: 4,
-              offset: const Offset(0, 4),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: SizedBox(
+          width: 30,
+          height: 30,
+          // ✅ บังคับให้เป็นสี่เหลี่ยม
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 4,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0), // กันภาพชนขอบ
+              child: Image.asset(imagePath, fit: BoxFit.contain),
+            ),
+          ),
         ),
-        child: Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // สามารถเปลี่ยน background ได้ตรงนี้
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
+        width: screenWidth,
+        height: screenHeight,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/GameBG/StartBGL.png'), // พื้นหลัง
-            fit: BoxFit.cover,
+            image: AssetImage('assets/images/GameBG/StartBGL.png'),
+            fit: BoxFit.cover, // <-- สำคัญมาก จะทำให้เต็มจอ
           ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 384),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               child: Column(
                 children: [
@@ -361,8 +360,7 @@ class _SelectFruitState extends State<SelectFruit1> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Progress Bar (เหมือนเดิม)
-                  // Progress Bar
+                  // ✅ Progress Bar
                   Container(
                     width: double.infinity,
                     height: 30,
@@ -379,13 +377,11 @@ class _SelectFruitState extends State<SelectFruit1> {
                     ),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double maxWidth =
-                            constraints.maxWidth - 20; // padding ซ้ายขวา
+                        double maxWidth = constraints.maxWidth - 20;
                         double iconWidth = 25;
 
                         return Stack(
                           children: [
-                            // Progress indicator
                             Positioned(
                               top: 9,
                               left: 10,
@@ -399,8 +395,6 @@ class _SelectFruitState extends State<SelectFruit1> {
                                 ),
                               ),
                             ),
-
-                            // Progress icon
                             Positioned(
                               top: 1,
                               left:
@@ -423,14 +417,14 @@ class _SelectFruitState extends State<SelectFruit1> {
                     ),
                   ),
 
-                  // Floating Fruit Selector (เหมือนเดิม)
+                  // ✅ Floating Fruit Selector
                   Container(
                     margin: const EdgeInsets.only(bottom: 30, top: 20),
                     child: Column(
                       children: [
                         Container(
-                          width: 128,
-                          height: 128,
+                          width: screenWidth * 0.3, // responsive
+                          height: screenWidth * 0.3,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -444,8 +438,8 @@ class _SelectFruitState extends State<SelectFruit1> {
                           ),
                           child: Center(
                             child: Container(
-                              width: 100,
-                              height: 106,
+                              width: screenWidth * 0.25,
+                              height: screenWidth * 0.26,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage('assets/images/head.png'),
@@ -456,37 +450,22 @@ class _SelectFruitState extends State<SelectFruit1> {
                           ),
                         ),
                         const SizedBox(height: 19),
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromARGB(
-                                  255,
-                                  77,
-                                  77,
-                                  77,
-                                ).withOpacity(0.25),
-                                blurRadius: 10,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
-                          ),
-                          child: CustomPaint(
-                            size: const Size(44, 19),
-                            painter: TrianglePainter(),
-                          ),
+                        CustomPaint(
+                          size: Size(screenWidth * 0.1, screenWidth * 0.05),
+                          painter: TrianglePainter(),
                         ),
                       ],
                     ),
                   ),
 
-                  // Filter Bar
+                  // ✅ Question Filter Bar
                   Container(
                     width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     height: 56,
                     margin: const EdgeInsets.only(bottom: 32),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -499,24 +478,26 @@ class _SelectFruitState extends State<SelectFruit1> {
                     child: Center(
                       child: Text(
                         fruitPages[currentPage]["question"] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Khula',
-                          fontSize: 20,
+                          fontSize: screenWidth * 0.05, // responsive font
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF805E57),
+                          color: const Color(0xFF805E57),
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
                   ),
 
-                  // Fruit Selection Grid
+                  // ✅ Fruit Selection Grid
+                  // ✅ Fruit Selection Grid (fix 2x2 always)
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
+                    crossAxisCount: 2, // บังคับให้ 2 เสมอ
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
+                    childAspectRatio: 1.5, // ✅ ทำให้ปุ่มเป็นสี่เหลี่ยมจัตุรัส
                     children: List.generate(
                       (fruitPages[currentPage]["fruits"] as List).length,
                       (index) {

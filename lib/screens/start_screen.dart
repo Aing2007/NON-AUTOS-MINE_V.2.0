@@ -97,7 +97,7 @@ class _StartButtonState extends State<_StartButton> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Barlow Semi Condensed',
-                fontSize: isSmallScreen ? 32 : 60,
+                fontSize: isSmallScreen ? 40 : 90,
                 fontWeight: FontWeight.w800,
                 color: const Color(0xFFFAF5EF),
                 letterSpacing: 2.4,

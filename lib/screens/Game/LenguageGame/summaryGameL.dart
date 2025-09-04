@@ -4,7 +4,6 @@ import '../LenguageGame/map_L.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
-// ฟังก์ชันสร้างหน้าสรุปผล
 Widget buildSummaryScreen({
   required BuildContext context,
   required int totalScore,
@@ -12,6 +11,10 @@ Widget buildSummaryScreen({
 }) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
+
+  // ✅ ใช้ scaleFactor สำหรับ responsive
+  double baseWidth = 390;
+  double scale = screenWidth / baseWidth;
 
   int scoreValue = totalScore * 10;
 
@@ -37,12 +40,12 @@ Widget buildSummaryScreen({
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            height: screenHeight,
-            constraints: const BoxConstraints(maxWidth: 384),
-            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+
+            constraints: const BoxConstraints(maxWidth: 500), // ✅ กัน UI บวม
+            margin: EdgeInsets.symmetric(horizontal: 16 * scale),
             padding: EdgeInsets.symmetric(
-              vertical: screenHeight * 0.01,
-              horizontal: screenWidth * 0.04,
+              vertical: 12 * scale,
+              horizontal: 16 * scale,
             ),
             child: Column(
               children: [
@@ -51,15 +54,15 @@ Widget buildSummaryScreen({
                   money: "12,000,000.00",
                   profileImage: "assets/images/head.png",
                 ),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: 20 * scale),
 
                 // ===== Progress Bar =====
                 Container(
                   width: double.infinity,
-                  height: screenHeight * 0.04,
+                  height: 20 * scale,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenHeight * 0.02),
+                    borderRadius: BorderRadius.circular(12 * scale),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -71,22 +74,20 @@ Widget buildSummaryScreen({
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double maxWidth = constraints.maxWidth - 20;
-                      double iconWidth = screenWidth * 0.07;
+                      double iconWidth = 28 * scale;
 
                       return Stack(
                         children: [
                           Positioned(
-                            top: screenHeight * 0.012,
+                            top: 6 * scale,
                             left: 10,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
-                              width: maxWidth, // เต็ม progress
-                              height: screenHeight * 0.015,
+                              width: maxWidth,
+                              height: 8 * scale,
                               decoration: BoxDecoration(
                                 color: const Color(0xFF7F95E4),
-                                borderRadius: BorderRadius.circular(
-                                  screenHeight * 0.01,
-                                ),
+                                borderRadius: BorderRadius.circular(8 * scale),
                               ),
                             ),
                           ),
@@ -100,7 +101,7 @@ Widget buildSummaryScreen({
                                 ),
                             child: Container(
                               width: iconWidth,
-                              height: screenHeight * 0.035,
+                              height: 28 * scale,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage('assets/images/head.png'),
@@ -117,15 +118,12 @@ Widget buildSummaryScreen({
 
                 // ===== Floating Circle Avatar =====
                 Container(
-                  margin: EdgeInsets.only(
-                    bottom: screenHeight * 0.04,
-                    top: screenHeight * 0.025,
-                  ),
+                  margin: EdgeInsets.symmetric(vertical: 24 * scale),
                   child: Column(
                     children: [
                       Container(
-                        width: screenWidth * 0.35,
-                        height: screenWidth * 0.35,
+                        width: 120 * scale,
+                        height: 120 * scale,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -138,8 +136,8 @@ Widget buildSummaryScreen({
                         ),
                         child: Center(
                           child: Container(
-                            width: screenWidth * 0.28,
-                            height: screenWidth * 0.3,
+                            width: 90 * scale,
+                            height: 90 * scale,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage('assets/images/head.png'),
@@ -149,7 +147,7 @@ Widget buildSummaryScreen({
                           ),
                         ),
                       ),
-                      SizedBox(height: screenHeight * 0.02),
+                      SizedBox(height: 12 * scale),
                       Container(
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -160,7 +158,7 @@ Widget buildSummaryScreen({
                           ],
                         ),
                         child: CustomPaint(
-                          size: Size(screenWidth * 0.12, screenHeight * 0.025),
+                          size: Size(40 * scale, 14 * scale),
                           painter: TrianglePainter(),
                         ),
                       ),
@@ -171,11 +169,11 @@ Widget buildSummaryScreen({
                 // ===== Stars & Score Box =====
                 Container(
                   width: double.infinity,
-                  height: screenHeight * 0.28,
-                  margin: EdgeInsets.only(bottom: screenHeight * 0.04),
+                  height: 180 * scale,
+                  margin: EdgeInsets.only(bottom: 24 * scale),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                    borderRadius: BorderRadius.circular(20 * scale),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.25),
@@ -193,11 +191,11 @@ Widget buildSummaryScreen({
                         children: List.generate(3, (index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.02,
+                              horizontal: 8 * scale,
                             ),
                             child: Icon(
                               Icons.star_rounded,
-                              size: screenWidth * 0.18,
+                              size: 60 * scale,
                               color: index < starsEarned
                                   ? const Color(0xFF7F95E4)
                                   : Colors.grey[400],
@@ -205,24 +203,22 @@ Widget buildSummaryScreen({
                           );
                         }),
                       ),
-                      SizedBox(height: screenHeight * 0.02),
+                      SizedBox(height: 12 * scale),
 
                       // 📦 Score Box
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.05,
-                          vertical: screenHeight * 0.012,
+                          horizontal: 20 * scale,
+                          vertical: 8 * scale,
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF7F95E4),
-                          borderRadius: BorderRadius.circular(
-                            screenWidth * 0.08,
-                          ),
+                          borderRadius: BorderRadius.circular(30 * scale),
                         ),
                         child: Text(
                           "คะแนน $totalScore / 10",
                           style: TextStyle(
-                            fontSize: screenWidth * 0.05,
+                            fontSize: 18 * scale,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -233,36 +229,30 @@ Widget buildSummaryScreen({
                 ),
 
                 // ===== Buttons Row =====
-                // ===== Buttons Row =====
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          // กลับไปแผนที่
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_) => MAPLscreen()),
                           );
                         },
-                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                        borderRadius: BorderRadius.circular(20 * scale),
                         child: Container(
-                          height: screenHeight * 0.08,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.015,
-                          ),
+                          height: 55 * scale,
+                          margin: EdgeInsets.symmetric(horizontal: 8 * scale),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                              screenWidth * 0.05,
-                            ),
+                            borderRadius: BorderRadius.circular(20 * scale),
                           ),
                           child: Center(
                             child: Icon(
                               Icons.location_pin,
                               color: const Color(0xFF7F95E4),
-                              size: screenWidth * 0.1,
+                              size: 36 * scale,
                             ),
                           ),
                         ),
@@ -272,15 +262,13 @@ Widget buildSummaryScreen({
                       child: InkWell(
                         onTap: () {
                           if (currentLevel == 1) {
-                            // ถ้าอยู่ level 1 → ไป SelectFruit2
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (_) => const SelectFruit2(),
                               ),
                             );
-                          }
-                          if (currentLevel == 2) {
+                          } else if (currentLevel == 2) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -288,7 +276,6 @@ Widget buildSummaryScreen({
                               ),
                             );
                           } else {
-                            // level อื่น ๆ → จะไปหน้าถัดไป หรือให้แสดง Dialog ก็ได้
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("ยังไม่มีด่านถัดไปนะครับ 🙂"),
@@ -296,23 +283,19 @@ Widget buildSummaryScreen({
                             );
                           }
                         },
-                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                        borderRadius: BorderRadius.circular(20 * scale),
                         child: Container(
-                          height: screenHeight * 0.08,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.015,
-                          ),
+                          height: 55 * scale,
+                          margin: EdgeInsets.symmetric(horizontal: 8 * scale),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                              screenWidth * 0.05,
-                            ),
+                            borderRadius: BorderRadius.circular(20 * scale),
                           ),
                           child: Center(
                             child: Icon(
                               Icons.arrow_forward_rounded,
                               color: const Color(0xFF7F95E4),
-                              size: screenWidth * 0.1,
+                              size: 36 * scale,
                             ),
                           ),
                         ),
