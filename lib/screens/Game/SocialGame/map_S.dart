@@ -1,7 +1,9 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import '../LenguageGame/Level1/1.1.dart';
-import '../LenguageGame/Level1/1.2.dart';
+
+import '../SocialGame/Level1/S.1.1.dart';
+import 'startscreenS.dart';
+import 'package:non_autos_mine/screens/gamemap_screen.dart';
 
 class MAPSscreen extends StatelessWidget {
   const MAPSscreen({super.key});
@@ -66,7 +68,7 @@ class MAPSscreen extends StatelessWidget {
                             horizontal: size.width * 0.03,
                             vertical: size.height * 0.01,
                           ),
-                          height: headerHeight,
+                          height: headerHeight * 0.8,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -88,7 +90,7 @@ class MAPSscreen extends StatelessWidget {
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
-                                  '12,000,000',
+                                  '12,000,000.00',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: size.width * 0.04,
@@ -105,23 +107,34 @@ class MAPSscreen extends StatelessWidget {
                       SizedBox(width: size.width * 0.03),
 
                       // ปุ่ม location
-                      Container(
-                        width: headerIconSize * 0.5,
-                        height: headerIconSize * 0.5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const GameMapScreen(), // เรียกหน้าใหม่
                             ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.location_pin,
-                          color: Colors.brown,
+                          );
+                        },
+                        child: Container(
+                          width: headerIconSize * 0.5,
+                          height: headerIconSize * 0.5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.location_pin,
+                            color: Colors.brown,
+                          ),
                         ),
                       ),
                     ],
@@ -141,29 +154,33 @@ class MAPSscreen extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 30,
+            top: size.height * 0.7,
             child: Container(
-              color: const Color.fromARGB(0, 149, 228, 228),
+              color: const Color(0xFFF65A3B),
               padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBottomButton('01', null, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GameWidgetWithUI(game: SideScrollGame()),
-                      ),
-                    );
-                  }, buttonSize),
-                  _buildBottomButton('02', null, () {
-                    //Navigator.push(
-                    // context,
-                    // MaterialPageRoute(builder: (context) => TTSscreen()),
-                    //);
-                  }, buttonSize),
-                  _buildBottomButton('', Icons.lock, null, buttonSize),
-                ],
+              height: size.height * 0.18, // ✅ กำหนดความสูงเผื่อใส่ 15 แถว
+              child: GridView.count(
+                crossAxisCount: 3, // ✅ 3 ปุ่มต่อแถว
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                padding: const EdgeInsets.all(12),
+                children: List.generate(45, (index) {
+                  final level = index + 1;
+                  return _buildBottomButton(
+                    level < 10 ? "0$level" : "$level", // ✅ 01, 02, ..., 45
+                    null,
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              STARTSscreen(number: "$level", page: "$level"),
+                        ),
+                      );
+                    },
+                    buttonSize,
+                  );
+                }),
               ),
             ),
           ),
@@ -197,7 +214,7 @@ class MAPSscreen extends StatelessWidget {
         ),
         child: Center(
           child: icon != null
-              ? Icon(icon, size: size * 0.3, color: const Color(0xFFF65A3B))
+              ? Icon(icon, size: size * 0.3, color: const Color(0xFFFED371))
               : Text(
                   label,
                   style: TextStyle(

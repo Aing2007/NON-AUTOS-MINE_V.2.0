@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
-import '../LenguageGame/map_L.dart';
+import '../SenceGame/map_C.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
-Widget buildSummaryScreen_L({
+Widget buildSummaryScreen_S({
   required BuildContext context,
   required int totalScore,
   required int currentLevel,
@@ -32,7 +32,7 @@ Widget buildSummaryScreen_L({
       height: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/GameBG/StartBGL.png"),
+          image: AssetImage("assets/images/GameBG/StartBGS.png"),
           fit: BoxFit.cover, // ✅ ให้ภาพเต็มหน้าจอ
         ),
       ),
@@ -86,7 +86,7 @@ Widget buildSummaryScreen_L({
                               width: maxWidth,
                               height: 8 * scale,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF7F95E4),
+                                color: const Color(0xFFF65A3B),
                                 borderRadius: BorderRadius.circular(8 * scale),
                               ),
                             ),
@@ -197,7 +197,7 @@ Widget buildSummaryScreen_L({
                               Icons.star_rounded,
                               size: 60 * scale,
                               color: index < starsEarned
-                                  ? const Color(0xFF7F95E4)
+                                  ? const Color(0xFFF65A3B)
                                   : Colors.grey[400],
                             ),
                           );
@@ -212,7 +212,7 @@ Widget buildSummaryScreen_L({
                           vertical: 8 * scale,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF7F95E4),
+                          color: const Color(0xFFF65A3B),
                           borderRadius: BorderRadius.circular(30 * scale),
                         ),
                         child: Text(
@@ -237,7 +237,7 @@ Widget buildSummaryScreen_L({
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => MAPLscreen()),
+                            MaterialPageRoute(builder: (_) => MAPCscreen()),
                           );
                         },
                         borderRadius: BorderRadius.circular(20 * scale),
@@ -251,7 +251,7 @@ Widget buildSummaryScreen_L({
                           child: Center(
                             child: Icon(
                               Icons.location_pin,
-                              color: const Color(0xFF7F95E4),
+                              color: const Color(0xFFF65A3B),
                               size: 36 * scale,
                             ),
                           ),
@@ -294,7 +294,7 @@ Widget buildSummaryScreen_L({
                           child: Center(
                             child: Icon(
                               Icons.arrow_forward_rounded,
-                              color: const Color(0xFF7F95E4),
+                              color: const Color(0xFFF65A3B),
                               size: 36 * scale,
                             ),
                           ),

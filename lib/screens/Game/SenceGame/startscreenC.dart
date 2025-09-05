@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/map_L.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
+import 'package:non_autos_mine/screens/Game/SenceGame/map_C.dart';
+import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.1.dart';
+import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.2.dart';
+import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.3.dart';
 
 import '../../../AIfunction/TTS.dart';
+import 'map_C.dart';
 
 void main() {
-  runApp(const STARTLscreen());
+  runApp(const STARTCscreen());
 }
 
-class STARTLscreen extends StatelessWidget {
+class STARTCscreen extends StatelessWidget {
   final String number;
   final String page;
-  const STARTLscreen({
+  const STARTCscreen({
     super.key,
     this.number = "00",
     this.page = "",
@@ -93,9 +94,9 @@ class _AingHomePageState extends State<AingHomePage>
 
   // Color definitions matching the design
   static const Color appBg = Color(0xFFFAF5EF);
-  static const Color appPrimary = Color(0xFF7F95E4);
+  static const Color appPrimary = Color(0xFFFED371);
   static const Color appAccent = Color(0xFFF65A3B);
-  static const Color appLight = Color(0xFFC3CFFF);
+  static const Color appLight = Color(0xFFFFE5A9);
   static const Color appText = Color(0xFF5F4A46);
   static const Color appTextLight = Color(0xFF9C8A87);
   static const Color appYellow = Color(0xFFFFD370);
@@ -309,7 +310,7 @@ class _AingHomePageState extends State<AingHomePage>
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const MAPLscreen()),
+                  MaterialPageRoute(builder: (_) => const MAPCscreen()),
                 );
               },
               child: Container(
@@ -484,7 +485,7 @@ class _AingHomePageState extends State<AingHomePage>
                               context,
                               MaterialPageRoute(
                                 builder: (_) =>
-                                    const MAPLscreen(), // 👉 ไปยังหน้าใหม่
+                                    const MAPCscreen(), // 👉 ไปยังหน้าใหม่
                               ),
                             );
                           },
@@ -525,12 +526,12 @@ class _AingHomePageState extends State<AingHomePage>
 Widget _getPageByNumber(String page) {
   switch (page) {
     case "1":
-      return const SelectFruit1();
+    //return const SelectFruit1();
     case "2":
-      return const SelectFruit2();
+    //return const SelectFruit2();
     case "3":
-      return const SelectFruit3();
+    //return const SelectFruit3();
     default:
-      return const MAPLscreen(); // fallback เผื่อ page ไม่ตรง
+      return const MAPCscreen(); // fallback เผื่อ page ไม่ตรง
   }
 }

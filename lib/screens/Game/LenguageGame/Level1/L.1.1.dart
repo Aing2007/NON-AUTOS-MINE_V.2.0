@@ -294,7 +294,7 @@ class _SelectFruitState extends State<SelectFruit1> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => buildSummaryScreen(
+                builder: (context) => buildSummaryScreen_L(
                   context: context,
                   totalScore: score,
                   currentLevel: 1,

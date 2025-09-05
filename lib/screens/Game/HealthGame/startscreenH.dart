@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/map_L.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
+
+import 'package:non_autos_mine/screens/Game/HealthGame/Level1/H.1.1.dart';
 
 import '../../../AIfunction/TTS.dart';
+import 'map_H.dart';
 
 void main() {
-  runApp(const STARTLscreen());
+  runApp(const STARTHscreen());
 }
 
-class STARTLscreen extends StatelessWidget {
+class STARTHscreen extends StatelessWidget {
   final String number;
   final String page;
-  const STARTLscreen({
+  const STARTHscreen({
     super.key,
     this.number = "00",
     this.page = "",
@@ -93,9 +92,9 @@ class _AingHomePageState extends State<AingHomePage>
 
   // Color definitions matching the design
   static const Color appBg = Color(0xFFFAF5EF);
-  static const Color appPrimary = Color(0xFF7F95E4);
+  static const Color appPrimary = Color(0xFF8BC7AD);
   static const Color appAccent = Color(0xFFF65A3B);
-  static const Color appLight = Color(0xFFC3CFFF);
+  static const Color appLight = Color(0xFFBFD9CE);
   static const Color appText = Color(0xFF5F4A46);
   static const Color appTextLight = Color(0xFF9C8A87);
   static const Color appYellow = Color(0xFFFFD370);
@@ -136,7 +135,7 @@ class _AingHomePageState extends State<AingHomePage>
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/GameBG/StartBGC.png"),
+            image: AssetImage("assets/images/GameBG/StartBGH.png"),
             fit: BoxFit.cover, // ✅ ให้ภาพเต็มหน้าจอ
           ),
         ),
@@ -309,7 +308,7 @@ class _AingHomePageState extends State<AingHomePage>
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const MAPLscreen()),
+                  MaterialPageRoute(builder: (_) => const MAPHscreen()),
                 );
               },
               child: Container(
@@ -484,7 +483,7 @@ class _AingHomePageState extends State<AingHomePage>
                               context,
                               MaterialPageRoute(
                                 builder: (_) =>
-                                    const MAPLscreen(), // 👉 ไปยังหน้าใหม่
+                                    const MAPHscreen(), // 👉 ไปยังหน้าใหม่
                               ),
                             );
                           },
@@ -525,12 +524,12 @@ class _AingHomePageState extends State<AingHomePage>
 Widget _getPageByNumber(String page) {
   switch (page) {
     case "1":
-      return const SelectFruit1();
+    //return const SelectFruit1();
     case "2":
-      return const SelectFruit2();
+    //return const SelectFruit2();
     case "3":
-      return const SelectFruit3();
+    //return const SelectFruit3();
     default:
-      return const MAPLscreen(); // fallback เผื่อ page ไม่ตรง
+      return const MAPHscreen(); // fallback เผื่อ page ไม่ตรง
   }
 }

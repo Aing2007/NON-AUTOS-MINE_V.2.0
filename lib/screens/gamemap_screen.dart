@@ -154,7 +154,9 @@ class _GameMapScreenState extends State<GameMapScreen> {
           color,
           locked: !isUnlocked,
           onTap: () {
-            if (isUnlocked) {
+            if (!isUnlocked && isUnlocked) //ตั้งเงื่อนไขล็อก ว่าให้กดได้ไหม
+              return;
+            {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -283,7 +285,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
                 children: [
                   Container(
                     width: avatarSize,
-                    height: avatarSize,
+                    height: avatarSize * 1.03,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: const DecorationImage(
@@ -312,7 +314,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
                         Text(
                           'NON AUTOS MINE',
                           style: TextStyle(
-                            fontSize: navFontSize * 1.2,
+                            fontSize: navFontSize,
                             fontWeight: FontWeight.w600,
                             color: darkGray,
                           ),
@@ -340,8 +342,8 @@ class _GameMapScreenState extends State<GameMapScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: navIconSize * 1.1,
-                                height: navIconSize * 1.1,
+                                width: navIconSize * 0.8,
+                                height: navIconSize * 0.8,
                                 decoration: const BoxDecoration(
                                   color: goldYellow,
                                   shape: BoxShape.circle,
@@ -360,7 +362,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
                               Text(
                                 '12,000,000.00 points',
                                 style: TextStyle(
-                                  fontSize: navFontSize * 1.3,
+                                  fontSize: navFontSize,
                                   fontWeight: FontWeight.w500,
                                   color: mediumGray,
                                 ),

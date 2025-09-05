@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../LenguageGame/Level1/1.1.dart';
 import 'startscreenL.dart';
+import 'package:non_autos_mine/screens/gamemap_screen.dart';
 
 class MAPLscreen extends StatelessWidget {
   const MAPLscreen({super.key});
@@ -106,23 +107,34 @@ class MAPLscreen extends StatelessWidget {
                       SizedBox(width: size.width * 0.03),
 
                       // ปุ่ม location
-                      Container(
-                        width: headerIconSize * 0.5,
-                        height: headerIconSize * 0.5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const GameMapScreen(), // เรียกหน้าใหม่
                             ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.location_pin,
-                          color: Colors.brown,
+                          );
+                        },
+                        child: Container(
+                          width: headerIconSize * 0.5,
+                          height: headerIconSize * 0.5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.location_pin,
+                            color: Colors.brown,
+                          ),
                         ),
                       ),
                     ],
