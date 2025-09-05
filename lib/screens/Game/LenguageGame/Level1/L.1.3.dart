@@ -155,19 +155,34 @@ class _SelectFruitState extends State<SelectFruit3> {
 
   // ✅ ตรวจสอบคำตอบจาก STT
   // ใน _checkAnswer
+  // ✅ ตรวจสอบคำตอบจาก STT
+  // ✅ ตรวจสอบคำตอบจาก STT พร้อมหน่วงเวลา
   void _checkAnswer(String text) {
-    if (!_canAnswer) return; // ถ้าเวลาหมดแล้ว ไม่เพิ่ม score
+    if (!_canAnswer) return; // ถ้าเวลาหมดแล้ว ไม่ตรวจอีก
 
     String question = fruitPages[currentPage]["question"] as String;
     String cleanQuestion = question.replaceAll(RegExp(r'^\d+\.'), '').trim();
 
     if (text.trim() == cleanQuestion) {
+      // 👉 ตอบถูก
       setState(() {
         score++; // เพิ่มคะแนน
-        _canAnswer = false; // กันบวกซ้ำ
+        _canAnswer = false;
       });
-      _nextQuestion();
+      print("Current score=${score}");
+      // พูด feedback
+      TtsService.speak("ถูกต้องครับ", rate: 0.6, pitch: 1.0);
+    } else {
+      // 👉 ตอบผิด
+      setState(() {
+        _canAnswer = false;
+      });
     }
+
+    // 👉 รอ 2 วิก่อนเปลี่ยนข้อ
+    Future.delayed(const Duration(seconds: 3), () {
+      _nextQuestion();
+    });
   }
 
   // ✅ ไปโจทย์ถัดไป
@@ -176,7 +191,7 @@ class _SelectFruitState extends State<SelectFruit3> {
       setState(() {
         currentPage++;
       });
-      startNewQuestion(30); // รีเซ็ต + เริ่มคำถามใหม่ (15 วิ)
+      startNewQuestion(15); // รีเซ็ต + เริ่มคำถามใหม่ (15 วิ)
     } else {
       print("Game Finished! Score: $score");
       TtsService.speak(
@@ -270,7 +285,7 @@ class _SelectFruitState extends State<SelectFruit3> {
                                 bottom: screenHeight * 0.02,
                               ),
                               width: double.infinity,
-                              height: screenHeight * 0.18,
+                              height: screenHeight * 0.25,
                               child: _buildFruitButton(
                                 imagePath: fruit["image"] as String,
                                 isCorrect: fruit["isCorrect"] as bool,
@@ -498,31 +513,43 @@ class _SelectFruitState extends State<SelectFruit3> {
   }
 
   // Fruit Button
+  // Fruit Button
   Widget _buildFruitButton({
     required String imagePath,
     required bool isCorrect,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    return Container(
-      padding: EdgeInsets.all(screenWidth * 0.04),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(screenWidth * 0.05),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 4,
-            offset: const Offset(0, 4),
+
+    return GestureDetector(
+      onTap: () {
+        // 🔊 เล่นเสียงโจทย์ซ้ำเมื่อกดที่ผลไม้
+        TtsService.speak(
+          fruitPages[currentPage]["question"] as String,
+          rate: 0.5,
+          pitch: 1.0,
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(screenWidth * 0.04),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(screenWidth * 0.05),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 4,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Image.asset(
+            imagePath,
+            fit: BoxFit.contain,
+            width: screenWidth * 0.4,
+            height: screenHeight * 0.15,
           ),
-        ],
-      ),
-      child: Center(
-        child: Image.asset(
-          imagePath,
-          fit: BoxFit.contain,
-          width: screenWidth * 0.4,
-          height: screenHeight * 0.15,
         ),
       ),
     );

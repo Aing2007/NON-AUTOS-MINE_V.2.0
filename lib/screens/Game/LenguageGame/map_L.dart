@@ -68,7 +68,7 @@ class MAPLscreen extends StatelessWidget {
                             horizontal: size.width * 0.03,
                             vertical: size.height * 0.01,
                           ),
-                          height: headerHeight * 0.8,
+                          height: headerHeight * 0.85,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
