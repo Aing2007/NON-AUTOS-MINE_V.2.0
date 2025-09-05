@@ -121,7 +121,7 @@ class _SelectFruitState extends State<SelectFruit3> {
   @override
   void initState() {
     super.initState();
-    startNewQuestion(15); // เริ่มคำถามแรกพร้อมนับถอยหลัง 15 วิ
+    startNewQuestion(10); // เริ่มคำถามแรกพร้อมนับถอยหลัง 15 วิ
   }
 
   @override
@@ -158,31 +158,24 @@ class _SelectFruitState extends State<SelectFruit3> {
   // ✅ ตรวจสอบคำตอบจาก STT
   // ✅ ตรวจสอบคำตอบจาก STT พร้อมหน่วงเวลา
   void _checkAnswer(String text) {
-    if (!_canAnswer) return; // ถ้าเวลาหมดแล้ว ไม่ตรวจอีก
+    if (!_canAnswer) return; // ถ้าเวลาหมดแล้ว ไม่เพิ่ม score
 
     String question = fruitPages[currentPage]["question"] as String;
     String cleanQuestion = question.replaceAll(RegExp(r'^\d+\.'), '').trim();
 
     if (text.trim() == cleanQuestion) {
-      // 👉 ตอบถูก
       setState(() {
         score++; // เพิ่มคะแนน
-        _canAnswer = false;
+        _canAnswer = false; // กันบวกซ้ำ
+        print("current Score : ${score}");
+        //TtsService.speak("ถูกต้องครับ", rate: 0.6, pitch: 1.0);
       });
-      print("Current score=${score}");
-      // พูด feedback
-      TtsService.speak("ถูกต้องครับ", rate: 0.6, pitch: 1.0);
-    } else {
-      // 👉 ตอบผิด
-      setState(() {
-        _canAnswer = false;
-      });
-    }
 
-    // 👉 รอ 2 วิก่อนเปลี่ยนข้อ
-    Future.delayed(const Duration(seconds: 3), () {
       _nextQuestion();
-    });
+    } else {
+      _nextQuestion();
+      print("false : ${score}");
+    }
   }
 
   // ✅ ไปโจทย์ถัดไป
@@ -219,11 +212,16 @@ class _SelectFruitState extends State<SelectFruit3> {
   }
 
   // เริ่มฟังเสียง
+  // เริ่มฟังเสียง
   Future<void> _startListening() async {
     setState(() => isListening = true);
     await SpeechService.startListening((text) {
+      // ระหว่างฟัง เราแค่อัปเดตข้อความ
       setState(() => recognizedText = text);
-      _checkAnswer(text); // ตรวจสอบทุกครั้งที่ได้ข้อความ
+      // ❌ ไม่ตรวจคำตอบตรงนี้
+      if (recognizedText.isNotEmpty) {
+        _checkAnswer(recognizedText);
+      }
     });
   }
 
@@ -231,6 +229,11 @@ class _SelectFruitState extends State<SelectFruit3> {
   Future<void> _stopListening() async {
     await SpeechService.stopListening();
     setState(() => isListening = false);
+
+    // ✅ ตรวจสอบคำตอบเมื่อหยุดฟัง
+    if (recognizedText.isNotEmpty) {
+      _checkAnswer(recognizedText);
+    }
   }
 
   @override
@@ -328,7 +331,8 @@ class _SelectFruitState extends State<SelectFruit3> {
                   ),
                 GestureDetector(
                   onLongPressStart: (_) => _startListening(),
-                  onLongPressEnd: (_) => _stopListening(),
+                  onLongPressEnd: (_) =>
+                      _stopListening(), // ตรวจสอบคำตอบตอนปล่อยปุ่ม
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     width: screenWidth * 0.3,
