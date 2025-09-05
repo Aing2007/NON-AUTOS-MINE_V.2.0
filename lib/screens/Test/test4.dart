@@ -3,6 +3,7 @@ import 'test3.dart';
 import '../start_screen.dart';
 import '../profile_screen.dart';
 import '/screens/Loading_screen.dart';
+import 'package:non_autos_mine/screens/Loding_man.dart';
 
 class Test4Screen extends StatefulWidget {
   final int? score1;
@@ -191,14 +192,22 @@ class _Test4ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 0,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
+                                    activeColor: const Color.fromRGBO(
+                                      139,
+                                      199,
+                                      173,
+                                      1,
+                                    ),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  Text("ไม่มี", style: TextStyle(fontSize: radioFontSize)),
+                                  Text(
+                                    "ไม่มี",
+                                    style: TextStyle(fontSize: radioFontSize),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -206,14 +215,22 @@ class _Test4ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 1,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
+                                    activeColor: const Color.fromRGBO(
+                                      139,
+                                      199,
+                                      173,
+                                      1,
+                                    ),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  Text("เล็กน้อย", style: TextStyle(fontSize: radioFontSize)),
+                                  Text(
+                                    "เล็กน้อย",
+                                    style: TextStyle(fontSize: radioFontSize),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -221,14 +238,22 @@ class _Test4ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 2,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
+                                    activeColor: const Color.fromRGBO(
+                                      139,
+                                      199,
+                                      173,
+                                      1,
+                                    ),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  Text("ปานกลาง", style: TextStyle(fontSize: radioFontSize)),
+                                  Text(
+                                    "ปานกลาง",
+                                    style: TextStyle(fontSize: radioFontSize),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -236,14 +261,22 @@ class _Test4ScreenState extends State<Test4Screen> {
                                   Radio<int>(
                                     value: 3,
                                     groupValue: _answers[index],
-                                    activeColor: const Color.fromRGBO(139, 199, 173, 1),
+                                    activeColor: const Color.fromRGBO(
+                                      139,
+                                      199,
+                                      173,
+                                      1,
+                                    ),
                                     onChanged: (value) {
                                       setState(() {
                                         _answers[index] = value;
                                       });
                                     },
                                   ),
-                                  Text("มาก", style: TextStyle(fontSize: radioFontSize)),
+                                  Text(
+                                    "มาก",
+                                    style: TextStyle(fontSize: radioFontSize),
+                                  ),
                                 ],
                               ),
                             ],
@@ -321,7 +354,7 @@ class _Test4ScreenState extends State<Test4Screen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoadingAnalysisPage(
+                      builder: (context) => LoadingManPage(
                         score1: widget.score1,
                         score2: widget.score2,
                         score3: widget.score3,

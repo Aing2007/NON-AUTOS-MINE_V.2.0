@@ -176,7 +176,7 @@ class _SelectFruitState extends State<SelectFruit3> {
       setState(() {
         currentPage++;
       });
-      startNewQuestion(15); // รีเซ็ต + เริ่มคำถามใหม่ (15 วิ)
+      startNewQuestion(30); // รีเซ็ต + เริ่มคำถามใหม่ (15 วิ)
     } else {
       print("Game Finished! Score: $score");
       TtsService.speak(

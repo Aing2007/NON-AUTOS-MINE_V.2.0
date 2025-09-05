@@ -136,7 +136,7 @@ class _AingHomePageState extends State<AingHomePage>
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/GameBG/StartBGC.png"),
+            image: AssetImage("assets/images/GameBG/StartBGL.png"),
             fit: BoxFit.cover, // ✅ ให้ภาพเต็มหน้าจอ
           ),
         ),

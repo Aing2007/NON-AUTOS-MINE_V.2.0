@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:non_autos_mine/screens/Game/SenceGame/map_C.dart';
-import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.1.dart';
-import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.2.dart';
-import 'package:non_autos_mine/screens/Game/SenceGame/Level1/S.1.3.dart';
-
-import '../../../AIfunction/TTS.dart';
-import 'map_C.dart';
+//import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.1.dart';
+//import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.2.dart';
+//import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.3.dart';
 
 void main() {
   runApp(const STARTCscreen());
