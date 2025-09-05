@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
 import '../../../../AIfunction/TTS.dart';
 import '../summaryGameL.dart';
 import '../../../../AIfunction/STT.dart'; // ใช้ STT Service
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.1.dart';
+import '../summaryGameL.dart';
 
 class SelectFruit3 extends StatefulWidget {
   const SelectFruit3({Key? key}) : super(key: key);
@@ -18,6 +20,9 @@ class _SelectFruitState extends State<SelectFruit3> {
   String recognizedText = ""; // ข้อความที่ฟังได้
   bool isListening = false; // สถานะไมโครโฟน
 
+  Timer? _answerTimer;
+  bool _canAnswer = false; // สถานะว่ายังตอบได้อยู่ไหม
+
   final List<Map<String, dynamic>> fruitPages = [
     {
       "question": "1.ฉันชอบกินกล้วย",
@@ -29,7 +34,7 @@ class _SelectFruitState extends State<SelectFruit3> {
       ],
     },
     {
-      "question": "2.ฉันชอบกินแอปเปิ้ล",
+      "question": "2.ฉันอยากกินแอปเปิ้ล",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/apple.png",
@@ -41,13 +46,13 @@ class _SelectFruitState extends State<SelectFruit3> {
       "question": "3.ฉันชอบกินองุ่น",
       "fruits": [
         {
-          "image": "assets/game_assets/prototype/fruit/apple.png",
+          "image": "assets/game_assets/prototype/fruit/grab.png",
           "isCorrect": false,
         },
       ],
     },
     {
-      "question": "4.ฉันชอบกินกีวี่",
+      "question": "4.ฉันไม่อยากกินกีวี่",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/kiwi.png",
@@ -56,7 +61,7 @@ class _SelectFruitState extends State<SelectFruit3> {
       ],
     },
     {
-      "question": "5.ฉันกินสตรอเบอร์รี่",
+      "question": "5.ฉันชอบกินสตอเบอรี่",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/strawberry.png",
@@ -65,16 +70,16 @@ class _SelectFruitState extends State<SelectFruit3> {
       ],
     },
     {
-      "question": "6.ฉันกินมะพร้าว",
+      "question": "6.ฉันอยากกินมะพร้าว",
       "fruits": [
         {
-          "image": "assets/game_assets/prototype/fruit/grab.png",
+          "image": "assets/game_assets/prototype/fruit/coconut.png",
           "isCorrect": false,
         },
       ],
     },
     {
-      "question": "7.ฉันกินเลม่อน",
+      "question": "7.ฉันไม่ชอบกินเลมอน",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/lemon.png",
@@ -83,25 +88,25 @@ class _SelectFruitState extends State<SelectFruit3> {
       ],
     },
     {
-      "question": "8.ฉันกินลูกท้อ",
+      "question": "8.ฉันไม่อยากกินลูกท้อ",
       "fruits": [
         {
-          "image": "assets/game_assets/prototype/fruit/kiwi.png",
+          "image": "assets/game_assets/prototype/fruit/peach.png",
           "isCorrect": false,
         },
       ],
     },
     {
-      "question": "9.ฉันกินสับปะรด",
+      "question": "9.ฉันชอบกินสับปะรด",
       "fruits": [
         {
-          "image": "assets/game_assets/prototype/fruit/strawberry.png",
+          "image": "assets/game_assets/prototype/fruit/pineapple.png",
           "isCorrect": false,
         },
       ],
     },
     {
-      "question": "10.ฉันกินแตงโม",
+      "question": "10.ฉันไม่ชอบกินแตงโม",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/watermelon.png",
@@ -116,27 +121,94 @@ class _SelectFruitState extends State<SelectFruit3> {
   @override
   void initState() {
     super.initState();
+    startNewQuestion(15); // เริ่มคำถามแรกพร้อมนับถอยหลัง 15 วิ
+  }
+
+  @override
+  void dispose() {
+    _answerTimer?.cancel();
+    super.dispose();
+  }
+
+  // ✅ ฟังก์ชันเริ่มคำถามใหม่ พร้อมรับเวลาเป็นพารามิเตอร์
+  void startNewQuestion(int countdownSeconds) {
+    setState(() {
+      recognizedText = "";
+      _canAnswer = true;
+    });
+
+    // อ่านโจทย์ด้วย TTS
     TtsService.speak(
-      fruitPages[0]["question"] as String,
+      fruitPages[currentPage]["question"] as String,
       rate: 0.5,
       pitch: 1.0,
     );
+
+    // เริ่มจับเวลา
+    _answerTimer?.cancel();
+    _answerTimer = Timer(Duration(seconds: countdownSeconds), () {
+      setState(() {
+        _canAnswer = false; // หมดเวลา
+      });
+    });
   }
 
-  // ฟังก์ชัน ProgressBar
-  double calculateProgress(double maxWidth) =>
-      maxWidth * ((currentPage + 1) / totalPages);
-  double calculateIconPosition(double maxWidth, double iconWidth) =>
-      (calculateProgress(maxWidth) - iconWidth / 2).clamp(
-        0,
-        maxWidth - iconWidth,
+  // ✅ ตรวจสอบคำตอบจาก STT
+  // ใน _checkAnswer
+  void _checkAnswer(String text) {
+    if (!_canAnswer) return; // ถ้าเวลาหมดแล้ว ไม่เพิ่ม score
+
+    String question = fruitPages[currentPage]["question"] as String;
+    String cleanQuestion = question.replaceAll(RegExp(r'^\d+\.'), '').trim();
+
+    if (text.trim() == cleanQuestion) {
+      setState(() {
+        score++; // เพิ่มคะแนน
+        _canAnswer = false; // กันบวกซ้ำ
+      });
+      _nextQuestion();
+    }
+  }
+
+  // ✅ ไปโจทย์ถัดไป
+  void _nextQuestion() {
+    if (currentPage < totalPages - 1) {
+      setState(() {
+        currentPage++;
+      });
+      startNewQuestion(15); // รีเซ็ต + เริ่มคำถามใหม่ (15 วิ)
+    } else {
+      print("Game Finished! Score: $score");
+      TtsService.speak(
+        "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด $totalPages คะแนน",
+        rate: 0.5,
+        pitch: 1.0,
       );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => buildSummaryScreen(
+            context: context,
+            totalScore: score,
+            currentLevel: 3,
+
+            //onNextLevel: () {
+            //Navigator.push(
+            //context,
+            //MaterialPageRoute(builder: (_) => NextLevelScreen()),
+            //      },
+          ),
+        ),
+      );
+    }
+  }
 
   // เริ่มฟังเสียง
   Future<void> _startListening() async {
     setState(() => isListening = true);
     await SpeechService.startListening((text) {
-      setState(() => recognizedText = text); // อัปเดตข้อความเรียลไทม์
+      setState(() => recognizedText = text);
+      _checkAnswer(text); // ตรวจสอบทุกครั้งที่ได้ข้อความ
     });
   }
 
@@ -186,6 +258,7 @@ class _SelectFruitState extends State<SelectFruit3> {
                       _buildQuestion(),
 
                       // ผลไม้
+                      // ปุ่มผลไม้เป็นแค่โชว์รูป ไม่สามารถกดไปคำถามต่อ
                       Column(
                         children: List.generate(
                           (fruitPages[currentPage]["fruits"] as List).length,
@@ -238,7 +311,6 @@ class _SelectFruitState extends State<SelectFruit3> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-
                 GestureDetector(
                   onLongPressStart: (_) => _startListening(),
                   onLongPressEnd: (_) => _stopListening(),
@@ -292,6 +364,12 @@ class _SelectFruitState extends State<SelectFruit3> {
         builder: (context, constraints) {
           double maxWidth = constraints.maxWidth - 20;
           double iconWidth = 25;
+          double progress = maxWidth * ((currentPage + 1) / totalPages);
+          double iconPos = (progress - iconWidth / 2).clamp(
+            0,
+            maxWidth - iconWidth,
+          );
+
           return Stack(
             children: [
               Positioned(
@@ -299,7 +377,7 @@ class _SelectFruitState extends State<SelectFruit3> {
                 left: 10,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  width: calculateProgress(maxWidth),
+                  width: progress,
                   height: 11,
                   decoration: BoxDecoration(
                     color: const Color(0xFF7F95E4),
@@ -309,7 +387,7 @@ class _SelectFruitState extends State<SelectFruit3> {
               ),
               Positioned(
                 top: 1,
-                left: 10 + calculateIconPosition(maxWidth, iconWidth),
+                left: 10 + iconPos,
                 child: Container(
                   width: iconWidth,
                   height: 27,
@@ -426,27 +504,25 @@ class _SelectFruitState extends State<SelectFruit3> {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    return GestureDetector(
-      child: Container(
-        padding: EdgeInsets.all(screenWidth * 0.04),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(screenWidth * 0.05),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              blurRadius: 4,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.contain,
-            width: screenWidth * 0.4,
-            height: screenHeight * 0.15,
+    return Container(
+      padding: EdgeInsets.all(screenWidth * 0.04),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 4,
+            offset: const Offset(0, 4),
           ),
+        ],
+      ),
+      child: Center(
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.contain,
+          width: screenWidth * 0.4,
+          height: screenHeight * 0.15,
         ),
       ),
     );
