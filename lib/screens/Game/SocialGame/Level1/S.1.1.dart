@@ -72,7 +72,7 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
   late final List<MatchQuestion> questions = [
     MatchQuestion(
       question:
-          "1.ผลไม้ชนิดไหนเหมาะกับใครน้า", //==============================================โจทย์
+          "1.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง", //==============================================โจทย์
       leftOptions: const [
         MatchOption(
           id: "l1", //====================================================ฝั่งซ้าย
@@ -99,7 +99,7 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
         MatchOption(
           id: "r1", //====================================================ฝั่งขวา
           iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFFE57373),
+          dotColor: Color(0xFFF65A3B),
         ),
         MatchOption(
           id: "r2",
@@ -124,75 +124,175 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
         "l4": "r2",
       }, //==========================คู่คำตอบ
     ),
+
     MatchQuestion(
-      question: "2. เลือกผลไม้สีเหลือง",
+      question: "2.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
       leftOptions: const [
         MatchOption(
           id: "l1",
-          iconPath: "assets/icons/person1.png",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
           dotColor: Color(0xFFFFD54F),
         ),
         MatchOption(
           id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF4DD0E1),
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
         ),
         MatchOption(
           id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFFBA68C8),
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
+          dotColor: Color(0xFF8BC7AD),
         ),
         MatchOption(
           id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFFAED581),
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
         ),
       ],
       rightOptions: const [
         MatchOption(
           id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/apple.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r3",
           iconPath: "assets/game_assets/prototype/fruit/banana.png",
           dotColor: Color(0xFFFFD54F),
         ),
         MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-        MatchOption(
           id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/peach.png",
-          dotColor: Color(0xFFAED581),
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF8BC7AD),
         ),
       ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
+      answers: const {"l1": "r3", "l2": "r1", "l3": "r4", "l4": "r2"},
     ),
+
     MatchQuestion(
-      question: "3. เลือกผลไม้สีแดง",
+      question: "3.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
       leftOptions: const [
         MatchOption(
           id: "l1",
-          iconPath: "assets/icons/person1.png",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
           dotColor: Color(0xFFE57373),
         ),
         MatchOption(
           id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF9575CD),
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
         ),
         MatchOption(
           id: "l3",
-          iconPath: "assets/icons/person3.png",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Purple.png",
+          dotColor: Color(0xFFA47FD6),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/strawberry.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/grab.png",
+          dotColor: Color(0xFF9575CD),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+      ],
+      answers: const {"l1": "r1", "l2": "r3", "l3": "r4", "l4": "r2"},
+    ),
+
+    MatchQuestion(
+      question: "4.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Pink.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
           dotColor: Color(0xFF4DB6AC),
         ),
         MatchOption(
           id: "l4",
-          iconPath: "assets/icons/person4.png",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/peach.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+      ],
+      answers: const {"l1": "r2", "l2": "r3", "l3": "r1", "l4": "r4"},
+    ),
+
+    MatchQuestion(
+      question: "5.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Purple.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
           dotColor: Color(0xFFFFB74D),
         ),
       ],
@@ -200,353 +300,17 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
         MatchOption(
           id: "r1",
           iconPath: "assets/game_assets/prototype/fruit/strawberry.png",
-          dotColor: Color(0xFFE57373),
+          dotColor: Color(0xFFF65A3B),
         ),
         MatchOption(
           id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
-          dotColor: Color(0xFF9575CD),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF4DB6AC),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/grab.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "4. เลือกผลไม้สีเขียว",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF4DB6AC),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFFAED581),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFF9CCC65),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
-          dotColor: Color(0xFF4DB6AC),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
-          dotColor: Color(0xFFAED581),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF9CCC65),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "5. เลือกผลไม้ผิวเรียบ",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/peach.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "6. เลือกผลไม้สีชมพู/ม่วง",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFFF48FB1),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFF9575CD),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFFB39DDB),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/grab.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/peach.png",
-          dotColor: Color(0xFFF48FB1),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
-          dotColor: Color(0xFF9575CD),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/strawberry.png",
-          dotColor: Color(0xFFB39DDB),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "7. เลือกผลไม้รสเปรี้ยว",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFFFFD54F),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
-          dotColor: Color(0xFFFFD54F),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "8. เลือกผลไม้เปลือกหนา",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFFE57373),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
-          dotColor: Color(0xFF4DD0E1),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
-          dotColor: Color(0xFFE57373),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "9. เลือกผลไม้เนื้อฉ่ำ",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFF4DB6AC),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
-          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
-          dotColor: Color(0xFF4DB6AC),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/peach.png",
-          dotColor: Color(0xFFFFB74D),
-        ),
-        MatchOption(
-          id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/grab.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-        MatchOption(
-          id: "r4",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-      ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
-    ),
-    MatchQuestion(
-      question: "10. เลือกผลไม้ปอกกินง่าย",
-      leftOptions: const [
-        MatchOption(
-          id: "l1",
-          iconPath: "assets/icons/person1.png",
-          dotColor: Color(0xFFFFD54F),
-        ),
-        MatchOption(
-          id: "l2",
-          iconPath: "assets/icons/person2.png",
-          dotColor: Color(0xFF81C784),
-        ),
-        MatchOption(
-          id: "l3",
-          iconPath: "assets/icons/person3.png",
-          dotColor: Color(0xFF64B5F6),
-        ),
-        MatchOption(
-          id: "l4",
-          iconPath: "assets/icons/person4.png",
-          dotColor: Color(0xFFBA68C8),
-        ),
-      ],
-      rightOptions: const [
-        MatchOption(
-          id: "r1",
           iconPath: "assets/game_assets/prototype/fruit/banana.png",
-          dotColor: Color(0xFFFFD54F),
-        ),
-        MatchOption(
-          id: "r2",
-          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
-          dotColor: Color(0xFF81C784),
+          dotColor: Color(0xFFFFB74D),
         ),
         MatchOption(
           id: "r3",
-          iconPath: "assets/game_assets/prototype/fruit/apple.png",
-          dotColor: Color(0xFF64B5F6),
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF4DB6AC),
         ),
         MatchOption(
           id: "r4",
@@ -554,7 +318,252 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
           dotColor: Color(0xFFBA68C8),
         ),
       ],
-      answers: const {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
+      answers: const {"l1": "r4", "l2": "r3", "l3": "r1", "l4": "r2"},
+    ),
+
+    MatchQuestion(
+      question: "6.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Pink.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Purple.png",
+          dotColor: Color(0xFFB39DDB),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/grab.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/peach.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/apple.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+      ],
+      answers: const {"l1": "r2", "l2": "r1", "l3": "r4", "l4": "r3"},
+    ),
+
+    MatchQuestion(
+      question: "7.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Purple.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/lemon.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/grab.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+      ],
+      answers: const {"l1": "r2", "l2": "r4", "l3": "r3", "l4": "r1"},
+    ),
+
+    MatchQuestion(
+      question: "8.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Pink.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/apple.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/peach.png",
+          dotColor: Color(0xFFF48FB1),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+      ],
+      answers: const {"l1": "r4", "l2": "r1", "l3": "r2", "l4": "r3"},
+    ),
+
+    MatchQuestion(
+      question: "9.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Purple.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/strawberry.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/grab.png",
+          dotColor: Color(0xFFBA68C8),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+      ],
+      answers: const {"l1": "r3", "l2": "r1", "l3": "r4", "l4": "r2"},
+    ),
+
+    MatchQuestion(
+      question: "10.จับคู่สีของคนที่เหมือนกับสีของผลไม้ให้ถูกต้อง",
+      leftOptions: const [
+        MatchOption(
+          id: "l1",
+          iconPath: "assets/game_assets/prototype/personcolor/Yellow.png",
+          dotColor: Color(0xFFFFB74D),
+        ),
+        MatchOption(
+          id: "l2",
+          iconPath: "assets/game_assets/prototype/personcolor/Red.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "l3",
+          iconPath: "assets/game_assets/prototype/personcolor/Brawn.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+        MatchOption(
+          id: "l4",
+          iconPath: "assets/game_assets/prototype/personcolor/Green.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+      ],
+      rightOptions: const [
+        MatchOption(
+          id: "r1",
+          iconPath: "assets/game_assets/prototype/fruit/pineapple.png",
+          dotColor: Color(0xFFFFD54F),
+        ),
+        MatchOption(
+          id: "r2",
+          iconPath: "assets/game_assets/prototype/fruit/watermelon.png",
+          dotColor: Color(0xFFF65A3B),
+        ),
+        MatchOption(
+          id: "r3",
+          iconPath: "assets/game_assets/prototype/fruit/kiwi.png",
+          dotColor: Color(0xFF4DB6AC),
+        ),
+        MatchOption(
+          id: "r4",
+          iconPath: "assets/game_assets/prototype/fruit/coconut.png",
+          dotColor: Color.fromARGB(255, 113, 67, 50),
+        ),
+      ],
+      answers: const {"l1": "r1", "l2": "r2", "l3": "r4", "l4": "r3"},
     ),
   ];
 
@@ -744,6 +753,7 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
     } else {
       setState(() {
         _currentDragPos = null;
+        print("ตอบผิด");
       });
     }
   }
@@ -761,18 +771,22 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
         (_) => _computeDotPositions(),
       );
     } else {
-      // จบชุดคำถาม -> ไป Summary (ตามต้นแบบ)
+      final int score = totalScore ~/ 4; //หารเอาจำนวนเต็ม
+
+      // พูดคะแนน
       TtsService.speak(
-        "คุณทำคะแนนได้ $totalScore คะแนน จากทั้งหมด 40 คะแนน",
+        "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด 40 คะแนน",
         rate: 0.5,
         pitch: 1.0,
       );
+
+      // ไปหน้าสรุป
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => buildSummaryScreen_S(
             context: context,
-            totalScore: totalScore,
+            totalScore: score,
             currentLevel: 1,
           ),
         ),
@@ -1147,8 +1161,8 @@ class _MatchItem extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     // ✅ ปรับขนาดได้แยกกัน
-    final avatarSize = screenWidth * 0.15; // ขนาดปุ่มวงกลมสีขาว
-    final imageSize = screenWidth * 0.1; // ขนาดรูปภาพด้านใน
+    final avatarSize = screenWidth * 0.14; // ขนาดปุ่มวงกลมสีขาว
+    final imageSize = screenWidth * 0.07; // ขนาดรูปภาพด้านใน
 
     final dotSize = screenWidth * 0.03;
     final iconSpacing = screenWidth * 0.001;
