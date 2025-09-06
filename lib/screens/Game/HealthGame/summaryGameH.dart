@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
-import '../HealthGame/map_H.dart';
+import '../CommonGame/map_C.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
@@ -237,7 +237,7 @@ Widget buildSummaryScreen_S({
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => MAPHscreen()),
+                            MaterialPageRoute(builder: (_) => MAPCscreen()),
                           );
                         },
                         borderRadius: BorderRadius.circular(20 * scale),

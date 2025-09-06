@@ -4,7 +4,7 @@ import 'profile_screen.dart'; // หน้า PROFILE
 import 'package:url_launcher/url_launcher.dart';
 import 'Game/LenguageGame/map_L.dart';
 import 'Game/SocialGame/map_S.dart';
-import 'Game/CommonGame/map_C.dart';
+import 'Game/SenceGame/map_C.dart';
 import 'Game/HealthGame/map_H.dart';
 
 void main() {

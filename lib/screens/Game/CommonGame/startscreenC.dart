@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+import 'package:non_autos_mine/screens/Game/CommonGame/Level1/C.1.1.dart';
+
+=======
 import 'package:non_autos_mine/screens/Game/CommonGame/map_C.dart';
+>>>>>>> main
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.1.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.2.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.3.dart';
+import 'map_C.dart';
 
 void main() {
   runApp(const STARTCscreen());
@@ -523,7 +529,7 @@ class _AingHomePageState extends State<AingHomePage>
 Widget _getPageByNumber(String page) {
   switch (page) {
     case "1":
-    //return const SelectFruit1();
+      return const common1();
     case "2":
     //return const SelectFruit2();
     case "3":
