@@ -17,14 +17,141 @@ class _EatFruitGameState extends State<EatFruitGame> {
   final List<Map<String, dynamic>> questions = [
     {
       "question": "1.ส่วนไหนของกล้วยที่กินได้",
-      "imageFruit": "/assets/game_assets/prototype/fruit/banana.png",
+      "imageFruit": "assets/game_assets/prototype/fruit/banana.png",
       "options": [
         {
-          "image": "/assets/game_assets/prototype/fruit/banana1.png",
+          "image": "assets/game_assets/prototype/fruit/banana1.png",
+          "isCorrect": false,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/banana2.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "2.ส่วนไหนของแอปเปิ้ลที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/apple.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/noto-v1_red-apple.png",
           "isCorrect": true,
         },
         {
-          "image": "/assets/game_assets/prototype/fruit/banana2.png",
+          "image": "assets/game_assets/prototype/fruit/Group 34004.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "3.ส่วนไหนขององุ่นที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/grab.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/Group 33974.png",
+          "isCorrect": true,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/Group 34005.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "4.ส่วนไหนของกีวี่ที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/kiwi.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/noto_kiwi-fruit.png",
+          "isCorrect": true,
+        },
+        {
+          "image":
+              "assets/game_assets/prototype/fruit/noto_kiwi-fruit สำเนา.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "5.ส่วนไหนของสตรอว์เบอร์รีที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/strawberry.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/Group 34006.png",
+          "isCorrect": true,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/emojione_strawberry.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "6.ส่วนไหนของมะพร้าวที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/coconut.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/twemoji_coconut.png",
+          "isCorrect": true,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/twemoji_coconut-1.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "7.ส่วนไหนของเลมอนที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/lemon.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/noto_lemon.png",
+          "isCorrect": false,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/noto_lemon-1.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "8.ส่วนไหนของลูกท้อที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/peach.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/fxemoji_peach.png",
+          "isCorrect": true,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/fxemoji_peach-1.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "9.ส่วนไหนของสัปปะรดที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/pineapple.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/noto-v1_pineapple.png",
+          "isCorrect": false,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/noto-v1_pineapple-1.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "10.ส่วนไหนของแตงโมที่กินได้",
+      "imageFruit": "assets/game_assets/prototype/fruit/watermelon.png",
+      "options": [
+        {
+          "image": "assets/game_assets/prototype/fruit/noto_watermelon-1.png",
+          "isCorrect": true,
+        },
+        {
+          "image": "assets/game_assets/prototype/fruit/noto_watermelon.png",
           "isCorrect": false,
         },
       ],
