@@ -2,6 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+<string>เกมต้องการใช้กล้องหน้าเพื่อตรวจจับสีหน้า</string>
+
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>App ต้องการเข้าถึงไมโครโฟนเพื่อแปลงเสียงเป็นข้อความ</string>
 	<key>NSMicrophoneUsageDescription</key>
