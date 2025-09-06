@@ -530,7 +530,7 @@ Widget _getPageByNumber(String page) {
     case "2":
       return const SelectFruitDragGame();
     case "3":
-    //return const FacialExpressionGame();
+      return const FacialExpressionGame();
     default:
       return const MAPSscreen(); // fallback เผื่อ page ไม่ตรง
   }

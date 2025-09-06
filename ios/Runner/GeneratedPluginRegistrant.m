@@ -54,6 +54,12 @@
 @import speech_to_text;
 #endif
 
+#if __has_include(<tflite/TflitePlugin.h>)
+#import <tflite/TflitePlugin.h>
+#else
+@import tflite;
+#endif
+
 #if __has_include(<url_launcher_ios/URLLauncherPlugin.h>)
 #import <url_launcher_ios/URLLauncherPlugin.h>
 #else
@@ -71,6 +77,7 @@
   [FlutterTtsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterTtsPlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
   [SpeechToTextPlugin registerWithRegistrar:[registry registrarForPlugin:@"SpeechToTextPlugin"]];
+  [TflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"TflitePlugin"]];
   [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
 }
 
