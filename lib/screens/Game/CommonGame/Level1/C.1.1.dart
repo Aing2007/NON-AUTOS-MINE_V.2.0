@@ -18,7 +18,7 @@ class _SelectFruitState extends State<common1> {
   final List<Map<String, dynamic>> fruitPages = [
     {
       //==========================================1==================================================
-      "question": "1.ผลไม้ใดสีต่างจากพวก",
+      "question": "1.ผลไม้ใดสีต่างจากพวก?",
       "fruits": [
         {
           "image": "assets/game_assets/prototype/fruit/apple.png",
