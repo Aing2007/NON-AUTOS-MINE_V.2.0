@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:non_autos_mine/screens/Game/SenceGame/map_C.dart';
-//import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.1.dart';
+import 'package:non_autos_mine/screens/Game/Common/map_C.dart';
+import 'package:non_autos_mine/screens/Game/Common/Level1/C.1.1.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.2.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.3.dart';
 
@@ -111,9 +111,11 @@ class _AingHomePageState extends State<AingHomePage>
     _cardAnimationController.forward().then((_) {
       _cardAnimationController.reverse();
     });
-    setState(() {
-      _currentNumber = _currentNumber < 99 ? _currentNumber + 1 : 1;
-    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const common1()), // ✅ ไปหน้าเกม
+    );
   }
 
   void _onCloseTap() {
@@ -523,7 +525,7 @@ class _AingHomePageState extends State<AingHomePage>
 Widget _getPageByNumber(String page) {
   switch (page) {
     case "1":
-    //return const SelectFruit1();
+      return common1();
     case "2":
     //return const SelectFruit2();
     case "3":
