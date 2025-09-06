@@ -775,7 +775,7 @@ class _SelectMatchConnectState extends State<SelectMatchConnect> {
 
       // พูดคะแนน
       TtsService.speak(
-        "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด 40 คะแนน",
+        "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด 10 คะแนน",
         rate: 0.5,
         pitch: 1.0,
       );
