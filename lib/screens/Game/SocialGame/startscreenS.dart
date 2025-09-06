@@ -528,7 +528,7 @@ Widget _getPageByNumber(String page) {
     case "1":
       return const SelectMatchConnect();
     case "2":
-    //return const SelectFruit2();
+      return const DragFruitGame();
     case "3":
     //return const SelectFruit3();
     default:
