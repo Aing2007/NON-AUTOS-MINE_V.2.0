@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
 import '../SocialGame/map_S.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
+import 'package:non_autos_mine/screens/Game/SocialGame/Level1/S.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
 Widget buildSummaryScreen_S({
@@ -265,7 +265,7 @@ Widget buildSummaryScreen_S({
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const SelectFruit2(),
+                                builder: (_) => const SelectFruitDragGame(),
                               ),
                             );
                           } else if (currentLevel == 2) {
