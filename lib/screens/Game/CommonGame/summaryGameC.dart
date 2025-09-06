@@ -5,8 +5,8 @@ import 'map_C.dart';
 
 import '../CommonGame/map_C.dart';
 
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
-import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
+import 'package:non_autos_mine/screens/Game/CommonGame/Level1/C.1.2.dart';
+import 'package:non_autos_mine/screens/Game/CommonGame/Level1/C.1.3.dart';
 
 Widget buildSummaryScreen_C({
   required BuildContext context,
@@ -269,14 +269,14 @@ Widget buildSummaryScreen_C({
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const SelectFruit2(),
+                                builder: (_) => const ColorFruitGame(),
                               ),
                             );
                           } else if (currentLevel == 2) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const SelectFruit3(),
+                                builder: (_) => const EatFruitGame(),
                               ),
                             );
                           } else {

@@ -49,8 +49,7 @@ dependencies:
   path_provider: ^2.0.15
   flutter_launcher_icons: ^0.14.4
   camera: ^0.10.0+1        # camera stream
-  tflite_flutter: ^0.11.0  
-  tflite_flutter_helper: ^0.3.0    # ใช้งาน TensorFlow Lite (เรียก runModelOnFrame)
+     # ใช้งาน TensorFlow Lite (เรียก runModelOnFrame)
   
 fl_chart: ^0.68.0
 dev_dependencies:

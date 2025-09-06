@@ -188,7 +188,7 @@ class _EatFruitGameState extends State<EatFruitGame> {
           builder: (context) => buildSummaryScreen_C(
             context: context,
             totalScore: score,
-            currentLevel: 1,
+            currentLevel: 3,
           ),
         ),
       );

@@ -210,7 +210,7 @@ class _ColorFruitGameState extends State<ColorFruitGame> {
           builder: (context) => buildSummaryScreen_C(
             context: context,
             totalScore: score,
-            currentLevel: 1,
+            currentLevel: 2,
           ),
         ),
       );
