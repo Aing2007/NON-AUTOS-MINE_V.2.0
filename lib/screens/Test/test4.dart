@@ -355,6 +355,7 @@ class _Test4ScreenState extends State<Test4Screen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => LoadingManPage(
+                        //LoadingAnalysisPage
                         score1: widget.score1,
                         score2: widget.score2,
                         score3: widget.score3,

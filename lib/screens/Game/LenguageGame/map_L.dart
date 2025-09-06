@@ -1,7 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import '../LenguageGame/Level1/1.1.dart';
 import 'startscreenL.dart';
 import 'package:non_autos_mine/screens/gamemap_screen.dart';
 

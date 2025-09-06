@@ -121,7 +121,7 @@ class _SelectFruitState extends State<SelectFruit3> {
   @override
   void initState() {
     super.initState();
-    startNewQuestion(10); // เริ่มคำถามแรกพร้อมนับถอยหลัง 15 วิ
+    startNewQuestion(60); // เริ่มคำถามแรกพร้อมนับถอยหลัง 15 วิ
   }
 
   @override
