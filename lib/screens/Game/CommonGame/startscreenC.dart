@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
+
 import 'package:non_autos_mine/screens/Game/CommonGame/Level1/C.1.1.dart';
 
-=======
 import 'package:non_autos_mine/screens/Game/CommonGame/map_C.dart';
->>>>>>> main
+
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.1.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.2.dart';
 //import 'package:non_autos_mine/screens/Game/SenceGame/Level1/C.1.3.dart';

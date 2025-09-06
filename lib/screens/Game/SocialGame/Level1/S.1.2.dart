@@ -1,186 +1,204 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import '/widgets/headerGame.dart';
 import '../../../../AIfunction/TTS.dart';
 import '../summaryGameS.dart';
 
-class DragFruitGame extends StatefulWidget {
-  const DragFruitGame({Key? key}) : super(key: key);
+class SelectFruitDragGame extends StatefulWidget {
+  const SelectFruitDragGame({Key? key}) : super(key: key);
 
   @override
-  State<DragFruitGame> createState() => _DragFruitGameState();
+  _SelectFruitDragGameState createState() => _SelectFruitDragGameState();
 }
 
-class _DragFruitGameState extends State<DragFruitGame>
-    with SingleTickerProviderStateMixin {
-  int currentLevel = 0;
+class _SelectFruitDragGameState extends State<SelectFruitDragGame> {
   int score = 0;
-  int? selectedChoice;
+  int currentPage = 0;
+  bool isAnimating = false;
 
-  final FlutterTts flutterTts = FlutterTts();
-  final AudioPlayer audioPlayer = AudioPlayer();
+  // ตัวอย่าง data (แทนที่ด้วยของคุณได้เลย)
+  final List<Map<String, dynamic>> fruitPages = [
+    {
+      "question": "1. ตัวละครอยากกินกล้วย",
+      "fruits": [
+        {
+          "id": "banana",
+          "image": "assets/game_assets/prototype/fruit/banana.png",
+          "isCorrect": true,
+        },
 
-  late AnimationController _eatController;
-  late Animation<double> _shrinkAnimation;
-
-  // ✅ ข้อมูลเกม
-  final List<Map<String, dynamic>> gameData = [
-    {
-      "sentence": "Please give me a banana.",
-      "questionImage": "assets/images/banana.png",
-      "choice1": "assets/images/banana.png",
-      "choice2": "assets/images/grape.png",
-      "correctAnswerIndex": 0,
+        {
+          "id": "grape",
+          "image": "assets/game_assets/prototype/fruit/grab.png",
+          "isCorrect": false,
+        },
+      ],
     },
-    {
-      "sentence": "Please give me an apple.",
-      "questionImage": "assets/images/apple.png",
-      "choice1": "assets/images/apple.png",
-      "choice2": "assets/images/orange.png",
-      "correctAnswerIndex": 0,
-    },
-    {
-      "sentence": "Please give me an orange.",
-      "questionImage": "assets/images/orange.png",
-      "choice1": "assets/images/grape.png",
-      "choice2": "assets/images/orange.png",
-      "correctAnswerIndex": 1,
-    },
-    // ... เพิ่มข้ออื่นๆ ตามต้องการ
+    // ... เพิ่มเป็น 10 หน้า
   ];
+
+  // เก็บสถานะว่า tile ถูกใช้แล้ว (เพื่อเล่น animation scale)
+  late List<bool> usedTiles;
 
   @override
   void initState() {
     super.initState();
-
-    _eatController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-
-    _shrinkAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(_eatController);
-
-    // ฟังคำถามแรก
-    _speakCurrentQuestion();
+    _initUsedTiles();
+    // อ่านคำถามแรก
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      TtsService.speak(
+        fruitPages[currentPage]["question"] as String,
+        rate: 0.5,
+        pitch: 1.0,
+      );
+      // precache images ถ้าต้องการ
+      _precacheAllAssets();
+    });
   }
 
-  @override
-  void dispose() {
-    _eatController.dispose();
-    flutterTts.stop();
-    audioPlayer.dispose();
-    super.dispose();
+  void _initUsedTiles() {
+    final count = (fruitPages[currentPage]["fruits"] as List).length;
+    usedTiles = List<bool>.filled(count, false);
   }
 
-  Future<void> _speakCurrentQuestion() async {
-    await flutterTts.stop();
-    await flutterTts.setLanguage("en-US");
-    await flutterTts.speak(gameData[currentLevel]["sentence"]);
+  Future<void> _precacheAllAssets() async {
+    for (var page in fruitPages) {
+      final fruits = page["fruits"] as List;
+      for (var f in fruits) {
+        final path = f["image"] as String;
+        precacheImage(AssetImage(path), context);
+      }
+    }
+    // precache character / header images ถ้ามี
+    precacheImage(const AssetImage('assets/images/head.png'), context);
   }
 
-  void _handleDrop(int droppedIndex) async {
-    final correctIndex = gameData[currentLevel]["correctAnswerIndex"];
-
-    if (droppedIndex == correctIndex) {
-      // ✅ ถูกรางวัล
+  void _nextQuestion() {
+    if (currentPage < fruitPages.length - 1) {
       setState(() {
-        selectedChoice = droppedIndex;
+        currentPage += 1;
+        _initUsedTiles();
       });
-
-      await _eatController.forward();
-      await audioPlayer.play(AssetSource("sounds/correct.mp3"));
-
-      setState(() {
-        score++;
-        if (currentLevel < gameData.length - 1) {
-          currentLevel++;
-          selectedChoice = null;
-          _eatController.reset();
-          _speakCurrentQuestion();
-        } else {
-          _goToSummary();
-        }
-      });
+      TtsService.speak(
+        fruitPages[currentPage]["question"] as String,
+        rate: 0.5,
+        pitch: 1.0,
+      );
     } else {
-      // ❌ ผิด → สั่น + เสียง + แจ้งเตือน
-      HapticFeedback.heavyImpact();
-      await audioPlayer.play(AssetSource("sounds/wrong.mp3"));
-      _showWrongShake();
+      // จบเกม
+      TtsService.speak(
+        "คุณทำคะแนนได้ $score คะแนน จากทั้งหมด ${fruitPages.length} คะแนน",
+        rate: 0.5,
+        pitch: 1.0,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => buildSummaryScreen_S(
+            context: context,
+            totalScore: score,
+            currentLevel: 1,
+          ),
+        ),
+      );
     }
   }
 
-  void _showWrongShake() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Wrong! Try again."),
-        duration: Duration(milliseconds: 500),
-      ),
-    );
+  Future<void> _handleAccepted(int draggedIndex) async {
+    if (isAnimating) return;
+    final fruits = fruitPages[currentPage]["fruits"] as List;
+    final isCorrect = fruits[draggedIndex]["isCorrect"] as bool;
+
+    setState(() => isAnimating = true);
+
+    if (isCorrect) {
+      // เล่น animation หดสำหรับ tile ที่ถูกลาก
+      setState(() {
+        usedTiles[draggedIndex] = true;
+      });
+
+      // รอให้ animation scale/opacity เล่นเสร็จ
+      await Future.delayed(const Duration(milliseconds: 350));
+
+      setState(() => score += 1);
+      setState(() => isAnimating = false);
+      _nextQuestion();
+    } else {
+      // Feedback ผิด: สั้น ๆ แล้วไปข้อถัดไป
+      // (สามารถเล่น sound / haptic / shake widget ได้ที่นี่)
+      await Future.delayed(const Duration(milliseconds: 250));
+      setState(() => isAnimating = false);
+      _nextQuestion();
+    }
   }
 
-  void _goToSummary() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => buildSummaryScreen_S(
-          context: context,
-          totalScore: score,
-          currentLevel: 2,
+  Widget _buildDraggableTile(
+    int index,
+    Map<String, dynamic> fruit,
+    double tileSize,
+  ) {
+    final bool used = usedTiles.length > index ? usedTiles[index] : false;
+    final imagePath = fruit["image"] as String;
+
+    return Draggable<int>(
+      data: index,
+      feedback: SizedBox(
+        width: tileSize,
+        height: tileSize,
+        child: Material(
+          color: Colors.transparent,
+          child: _fruitTile(imagePath, tileSize, elevation: 8),
+        ),
+      ),
+      childWhenDragging: Opacity(
+        opacity: 0.25,
+        child: _fruitTile(imagePath, tileSize),
+      ),
+      maxSimultaneousDrags: isAnimating ? 0 : 1,
+      child: AnimatedScale(
+        scale: used ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        child: AnimatedOpacity(
+          opacity: used ? 0.0 : 1.0,
+          duration: const Duration(milliseconds: 300),
+          child: _fruitTile(imagePath, tileSize),
         ),
       ),
     );
   }
 
-  double _calculateProgress(double maxWidth) {
-    return maxWidth * ((currentLevel + 1) / gameData.length);
-  }
-
-  double _calculateIconPosition(double maxWidth, double iconWidth) {
-    final progress = _calculateProgress(maxWidth);
-    return (progress - iconWidth / 2).clamp(0, maxWidth - iconWidth);
-  }
-
-  Widget _buildChoice(int index, double size) {
-    final choicePath = gameData[currentLevel]["choice${index + 1}"];
-    final isSelected = selectedChoice == index;
-
-    return Draggable<int>(
-      data: index,
-      feedback: Material(
-        color: Colors.transparent,
-        child: Image.asset(choicePath, width: size, height: size),
+  Widget _fruitTile(String assetPath, double size, {double elevation = 2}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: elevation,
+          ),
+        ],
       ),
-      childWhenDragging: Opacity(
-        opacity: 0.3,
-        child: Image.asset(choicePath, width: size, height: size),
-      ),
-      child: AnimatedBuilder(
-        animation: _eatController,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: isSelected ? _shrinkAnimation.value : 1.0,
-            child: Image.asset(choicePath, width: size, height: size),
-          );
-        },
-      ),
+      padding: const EdgeInsets.all(8),
+      child: Image.asset(assetPath, fit: BoxFit.contain),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenW = MediaQuery.of(context).size.width;
+    final screenH = MediaQuery.of(context).size.height;
+    final tileSize = screenW * 0.22;
+
+    final currentFruits = fruitPages[currentPage]["fruits"] as List;
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
-        width: screenWidth,
-        height: screenHeight,
+        width: screenW,
+        height: screenH,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/GameBG/StartBGS.png'),
@@ -190,101 +208,191 @@ class _DragFruitGameState extends State<DragFruitGame>
         child: SafeArea(
           child: Column(
             children: [
-              // Header
-              GameHeader(
-                money: "12,000,000.00",
-                profileImage: "assets/images/head.png",
-              ),
-              const SizedBox(height: 20),
-
-              // Progress Bar + Icon
+              // ---------- Header ----------
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.025),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final maxWidth = constraints.maxWidth - screenWidth * 0.05;
-                    final iconWidth = screenWidth * 0.06;
-                    return Stack(
-                      children: [
-                        // Progress Line
-                        Positioned(
-                          top: screenHeight * 0.01,
-                          child: Container(
-                            width: _calculateProgress(maxWidth),
-                            height: screenHeight * 0.012,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF65A3B),
-                              borderRadius: BorderRadius.circular(
-                                screenHeight * 0.006,
-                              ),
-                            ),
-                          ),
-                        ),
-                        // Icon
-                        Positioned(
-                          top: 0,
-                          left: _calculateIconPosition(maxWidth, iconWidth),
-                          child: Container(
-                            width: iconWidth,
-                            height: screenHeight * 0.075,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/head.png'),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: GameHeader(
+                  money: "12,000,000.00",
+                  profileImage: "assets/images/head.png",
                 ),
               ),
 
-              const SizedBox(height: 20),
+              // ---------- Progress bar (reuse logic fromต้นแบบ) ----------
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  width: double.infinity,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double maxWidth = constraints.maxWidth - 20;
+                      double iconWidth = 25;
+                      double progress =
+                          ((currentPage + 1) / fruitPages.length) * maxWidth;
+                      return Stack(
+                        children: [
+                          Positioned(
+                            top: 9,
+                            left: 10,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              width: progress,
+                              height: 11,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF65A3B),
+                                borderRadius: BorderRadius.circular(5.5),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 1,
+                            left:
+                                10 +
+                                (progress - iconWidth / 2).clamp(
+                                  0,
+                                  maxWidth - iconWidth,
+                                ),
+                            child: Container(
+                              width: iconWidth,
+                              height: 27,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/head.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
 
-              // ตัวคำสั่ง + กล่องลาก
+              const SizedBox(height: 18),
+
+              // ---------- Character area (DragTarget) ----------
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // คำสั่ง
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        gameData[currentLevel]["sentence"],
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // background card / decorative shapes can be here
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 22),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        textAlign: TextAlign.center,
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.56,
                       ),
-                    ),
-                    const SizedBox(height: 20),
 
-                    // รูปภาพเป้าหมาย DragTarget
-                    DragTarget<int>(
-                      builder: (context, candidateData, rejectedData) {
-                        return Image.asset(
-                          gameData[currentLevel]["questionImage"],
-                          width: screenWidth * 0.4,
-                          height: screenWidth * 0.4,
-                        );
-                      },
-                      onAccept: (index) => _handleDrop(index),
-                    ),
+                      // Character image
+                      Positioned(
+                        top: 40,
+                        child: Column(
+                          children: [
+                            // speech bubble with requested fruit
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Image.asset(
+                                (fruitPages[currentPage]["fruits"]
+                                        as List)[(fruitPages[currentPage]["fruits"]
+                                            as List)
+                                        .indexWhere(
+                                          (f) => f['isCorrect'] == true,
+                                        )]["image"]
+                                    as String,
+                                width: 64,
+                                height: 64,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            // Character is also the drop target
+                            DragTarget<int>(
+                              builder: (context, candidateData, rejectedData) {
+                                // highlight when hovering
+                                final hovering = candidateData.isNotEmpty;
+                                return Container(
+                                  width: screenW * 1.3,
+                                  height: screenW * 1.3,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                      0,
+                                      255,
+                                      255,
+                                      255,
+                                    ),
 
-                    const SizedBox(height: 30),
+                                    border: hovering
+                                        ? Border.all(
+                                            color: Colors.greenAccent,
+                                            width: 3,
+                                          )
+                                        : null,
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/game_assets/prototype/avatar/fornt.png',
+                                      fit: BoxFit.contain,
+                                    ), // replace with your character image
+                                  ),
+                                );
+                              },
+                              onWillAccept: (data) => !isAnimating,
+                              onAccept: (draggedIndex) async {
+                                await _handleAccepted(draggedIndex);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
-                    // ตัวเลือก Drag
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildChoice(0, screenWidth * 0.25),
-                        _buildChoice(1, screenWidth * 0.25),
-                      ],
-                    ),
-                  ],
+              // ---------- Bottom card: choices ----------
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.12),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(currentFruits.length, (i) {
+                      final fruit = currentFruits[i] as Map<String, dynamic>;
+                      return _buildDraggableTile(i, fruit, tileSize);
+                    }),
+                  ),
                 ),
               ),
             ],

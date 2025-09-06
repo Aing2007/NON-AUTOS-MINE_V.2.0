@@ -458,7 +458,7 @@ class _SelectFruitState extends State<common1> {
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2, // บังคับให้ 2 เสมอ
+                    crossAxisCount: 3, // บังคับให้ 2 เสมอ
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     childAspectRatio: 1.5, // ✅ ทำให้ปุ่มเป็นสี่เหลี่ยมจัตุรัส
