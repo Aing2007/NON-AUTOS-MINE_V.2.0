@@ -86,6 +86,7 @@ flutter:
     - assets/game_assets/prototype/fruit/
     - assets/images/ICON.png
     - assets/game_assets/prototype/personcolor/
+    - assets/game_assets/prototype/avatar/
 fonts:
   - family: Barlow Semi Condensed
     fonts:
