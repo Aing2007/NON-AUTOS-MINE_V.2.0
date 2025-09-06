@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '/widgets/headerGame.dart';
+
 import 'map_C.dart';
+
+import '../CommonGame/map_C.dart';
+
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 

@@ -18,7 +18,7 @@ class _SelectFruitDragGameState extends State<SelectFruitDragGame> {
   // ตัวอย่าง data (แทนที่ด้วยของคุณได้เลย)
   final List<Map<String, dynamic>> fruitPages = [
     {
-      "question": "1. ตัวละครอยากกินกล้วย",
+      "question": "1.ฉันอยากกินกล้วยจังเลย",
       "fruits": [
         {
           "id": "banana",
@@ -33,6 +33,151 @@ class _SelectFruitDragGameState extends State<SelectFruitDragGame> {
         },
       ],
     },
+    {
+      "question": "2.ฉันอยากกินแอปเปิ้ลจังเลย",
+      "fruits": [
+        {
+          "id": "banana",
+          "image": "assets/game_assets/prototype/fruit/banana.png",
+          "isCorrect": false,
+        },
+
+        {
+          "id": "apple",
+          "image": "assets/game_assets/prototype/fruit/apple.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "3.ฉันอยากกินองุ่นจังเลย",
+      "fruits": [
+        {
+          "id": "apple",
+          "image": "assets/game_assets/prototype/fruit/apple.png",
+          "isCorrect": false,
+        },
+
+        {
+          "id": "grape",
+          "image": "assets/game_assets/prototype/fruit/grab.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "4.ฉันอยากกินกีวี่จังเลย",
+      "fruits": [
+        {
+          "id": "kiwi",
+          "image": "assets/game_assets/prototype/fruit/kiwi.png",
+          "isCorrect": true,
+        },
+
+        {
+          "id": "apple",
+          "image": "assets/game_assets/prototype/fruit/apple.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "5.ฉันอยากกินสตรอว์เบอร์รีจังเลย",
+      "fruits": [
+        {
+          "id": "banana",
+          "image": "assets/game_assets/prototype/fruit/banana.png",
+          "isCorrect": false,
+        },
+
+        {
+          "id": "strawberry",
+          "image": "assets/game_assets/prototype/fruit/strawberry.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "6.ฉันอยากกินมะพร้าวจังเลย",
+      "fruits": [
+        {
+          "id": "coconut",
+          "image": "assets/game_assets/prototype/fruit/coconut.png",
+          "isCorrect": true,
+        },
+
+        {
+          "id": "grape",
+          "image": "assets/game_assets/prototype/fruit/grab.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "7.ฉันอยากกินเลม่อนจังเลย",
+      "fruits": [
+        {
+          "id": "lemon",
+          "image": "assets/game_assets/prototype/fruit/lemon.png",
+          "isCorrect": true,
+        },
+
+        {
+          "id": "strawberry",
+          "image": "assets/game_assets/prototype/fruit/strawberry.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+    {
+      "question": "8.ฉันอยากกินลูกท้อจังเลย",
+      "fruits": [
+        {
+          "id": "kiwi",
+          "image": "assets/game_assets/prototype/fruit/kiwi.png",
+          "isCorrect": false,
+        },
+
+        {
+          "id": "peach",
+          "image": "assets/game_assets/prototype/fruit/peach.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "9.ฉันอยากกินสัปปะรดจังเลย",
+      "fruits": [
+        {
+          "id": "strawberry",
+          "image": "assets/game_assets/prototype/fruit/strawberry.png",
+          "isCorrect": false,
+        },
+
+        {
+          "id": "pineapple",
+          "image": "assets/game_assets/prototype/fruit/pineapple.png",
+          "isCorrect": true,
+        },
+      ],
+    },
+    {
+      "question": "10.ฉันอยากกินแตงโมจังเลย",
+      "fruits": [
+        {
+          "id": "watermelon",
+          "image": "assets/game_assets/prototype/fruit/watermelon.png",
+          "isCorrect": true,
+        },
+
+        {
+          "id": "coconut",
+          "image": "assets/game_assets/prototype/fruit/coconut.png",
+          "isCorrect": false,
+        },
+      ],
+    },
+
     // ... เพิ่มเป็น 10 หน้า
   ];
 
