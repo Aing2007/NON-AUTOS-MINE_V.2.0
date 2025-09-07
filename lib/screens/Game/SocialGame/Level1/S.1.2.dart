@@ -241,7 +241,7 @@ class _SelectFruitDragGameState extends State<SelectFruitDragGame> {
           builder: (context) => buildSummaryScreen_S(
             context: context,
             totalScore: score,
-            currentLevel: 1,
+            currentLevel: 2,
           ),
         ),
       );

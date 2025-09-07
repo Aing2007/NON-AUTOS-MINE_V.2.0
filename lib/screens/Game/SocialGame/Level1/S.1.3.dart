@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite/tflite.dart';
 import '../summaryGameS.dart';
 import '/widgets/headerGame.dart'; // ใช้ Header ของคุณ
 import '../../../../AIfunction/TTS.dart';
@@ -14,8 +13,8 @@ import '../../../../AIfunction/TTS.dart';
 class FaceQuestion {
   final String id;
   final String prompt; // ข้อความโจทย์ เช่น "ทำหน้ายิ้ม"
-  final String requiredLabel; // label ที่โมเดลต้องทำนายให้ตรง เช่น "happy"
-  final String fruitAsset; // path ของผลไม้แสดงในหน้าคำถาม
+  final String requiredLabel; // label ที่ต้องการ (mock)
+  final String fruitAsset; // path ของผลไม้
 
   const FaceQuestion({
     required this.id,
@@ -39,52 +38,49 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   bool _cameraInitialized = false;
   List<CameraDescription>? _cameras;
 
-  // TFLite status
-  bool _modelLoaded = false;
-
   // Game questions (10 ข้อ)
   late final List<FaceQuestion> _questions = [
     const FaceQuestion(
       id: 'q1',
-      prompt: '1. ทำหน้ายิ้ม (Happy)',
+      prompt: '1.กล้วยมีรสหวานมากเลย ทำหน้ายิ้มหน่อย',
       requiredLabel: 'happy',
       fruitAsset: 'assets/game_assets/prototype/fruit/banana.png',
     ),
     const FaceQuestion(
       id: 'q2',
-      prompt: '2. ทำหน้าเศร้า (Sad)',
+      prompt: '2. แอปเปิ้ลลูกนี้เปรี้ยวมากเลย ทำหน้ายู่ให้ดูหน่อย',
       requiredLabel: 'sad',
       fruitAsset: 'assets/game_assets/prototype/fruit/apple.png',
     ),
     const FaceQuestion(
       id: 'q3',
-      prompt: '3. ทำหน้าโกรธ (Angry)',
+      prompt: '3.องุ่นพวงนี้รสชาติหวามอร่อย ทำหน้ามีความสุขให้ดูหน่อย',
       requiredLabel: 'angry',
-      fruitAsset: 'assets/game_assets/prototype/fruit/strawberry.png',
+      fruitAsset: 'assets/game_assets/prototype/fruit/grab.png',
     ),
     const FaceQuestion(
       id: 'q4',
-      prompt: '4. ทำหน้ายู่ (Disgust)',
+      prompt: '4. กีวี่ลูกนี้เปรี้ยวมากๆเลย ไหนทำหน้าเปรี้ยวจี๊ดให้ดูหน่อย',
       requiredLabel: 'disgust',
-      fruitAsset: 'assets/game_assets/prototype/fruit/lemon.png',
-    ),
-    const FaceQuestion(
-      id: 'q5',
-      prompt: '5. ทำหน้างง (Surprised)',
-      requiredLabel: 'surprised',
       fruitAsset: 'assets/game_assets/prototype/fruit/kiwi.png',
     ),
     const FaceQuestion(
+      id: 'q5',
+      prompt: '5. สตอเบอรี่ลูกนี้หวาน รสชาติอร่อย ทำหน้ามีความสุขหน่อย',
+      requiredLabel: 'surprised',
+      fruitAsset: 'assets/game_assets/prototype/fruit/strawberry.png',
+    ),
+    const FaceQuestion(
       id: 'q6',
-      prompt: '6. ทำหน้าเฉยๆ (Neutral)',
+      prompt: '6. มะพร้าวลูกนี้หอมมันมาก รสชาติอร่อย ทำหน้ามีความสุขหน่อย',
       requiredLabel: 'neutral',
-      fruitAsset: 'assets/game_assets/prototype/fruit/watermelon.png',
+      fruitAsset: 'assets/game_assets/prototype/fruit/coconut.png',
     ),
     const FaceQuestion(
       id: 'q7',
       prompt: '7. ทำหน้าตื่นเต้น (Excited ~ surprised)',
       requiredLabel: 'surprised',
-      fruitAsset: 'assets/game_assets/prototype/fruit/pineapple.png',
+      fruitAsset: 'assets/game_assets/prototype/fruit/lemon.png',
     ),
     const FaceQuestion(
       id: 'q8',
@@ -113,11 +109,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   Timer? _questionTimer;
   int _timeLeft = 30; // วินาที
 
-  // periodic inference control
-  Timer? _inferenceTimer;
-  final int _inferenceIntervalMs = 500;
-
-  // last inference result
+  // mock prediction result (แทนที่ tflite)
   String? _lastLabel;
   double _lastConfidence = 0.0;
 
@@ -131,14 +123,11 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _initCameraAndModel();
+    _initCamera();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // อ่านโจทย์ข้อแรกด้วย TTS
       if (_questions.isNotEmpty) {
         TtsService.speak(_questions[0].prompt, rate: 0.5, pitch: 1.0);
       }
-
-      // precache images ถ้าต้องการ
     });
   }
 
@@ -151,12 +140,10 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
 
   void _stopAll() {
     _questionTimer?.cancel();
-    _inferenceTimer?.cancel();
     _cameraController?.dispose();
-    Tflite.close();
   }
 
-  Future<void> _initCameraAndModel() async {
+  Future<void> _initCamera() async {
     try {
       _cameras = await availableCameras();
       final front = _cameras!.firstWhere(
@@ -172,86 +159,11 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
       await _cameraController!.initialize();
       _cameraInitialized = true;
       setState(() {});
-
-      await _cameraController!.startImageStream(_processCameraImage);
     } catch (e) {
       print("Camera init error: $e");
     }
 
-    try {
-      String? res = await Tflite.loadModel(
-        model: "assets/tflite/model.tflite",
-        labels: "assets/tflite/labels.txt",
-        numThreads: 2,
-        isAsset: true,
-        useGpuDelegate: false,
-      );
-      print("TFLite loadModel result: $res");
-      _modelLoaded = true;
-      setState(() {});
-    } catch (e) {
-      print("TFLite load model error: $e");
-    }
-
     _startQuestionTimer();
-
-    _inferenceTimer?.cancel();
-    _inferenceTimer = Timer.periodic(
-      Duration(milliseconds: _inferenceIntervalMs),
-      (_) => _checkMatchAndAdvanceIfNeeded(),
-    );
-  }
-
-  bool _isRunningInference = false;
-  CameraImage? _latestImage;
-
-  void _processCameraImage(CameraImage image) {
-    _latestImage = image;
-    if (!_isRunningInference) {
-      _isRunningInference = true;
-      _runModelOnFrame(image).whenComplete(() => _isRunningInference = false);
-    }
-  }
-
-  Future<void> _runModelOnFrame(CameraImage image) async {
-    if (!_modelLoaded) return;
-    try {
-      final preds = await Tflite.runModelOnFrame(
-        bytesList: image.planes.map((plane) => plane.bytes).toList(),
-        imageHeight: image.height,
-        imageWidth: image.width,
-        imageMean: 127.5,
-        imageStd: 127.5,
-        rotation: 0,
-        numResults: 3,
-        threshold: 0.40,
-        asynch: true,
-      );
-      if (preds != null && preds.isNotEmpty) {
-        final top = preds.first;
-        final labelRaw = top['label'] as String;
-        String label = labelRaw.contains(" ")
-            ? labelRaw.split(" ").last
-            : labelRaw;
-        final conf = (top['confidence'] as double?) ?? 0.0;
-        _lastLabel = label.toLowerCase();
-        _lastConfidence = conf;
-        if (mounted) setState(() {});
-      }
-    } catch (e) {
-      print("Error runModelOnFrame: $e");
-    }
-  }
-
-  void _checkMatchAndAdvanceIfNeeded() {
-    if (_lastLabel == null) return;
-    final curQ = _questions[_currentIndex];
-    final need = curQ.requiredLabel.toLowerCase();
-    const confThreshold = 0.60;
-    if (_lastLabel == need && _lastConfidence >= confThreshold) {
-      _score += 1;
-      _goNextQuestion(passed: true);
-    }
   }
 
   void _startQuestionTimer() {
@@ -265,6 +177,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
 
   void _goNextQuestion({required bool passed}) {
     _questionTimer?.cancel();
+    if (passed) _score++;
     Future.delayed(const Duration(milliseconds: 300), () {
       if (_currentIndex < _questions.length - 1) {
         setState(() {
@@ -272,14 +185,11 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
           _lastLabel = null;
           _lastConfidence = 0.0;
         });
-
-        // อ่านคำถามใหม่ด้วย TTS
         TtsService.speak(
           _questions[_currentIndex].prompt,
           rate: 0.5,
           pitch: 1.0,
         );
-
         _startQuestionTimer();
       } else {
         _finishGame();
@@ -299,7 +209,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
       return buildSummaryScreen_S(
         context: context,
         totalScore: _score,
-        currentLevel: 1,
+        currentLevel: 3,
       );
     }
 
@@ -508,8 +418,8 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
                                   top: screenWidth * 0.08,
                                   left: screenWidth * 0.28,
                                   child: SizedBox(
-                                    width: screenWidth * 0.4, // กำหนดความกว้าง
-                                    height: screenHeight * 0.4, // กำหนดความสูง
+                                    width: screenWidth * 0.4,
+                                    height: screenHeight * 0.4,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Transform(
@@ -556,7 +466,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
                                   ),
                                 ),
                               ),
-                              // Timer + prediction
+                              // Timer + prediction (mock)
                               Positioned(
                                 top: constraints.maxHeight * 0.03,
                                 left: constraints.maxWidth * 0.04,

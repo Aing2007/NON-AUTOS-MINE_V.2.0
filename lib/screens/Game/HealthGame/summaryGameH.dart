@@ -4,7 +4,7 @@ import '../CommonGame/map_C.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.2.dart';
 import 'package:non_autos_mine/screens/Game/LenguageGame/Level1/L.1.3.dart';
 
-Widget buildSummaryScreen_S({
+Widget buildSummaryScreen_H({
   required BuildContext context,
   required int totalScore,
   required int currentLevel,

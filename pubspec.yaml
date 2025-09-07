@@ -43,13 +43,13 @@ dependencies:
   firebase_database: ^12.0.0
   email_validator: ^3.0.0
   
-  tflite: ^1.1.2
+  
   speech_to_text: ^7.3.0
   flutter_tts: ^4.2.3
   path_provider: ^2.0.15
   flutter_launcher_icons: ^0.14.4
   camera: ^0.10.0+1   
-  tflite_flutter: ^0.10.4
+  
     # camera stream
      # ใช้งาน TensorFlow Lite (เรียก runModelOnFrame)
   
