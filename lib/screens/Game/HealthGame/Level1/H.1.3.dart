@@ -186,7 +186,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
           builder: (context) => buildSummaryScreen_H(
             context: context,
             totalScore: score,
-            currentLevel: 1,
+            currentLevel: 2,
           ),
         ),
       );
@@ -226,7 +226,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
         height: screenH,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/GameBG/StartBGH.png'),
+            image: AssetImage('assets/images/GameBG/StartBGS.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -248,7 +248,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
               // ---------------- Progress Bar (เหมือนต้นแบบ) ----------------
               _ProgressBar(current: currentPage + 1, total: pages.length),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
 
               // ---------------- Character Area + Bubble ----------------
               Expanded(
@@ -264,6 +264,20 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
                         alignment: Alignment.topCenter,
                         children: [
                           // การ์ดพื้นหลังโปร่งบาง เหมือนหน้าเดิม
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 22,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              width: double.infinity,
+                              height: (screenH * 0.56).clamp(360, 560),
+                            ),
+                          ),
 
                           // Bubble + Character
                           Column(
@@ -285,8 +299,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
 
                               // --- Character ---
                               Container(
-                                width: maxW * 1.2,
-                                height: screenH * 0.6,
+                                width: maxW * 0.9,
                                 constraints: const BoxConstraints(
                                   maxWidth: 520,
                                 ),
@@ -365,7 +378,7 @@ class _ProgressBar extends StatelessWidget {
                     width: progress,
                     height: 11,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF8BC7AD),
+                      color: const Color(0xFFF65A3B),
                       borderRadius: BorderRadius.circular(5.5),
                     ),
                   ),

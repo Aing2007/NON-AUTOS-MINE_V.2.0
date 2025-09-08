@@ -524,7 +524,7 @@ class _AingHomePageState extends State<AingHomePage>
 Widget _getPageByNumber(String page) {
   switch (page) {
     case "1":
-      return const SelectFruit1();
+      return const FruitHandChoiceGame();
     case "2":
     //return const SelectFruit2();
     case "3":

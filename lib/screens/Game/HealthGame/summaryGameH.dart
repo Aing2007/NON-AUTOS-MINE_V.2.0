@@ -86,7 +86,7 @@ Widget buildSummaryScreen_H({
                               width: maxWidth,
                               height: 8 * scale,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF65A3B),
+                                color: const Color(0xFF8BC7AD),
                                 borderRadius: BorderRadius.circular(8 * scale),
                               ),
                             ),
@@ -197,7 +197,7 @@ Widget buildSummaryScreen_H({
                               Icons.star_rounded,
                               size: 60 * scale,
                               color: index < starsEarned
-                                  ? const Color(0xFFF65A3B)
+                                  ? const Color(0xFF8BC7AD)
                                   : Colors.grey[400],
                             ),
                           );
@@ -251,7 +251,7 @@ Widget buildSummaryScreen_H({
                           child: Center(
                             child: Icon(
                               Icons.location_pin,
-                              color: const Color(0xFFF65A3B),
+                              color: const Color(0xFF8BC7AD),
                               size: 36 * scale,
                             ),
                           ),
@@ -294,7 +294,7 @@ Widget buildSummaryScreen_H({
                           child: Center(
                             child: Icon(
                               Icons.arrow_forward_rounded,
-                              color: const Color(0xFFF65A3B),
+                              color: const Color(0xFF8BC7AD),
                               size: 36 * scale,
                             ),
                           ),
