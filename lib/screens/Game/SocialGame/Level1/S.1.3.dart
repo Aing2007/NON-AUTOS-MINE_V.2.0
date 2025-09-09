@@ -1,12 +1,11 @@
 // facial_expression_game.dart
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import '../summaryGameS.dart';
-import '/widgets/headerGame.dart'; // ใช้ Header ของคุณ
+import '/widgets/headerGame.dart';
 import '../../../../AIfunction/TTS.dart';
 
 /// --------------------
@@ -35,7 +34,7 @@ class FacialExpressionGame extends StatefulWidget {
 
 class _FacialExpressionGameState extends State<FacialExpressionGame>
     with WidgetsBindingObserver {
-  // camera
+  // Camera
   CameraController? _cameraController;
   bool _cameraInitialized = false;
   List<CameraDescription>? _cameras;
@@ -44,7 +43,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   late final List<FaceQuestion> _questions = [
     const FaceQuestion(
       id: 'q1',
-      prompt: '1.กล้วยมีรสหวานมากเลย ทำหน้ายิ้มหน่อย',
+      prompt: '1. รสชาติหอม หวาน อร่อย',
       requiredLabel: 'happy',
       fruitAsset: 'assets/game_assets/prototype/fruit/banana.png',
     ),
@@ -56,34 +55,31 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
     ),
     const FaceQuestion(
       id: 'q3',
-      prompt: '3.องุ่นพวงนี้รสชาติหวามอร่อย ทำหน้ามีความสุขให้ดูหน่อย',
-      requiredLabel:
-          'angry', // เดิมไม่สอดคล้องกับ prompt -> แก้ด้วย acceptable labels ด้านล่าง
+      prompt: '3. องุ่นพวงนี้รสชาติหวานอร่อย ทำหน้ามีความสุขให้ดูหน่อย',
+      requiredLabel: 'happy',
       fruitAsset: 'assets/game_assets/prototype/fruit/grab.png',
     ),
     const FaceQuestion(
       id: 'q4',
-      prompt: '4. กีวี่ลูกนี้เปรี้ยวมากๆเลย ไหนทำหน้าเปรี้ยวจี๊ดให้ดูหน่อย',
+      prompt: '4. กีวี่ลูกนี้เปรี้ยวมาก ๆ ทำหน้าเปรี้ยวจี๊ดให้ดูหน่อย',
       requiredLabel: 'disgust',
       fruitAsset: 'assets/game_assets/prototype/fruit/kiwi.png',
     ),
     const FaceQuestion(
       id: 'q5',
-      prompt: '5. สตอเบอรี่ลูกนี้หวาน รสชาติอร่อย ทำหน้ามีความสุขหน่อย',
-      requiredLabel:
-          'surprised', // เดิมไม่สอดคล้องกับ prompt -> แก้ด้วย acceptable labels ด้านล่าง
+      prompt: '5. สตรอว์เบอร์รี่หวานอร่อย ทำหน้ามีความสุขหน่อย',
+      requiredLabel: 'happy',
       fruitAsset: 'assets/game_assets/prototype/fruit/strawberry.png',
     ),
     const FaceQuestion(
       id: 'q6',
-      prompt: '6. มะพร้าวลูกนี้หอมมันมาก รสชาติอร่อย ทำหน้ามีความสุขหน่อย',
-      requiredLabel:
-          'neutral', // เดิมไม่สอดคล้องกับ prompt -> แก้ด้วย acceptable labels ด้านล่าง
+      prompt: '6. มะพร้าวหอมมัน รสชาติอร่อย ทำหน้ามีความสุขหน่อย',
+      requiredLabel: 'happy',
       fruitAsset: 'assets/game_assets/prototype/fruit/coconut.png',
     ),
     const FaceQuestion(
       id: 'q7',
-      prompt: '7. ทำหน้าตื่นเต้น (Excited ~ surprised)',
+      prompt: '7. ทำหน้าตื่นเต้น (Excited ~ Surprised)',
       requiredLabel: 'surprised',
       fruitAsset: 'assets/game_assets/prototype/fruit/lemon.png',
     ),
@@ -101,31 +97,13 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
     ),
     const FaceQuestion(
       id: 'q10',
-      prompt: '10. ทำหน้าเฉยๆ',
+      prompt: '10. ทำหน้าเฉย ๆ',
       requiredLabel: 'neutral',
       fruitAsset: 'assets/game_assets/prototype/fruit/grab.png',
     ),
   ];
 
-  // ✅ แผนที่ label ที่ยอมรับได้ต่อข้อ (เพื่อชดเชย prompt/requiredLabel ที่เคยไม่ตรง)
-  // ไม่กระทบ UI เพราะเป็นลอจิกภายในเท่านั้น
-  late final Map<String, Set<String>> _acceptableLabelsByQuestionId = {
-    'q1': {'happy', 'smile'},
-    'q2': {'sad', 'frown'},
-    // q3: prompt ขอความสุข แต่ requiredLabel เดิมเป็น angry -> ยอมรับทั้ง 'happy' และ 'angry' เพื่อไม่เปลี่ยน UI
-    'q3': {'happy', 'angry'},
-    'q4': {'disgust', 'disgusted', 'sour'},
-    // q5: prompt ขอความสุข แต่ requiredLabel เดิมเป็น surprised -> ยอมรับทั้ง 'happy' และ 'surprised'
-    'q5': {'happy', 'surprised'},
-    // q6: prompt บอกมีความสุข แต่ requiredLabel เดิม neutral -> ยอมรับทั้ง 'happy' และ 'neutral'
-    'q6': {'neutral', 'happy'},
-    'q7': {'surprised', 'excited'},
-    'q8': {'surprised', 'shock'},
-    'q9': {'happy', 'smile'},
-    'q10': {'neutral'},
-  };
-
-  // mapping alias -> canonical
+  // ยอมรับ alias ของ label เล็กน้อยเพื่อความยืดหยุ่น
   final Map<String, String> _labelAliases = const {
     'smile': 'happy',
     'frown': 'sad',
@@ -133,6 +111,12 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
     'sour': 'disgust',
     'excited': 'surprised',
     'shock': 'surprised',
+    'neutral': 'neutral',
+    'angry': 'angry',
+    'happy': 'happy',
+    'sad': 'sad',
+    'surprised': 'surprised',
+    'disgust': 'disgust',
   };
 
   int _currentIndex = 0;
@@ -140,34 +124,28 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
 
   // per-question timer
   Timer? _questionTimer;
-  int _timeLeft = 30; // วินาที
+  int _timeLeft = 15; // วินาที
 
-  // prediction result
+  // prediction result (debug/state)
   String? _lastLabel;
   double _lastConfidence = 0.0;
 
-  // UI reuse
+  // UI
   final GlobalKey _stackKey = GlobalKey();
-
-  // game finished flag
   bool _isGameFinished = false;
-
-  // ✅ ป้องกันกดปุ่มถ่ายรัว ๆ / ส่งซ้ำ
   bool _isCapturing = false;
 
-  // ✅ ปรับ threshold ผ่านได้ตามต้องการ
+  // Threshold ผ่าน
   static const double _passThreshold = 0.60;
 
-  /// Roboflow config (ปรับค่าจริงก่อนใช้งาน)
-  static const String _rfApiKey = "rf_OqbLvRlnPqg3KIvM9Jr5PHoD8MC3";
-  static const String _rfProject = "human-face-expression-git8p";
-  static const String _rfVersion = "1";
+  /// Roboflow config (ใส่ค่าจริงก่อนใช้งาน)
+  static const String _rfApiKey = "EmsyUjB6F24BkOOZO3g4";
+  static const String _rfProject =
+      "human-face-expression-git8p"; // เช่น human-face-expression-git8p
+  static const String _rfVersion = "1"; // เช่น 1
 
-  Uri _rfClassifyUri() => Uri.parse(
-    "https://classify.roboflow.com/$_rfProject/$_rfVersion?api_key=$_rfApiKey",
-  );
   Uri _rfDetectUri() => Uri.parse(
-    "https://detect.roboflow.com/$_rfProject/$_rfVersion?api_key=$_rfApiKey",
+    "https://serverless.roboflow.com/$_rfProject/$_rfVersion?api_key=$_rfApiKey",
   );
 
   @override
@@ -197,14 +175,15 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
 
   Future<void> _initCamera() async {
     try {
-      _cameras = await availableCameras();
+      final cameras = await availableCameras();
+      _cameras = cameras;
       final front = _cameras!.firstWhere(
         (c) => c.lensDirection == CameraLensDirection.front,
         orElse: () => _cameras!.first,
       );
       _cameraController = CameraController(
         front,
-        ResolutionPreset.medium,
+        ResolutionPreset.high, // ภาพคมขึ้น (ปรับได้)
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.yuv420,
       );
@@ -234,7 +213,6 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
       _score++;
       TtsService.speak("เยี่ยมมาก! ถูกต้อง", rate: 0.9, pitch: 1.05);
     }
-    // หน่วงนิดหน่อยเพื่อให้ผู้เล่นรับรู้ผล
     Future.delayed(const Duration(milliseconds: 350), () {
       if (!mounted) return;
       if (_currentIndex < _questions.length - 1) {
@@ -262,59 +240,20 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
     });
   }
 
-  // ✅ รวมผลลัพธ์จากทั้ง classify และ detect ให้ได้ class + confidence
-  // รูปแบบที่รองรับ:
-  // - Classify: { "top": {"class_name":"happy","confidence":0.87}, ... }
-  //             หรือ { "predictions": [{"class":"happy","confidence":0.87}, ...] }
-  // - Detect:   { "predictions": [{"class":"happy","confidence":0.87, ...}, ...] }
-  Map<String, dynamic>? _extractPrediction(dynamic jsonBody) {
-    if (jsonBody == null) return null;
-
-    // classify: top
-    final top = jsonBody['top'];
-    if (top is Map) {
-      final c = (top['class_name'] ?? top['class'])?.toString();
-      final conf = (top['confidence'] is num)
-          ? (top['confidence'] as num).toDouble()
-          : null;
-      if (c != null && conf != null) {
-        return {'class': c, 'confidence': conf};
-      }
-    }
-
-    // classify/detect: predictions[0]
-    if (jsonBody['predictions'] is List &&
-        (jsonBody['predictions'] as List).isNotEmpty) {
-      final p = (jsonBody['predictions'] as List).first;
-      if (p is Map) {
-        final c = (p['class_name'] ?? p['class'])?.toString();
-        final conf = (p['confidence'] is num)
-            ? (p['confidence'] as num).toDouble()
-            : null;
-        if (c != null && conf != null) {
-          return {'class': c, 'confidence': conf};
-        }
-      }
-    }
-
-    return null;
-  }
-
   String _canonicalize(String raw) {
     final lower = raw.toLowerCase().trim();
     return _labelAliases[lower] ?? lower;
+    // ถ้า label ไม่อยู่ใน alias จะใช้ lower-case เดิม
   }
 
-  bool _isPassForCurrentQuestion(String predictedLabel, double conf) {
-    final q = _questions[_currentIndex];
-    final acceptSet =
-        _acceptableLabelsByQuestionId[q.id] ?? {q.requiredLabel.toLowerCase()};
-    final canonical = _canonicalize(predictedLabel);
-    return acceptSet.map((e) => _canonicalize(e)).contains(canonical) &&
-        conf >= _passThreshold;
+  bool _isPass(String predicted, double conf) {
+    final required = _canonicalize(_questions[_currentIndex].requiredLabel);
+    final got = _canonicalize(predicted);
+    return (got == required) && conf >= _passThreshold;
   }
 
-  /// ✅ ฟังก์ชันถ่ายรูป + ส่ง Roboflow API
+  /// ✅ ฟังก์ชันถ่ายรูป + ส่ง Roboflow DETECT API
+  /// ✅ ฟังก์ชันถ่ายรูป + ส่ง Roboflow DETECT API
   Future<void> _captureAndSendToRoboflow() async {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       debugPrint("❌ Camera not ready");
@@ -324,50 +263,44 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
     _isCapturing = true;
 
     try {
-      // ถ่ายรูป
+      // 1) ถ่ายรูป
       final XFile file = await _cameraController!.takePicture();
       final bytes = await file.readAsBytes();
 
-      // ลองเรียก classify ก่อน ถ้า error ค่อย fallback เป็น detect
-      http.Response? response;
-      try {
-        response = await http.post(
-          _rfClassifyUri(),
-          headers: {"Content-Type": "application/octet-stream"},
-          body: bytes,
-        );
-      } catch (_) {
-        // เฉย ๆ แล้วค่อยลอง detect
-      }
+      // 2) สร้าง URL ตาม Roboflow Hosted Inference
+      final uri = Uri.parse(
+        "https://serverless.roboflow.com/human-face-expression-git8p/1?api_key=EmsyUjB6F24BkOOZO3g4",
+      );
 
-      if (response == null || response.statusCode >= 400) {
-        response = await http.post(
-          _rfDetectUri(),
-          headers: {"Content-Type": "application/octet-stream"},
-          body: bytes,
-        );
-      }
+      // 3) ส่งภาพไป Roboflow
+      final response = await http.post(
+        uri,
+        headers: {"Content-Type": "application/octet-stream"},
+        body: bytes,
+      );
 
+      // 4) ตรวจผลลัพธ์
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
-        final pred = _extractPrediction(result);
 
-        if (pred != null) {
-          final String label = (pred['class'] as String?) ?? '';
-          final double conf = (pred['confidence'] as double?) ?? 0.0;
+        if (result["predictions"] != null && result["predictions"].isNotEmpty) {
+          final preds = result["predictions"] as List;
+          preds.sort(
+            (a, b) => ((b["confidence"] ?? 0) as num).compareTo(
+              (a["confidence"] ?? 0) as num,
+            ),
+          );
+          final pred = preds.first;
 
-          if (!mounted) return;
-          setState(() {
-            _lastLabel = label;
-            _lastConfidence = conf;
-          });
+          final String label = (pred["class_name"] ?? pred["class"] ?? "")
+              .toString();
+          final double conf = (pred["confidence"] as num).toDouble();
 
-          debugPrint("✅ Predict: $_lastLabel conf=$_lastConfidence");
+          debugPrint("✅ Predict: $label conf=$conf");
 
-          if (_isPassForCurrentQuestion(label, conf)) {
+          if (_isPass(label, conf)) {
             _goNextQuestion(passed: true);
           } else {
-            // ยังไม่ผ่าน ให้ลองใหม่ได้ (ไม่ตัดเวลาเพิ่ม)
             TtsService.speak("ลองปรับสีหน้าอีกครั้ง", rate: 0.9, pitch: 1.0);
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -377,26 +310,19 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
             _isCapturing = false;
           }
         } else {
+          debugPrint("⚠️ ไม่พบการทำนายจาก API");
           if (mounted) {
-            setState(() {
-              _lastLabel = "ไม่พบ";
-              _lastConfidence = 0.0;
-            });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("ไม่พบการทำนายจากภาพ ลองใหม่อีกครั้ง"),
-              ),
+              const SnackBar(content: Text("ไม่พบการทำนายจากภาพ")),
             );
           }
           _isCapturing = false;
         }
       } else {
-        debugPrint("❌ Roboflow error: ${response.body}");
+        debugPrint("❌ Roboflow error: ${response.statusCode} ${response.body}");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("เกิดข้อผิดพลาดจากเซิร์ฟเวอร์: ${response.body}"),
-            ),
+            const SnackBar(content: Text("เกิดข้อผิดพลาดจากเซิร์ฟเวอร์")),
           );
         }
         _isCapturing = false;
@@ -405,7 +331,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
       debugPrint("❌ Capture error: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("ถ่ายภาพหรือส่งไม่สำเร็จ ลองอีกครั้ง")),
+          const SnackBar(content: Text("ถ่ายภาพหรือส่งไม่สำเร็จ")),
         );
       }
       _isCapturing = false;
@@ -414,7 +340,6 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // จัดการกล้องเมื่อแอปพัก/กลับมา
     if (_cameraController == null) return;
     if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.paused) {
@@ -456,93 +381,134 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // ---------------- Header ----------------
                   GameHeader(
                     money: "12,000,000.00",
                     profileImage: "assets/images/head.png",
                   ),
-                  const SizedBox(height: 20),
 
-                  // Progress bar
-                  // ... (โค้ดเดิมทั้งหมด ไม่เปลี่ยนแปลง) ...
-                  const SizedBox(height: 20),
-                  // Main play area
+                  const SizedBox(height: 12),
+
+                  // ---------------- Progress Bar แบบในภาพ ----------------
+                  _ProgressWithAvatar(
+                    progress: (_currentIndex + 1) / _questions.length,
+                    avatarAsset: "assets/images/head.png",
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ---------------- Avatar กลมกลางบน ----------------
+                  CircleAvatar(
+                    radius: 42,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 38,
+                      backgroundImage: const AssetImage(
+                        "assets/images/head.png",
+                      ),
+                      backgroundColor: Colors.white.withOpacity(0.9),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // ---------------- การ์ดโจทย์ ----------------
+                  _PromptCard(text: curQ.prompt),
+
+                  const SizedBox(height: 16),
+
+                  // ---------------- กรอบกล้อง + ปุ่มผลไม้ซ้อนทับ ----------------
+                  // อัตราส่วนใกล้เคียงภาพ (แนวตั้ง)
                   AspectRatio(
-                    aspectRatio: 9 / 12,
+                    aspectRatio: 1 / 1,
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Stack(
-                            key: _stackKey,
-                            children: [
-                              // ✅ ใส่ CameraPreview ลงในตำแหน่งเดิม (ไม่เปลี่ยน UI/โครง)
-                              if (_cameraInitialized &&
-                                  _cameraController != null)
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: CameraPreview(_cameraController!),
-                                )
-                              else
-                                const Center(
-                                  child: CircularProgressIndicator(),
+                        return Stack(
+                          key: _stackKey,
+                          alignment: Alignment.center,
+                          children: [
+                            // กรอบมุมโค้ง + เส้นขาว
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3,
                                 ),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child:
+                                  _cameraInitialized &&
+                                      _cameraController != null
+                                  ? CameraPreview(_cameraController!)
+                                  : const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                            ),
 
-                              // ✅ ปุ่ม Capture ด้านล่าง (เดิม)
-                              Positioned(
-                                bottom: 20,
-                                left: 0,
-                                right: 0,
-                                child: Center(
-                                  child: ElevatedButton.icon(
-                                    onPressed: _isCapturing
-                                        ? null
-                                        : _captureAndSendToRoboflow,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.redAccent,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 12,
+                            // ปุ่มผลไม้กลมซ้อนทับด้านล่าง (กด = ถ่ายรูป)
+                            Positioned(
+                              bottom: 12,
+                              child: GestureDetector(
+                                onTap: _isCapturing
+                                    ? null
+                                    : _captureAndSendToRoboflow,
+                                child: Container(
+                                  width: 68,
+                                  height: 68,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.12),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 4),
                                       ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.white,
-                                    ),
-                                    label: Text(
-                                      _isCapturing ? "กำลังตรวจ..." : "ถ่ายรูป",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Image.asset(
+                                    curQ.fruitAsset,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         );
                       },
                     ),
                   ),
-                  const SizedBox(height: 24),
 
-                  // Bottom info (เดิม)
-                  Text(
-                    'ข้อที่ ${_currentIndex + 1} / ${_questions.length}    คะแนน: $_score',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(height: 8),
+
+                  // ---------------- ข้อมูลข้างล่างเล็กน้อย ----------------
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'ข้อที่ ${_currentIndex + 1} / ${_questions.length}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'คะแนน: $_score',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'เวลา: $_timeLeft วิ',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
 
-                  // (ไม่บังคับแสดง แต่ถ้าต้องการ debug ก็อ่านได้จากตัวแปร)
+                  // ถ้าต้องการ debug label
                   // Text('Label: ${_lastLabel ?? "-"} (${_lastConfidence.toStringAsFixed(2)})'),
-                  // Text('เวลา: $_timeLeft วินาที'),
-                  // Text(curQ.prompt),
                 ],
               ),
             ),
@@ -553,7 +519,119 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   }
 }
 
-/// สามเหลี่ยมด้านล่าง avatar
+/// --------------------
+/// Widgets เฉพาะ UI
+/// --------------------
+
+class _PromptCard extends StatelessWidget {
+  final String text;
+  const _PromptCard({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: Color(0xFF5B5B5B),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProgressWithAvatar extends StatelessWidget {
+  final double progress; // 0..1
+  final String avatarAsset;
+  const _ProgressWithAvatar({
+    required this.progress,
+    required this.avatarAsset,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final clamped = progress.clamp(0.0, 1.0);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final barHeight = 14.0;
+        final handleSize = 28.0;
+        final barWidth = constraints.maxWidth;
+        final x = (barWidth - handleSize) * clamped;
+
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              height: barHeight,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.85),
+                borderRadius: BorderRadius.circular(barHeight),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(barHeight),
+                child: LinearProgressIndicator(
+                  value: clamped,
+                  minHeight: barHeight,
+                  backgroundColor: Colors.transparent,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    const Color(0xFFE97359), // เฉดแดงส้มอ่อนตามภาพ
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: x,
+              top: -(handleSize / 2) + (barHeight / 2),
+              child: Container(
+                width: handleSize,
+                height: handleSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.10),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  child: Image.asset(avatarAsset, fit: BoxFit.cover),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// สามเหลี่ยมด้านล่าง avatar (ถ้ายังต้องใช้ที่อื่น)
 class _TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
