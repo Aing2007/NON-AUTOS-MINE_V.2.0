@@ -142,7 +142,7 @@ class _FacialExpressionGameState extends State<FacialExpressionGame>
   static const String _rfApiKey = "EmsyUjB6F24BkOOZO3g4";
   static const String _rfProject =
       "human-face-expression-git8p"; // เช่น human-face-expression-git8p
-  static const String _rfVersion = "1"; // เช่น 1
+  static const String _rfVersion = "2"; // เช่น 1
 
   Uri _rfDetectUri() => Uri.parse(
     "https://serverless.roboflow.com/$_rfProject/$_rfVersion?api_key=$_rfApiKey",

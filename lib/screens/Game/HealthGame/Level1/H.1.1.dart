@@ -32,7 +32,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
   /// หมายเหตุ: ปรับ paths ให้ตรงกับ assets ของโปรเจกต์คุณ
   final List<Map<String, dynamic>> pages = [
     {
-      'questionTts': 'หนึ่ง. ฉันอยากกินกล้วยสามลูก',
+      'questionTts': 'ฉันกินกล้วยไป 3 ลูกแล้วตอนนี้ฉันอิ่มมาก',
       'fruitImage': 'assets/game_assets/prototype/fruit/banana.png',
       'fruitCount': 3,
       'options': [
@@ -43,7 +43,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
         },
         {
           'id': 'hand',
-          'icon': 'assets/game_assets/prototype/icons/hand.png',
+          'icon': 'assets/game_assets/prototype/other/stop.png',
           'isCorrect': false,
         },
       ],
@@ -286,7 +286,7 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
                               // --- Character ---
                               Container(
                                 width: maxW * 1.2,
-                                height: screenH * 0.6,
+                                height: screenH * 0.5,
                                 constraints: const BoxConstraints(
                                   maxWidth: 520,
                                 ),
@@ -313,8 +313,8 @@ class _FruitHandChoiceGameState extends State<FruitHandChoiceGame>
               // ---------------- Bottom Choices ----------------
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 18,
+                  horizontal: 30,
+                  vertical: 30,
                 ),
                 child: _BottomChoices(
                   isAnimating: isAnimating,
